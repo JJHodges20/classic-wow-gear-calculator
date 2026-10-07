@@ -18,7 +18,7 @@ External item providers / bundled data / manual entry
         |
    scoring                  weighted, cap-aware, explainable item scores
         |
-   comparison / optimizer   item A vs item B, replacement deltas; later whole sets
+   comparison / optimizer   items compared, whole gear sets, replacements; later the optimizer
         |
    services                 use cases for the UI and the command line
         |
@@ -174,7 +174,8 @@ roles and profiles a ruleset has, builds a checked `CharacterContext` from a pro
 player's choices (the profile supplies defaults: level, content mode, phase), runs every
 item - manual, imported or looked up - through the same validation, and calls the scoring
 engine and the comparison layer. `reporting/text.py` formats a comparison as plain text;
-`wowgear compare` prints it (or `--json`).
+`wowgear compare` prints it (or `--json`) and writes it to a file with `--output` (`.json`,
+`.csv`, `.html`, `.txt`) and every score component with `--components`.
 
 ## The app
 
@@ -183,16 +184,20 @@ apps/streamlit_app/
   app.py          the shell: page setup, theme, top navigation, footer; keeps the shared
                   choices when the player changes page
   pages/          one small script per page, as st.navigation runs them
-  views/          what each page draws, as functions: calculator, compare, profiles,
-                  item_database, data_health, and the setup they share
+  views/          what each page draws, as functions: calculator, compare, gear_set,
+                  profiles, item_database, data_health, and the setup they share
   components/     the pieces: theme, escaped HTML, item cards, the context bar, the item
-                  picker and manual entry, the recommendation, the advanced tabs
+                  picker and manual entry, the recommendation, the advanced tabs, the
+                  gear set's slots, caps and value, and the export menu
   state/          session keys and helpers; the workspace, cached once per project
 ```
 
 The pages: **Calculator** (two items, the recommendation and the advanced tabs);
 **Compare** (up to eight items ranked, the two best explained, every component in one
-table); **Build profiles** (a profile's weights, conversions, caps evaluated as numbers,
+table); **Gear set** (a saved character's whole gear: each slot with what the piece is
+worth, the set's value and where it comes from, caps and breakpoints as bars, under-served
+priorities, stats not valued, the weakest pieces, a replacement tried against the whole
+character, the totals sent to the calculator, import and export); **Build profiles** (a profile's weights, conversions, caps evaluated as numbers,
 assumptions and sources; save your own weights as a custom profile - [decision
 0007](decisions/0007-custom-profiles.md)); **Item database** (filter and page through the
 local items, see where each came from, send one to the calculator); **Data health**
@@ -212,6 +217,32 @@ missing dataset, an invalid context, a failing or unconfigured provider, an expi
 lookup, an item that fails validation and an unusable item each say what happened and what
 still works. The design system is in [decision 0006](decisions/0006-app-design-system.md).
 
-## Sections to complete
+## Characters and gear sets
 
-This document grows with the milestones: characters and gear sets (9).
+[Decision 0008](decisions/0008-gear-sets.md) has the reasoning; the pieces:
+
+| Module | Does |
+| --- | --- |
+| `models/gear.py` | `GearSet`, `SavedCharacter`, and the analysis results: `GearAnalysis`, `SlotValue`, `CapStatus`, `WeakSlot`, `SetPieces`, `ReplacementResult` |
+| `scoring/gear.py` | What items add up to (`gear_totals`, weapon damage left out) and the whole set scored by the engine (`evaluate_gear`): each item on top of the ones before it, with the set's weapon types and weapon skill throughout |
+| `comparison/gear.py` | `check_gear` (slots, a two-hander's off hand, unique items), `analyse_gear` (each piece's worth, caps and breakpoints, under-served priorities, stats not valued, weakest pieces, sets), `replacement` (the change in the whole set's value and its explanation) |
+| `repositories/characters.py` | Saved characters in the local database, one row each as JSON, versioned on save |
+| `data_sources/files.py`, `processing/gear_files.py` | Reading a character (JSON) or a gear list (CSV) from a file |
+| `services/characters.py` | The use cases: new, change, equip, save, delete, analyse, try a replacement, import and export |
+
+A piece's worth is the set's value less the set's value without it; a replacement's is the
+set's value with it less the set's value as it is. Both are exact under the scoring model,
+and both reuse the engine for every number. The engine's cap curves (`cap_curves`) and
+measured totals (`measured_totals`) are public so the cap status reads the same curves the
+scores use. `wowgear gear` lists the saved characters, analyses one (or a character file)
+and tries an item with `--try SLOT=ITEM`.
+
+## Exports
+
+`reporting/export.py` formats, and never changes a number: a comparison as JSON (the result
+model), a ranking CSV and a components CSV; a character as JSON (what the gear import
+reads); a gear list as CSV (every slot, the import format); and a comparison or a gear
+analysis as one self-contained HTML page - escaped, no scripts, nothing loaded from
+elsewhere, light and dark, printable. Text cells a spreadsheet would run as a formula are
+prefixed with an apostrophe. The calculator and Compare pages have an Export menu; the
+Gear set page exports the character, the gear list and the report.

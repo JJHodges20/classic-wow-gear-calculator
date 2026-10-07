@@ -17,11 +17,12 @@ from __future__ import annotations
 
 import math
 from collections import defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Literal
 
 from wow_gear import __version__ as package_version
-from wow_gear.calculations.caps import EvaluatedCap, evaluate_cap
+from wow_gear.calculations.caps import resolve_cap
 from wow_gear.calculations.conversions import DerivedAmount, derive, describe
 from wow_gear.calculations.curves import FLAT, ValueCurve
 from wow_gear.calculations.levels import target_level
@@ -30,7 +31,7 @@ from wow_gear.core.hashing import content_hash
 from wow_gear.models.character import CharacterContext
 from wow_gear.models.enums import Stat, ValidationStatus
 from wow_gear.models.item import Item
-from wow_gear.models.profile import BuildProfile, CapReference
+from wow_gear.models.profile import BuildProfile
 from wow_gear.models.ruleset import Ruleset
 from wow_gear.models.score import (
     CapEvent,
@@ -62,48 +63,40 @@ class _Part:
 
 
 @dataclass(frozen=True)
-class _CapInfo:
+class CapInfo:
+    """A profile's cap on one stat, evaluated for a context, as the curve the engine counts on."""
+
     kind: Literal["hard", "soft"]
     curve: ValueCurve
     cap: float
     derivation: str
 
 
-def _resolve(reference: CapReference, ruleset: Ruleset, context: CharacterContext) -> EvaluatedCap:
-    if reference.fixed is not None:
-        value = max(0.0, reference.fixed - reference.reduced_by)
-        detail = f"fixed at {reference.fixed:g}"
-        if reference.reduced_by:
-            detail += f"; {reference.reduced_by:g} already provided by the build"
-        return EvaluatedCap(name="fixed", cap=value, dead_zone=0.0, derivation=detail)
-    assert reference.ruleset_cap is not None
-    return evaluate_cap(reference.ruleset_cap, ruleset, context, reference.reduced_by)
-
-
-def _cap_curves(
+def cap_curves(
     profile: BuildProfile, ruleset: Ruleset, context: CharacterContext
-) -> dict[Stat, _CapInfo]:
-    caps: dict[Stat, _CapInfo] = {}
+) -> dict[Stat, CapInfo]:
+    """The value curve of every capped stat of ``profile`` in ``context``."""
+    caps: dict[Stat, CapInfo] = {}
     for hard in profile.hard_caps:
-        evaluated = _resolve(hard.cap, ruleset, context)
-        caps[hard.stat] = _CapInfo(
+        evaluated = resolve_cap(hard.cap, ruleset, context)
+        caps[hard.stat] = CapInfo(
             kind="hard",
             curve=ValueCurve(dead_zone=evaluated.dead_zone, full_until=evaluated.cap),
             cap=evaluated.cap,
             derivation=evaluated.derivation,
         )
     for soft in profile.soft_caps:
-        start = _resolve(soft.starts_at, ruleset, context)
+        start = resolve_cap(soft.starts_at, ruleset, context)
         derivation = start.derivation
         if soft.ends_at is not None:
-            end = _resolve(soft.ends_at, ruleset, context)
+            end = resolve_cap(soft.ends_at, ruleset, context)
             soft_until = max(end.cap, start.cap)
             derivation += f"; reduced value ends at {soft_until:g} ({end.derivation})"
         elif soft.stat in caps:
             soft_until = max(caps[soft.stat].cap, start.cap)
         else:
             soft_until = math.inf
-        caps[soft.stat] = _CapInfo(
+        caps[soft.stat] = CapInfo(
             kind="soft",
             curve=ValueCurve(
                 dead_zone=min(start.dead_zone, start.cap),
@@ -137,7 +130,16 @@ def _with_derived(totals: dict[Stat, float], derived: list[DerivedAmount]) -> di
     return combined
 
 
-def _cap_message(stat_name: str, info: _CapInfo, before: float, amount: float) -> str:
+def measured_totals(
+    totals: Mapping[Stat, float], context: CharacterContext, profile: BuildProfile, ruleset: Ruleset
+) -> dict[Stat, float]:
+    """Gear totals as caps and breakpoints measure them: with what the profile's conversions
+    add (Agility into crit, for example) on top of each stat itself."""
+    base = dict(totals)
+    return _with_derived(base, derive(base, profile.derived_stats, ruleset, context.class_name))
+
+
+def _cap_message(stat_name: str, info: CapInfo, before: float, amount: float) -> str:
     pieces = info.curve.segments(before, amount)
     parts = []
     if abs(pieces.dead) > _EPSILON:
@@ -195,12 +197,11 @@ def score_item(
     usable = eligibility(item, context, ruleset)
     amounts = item_amounts(item, context, profile, ruleset)
     baseline = _baseline(context, replacing, profile, ruleset)
-    caps = _cap_curves(profile, ruleset, context)
+    caps = cap_curves(profile, ruleset, context)
 
     item_totals = amounts.totals()
     derived_item = derive(item_totals, profile.derived_stats, ruleset, context.class_name)
-    derived_base = derive(baseline, profile.derived_stats, ruleset, context.class_name)
-    before_totals = _with_derived(baseline, derived_base)
+    before_totals = measured_totals(baseline, context, profile, ruleset)
     converted = {amount.source for amount in derived_item}
 
     pools: dict[Stat, list[_Part]] = defaultdict(list)
@@ -408,7 +409,7 @@ def _thresholds(
         amount = sum(part.amount for part in pools.get(rule.stat, []))
         if abs(amount) <= _EPSILON:
             continue
-        evaluated = _resolve(rule.at, ruleset, context)
+        evaluated = resolve_cap(rule.at, ruleset, context)
         before = before_totals.get(rule.stat, 0.0)
         after = before + amount
         target = evaluated.cap
@@ -497,7 +498,7 @@ def _warnings(
     ruleset: Ruleset,
     ineligibility: tuple[str, ...],
     amounts: ItemAmounts,
-    caps: dict[Stat, _CapInfo],
+    caps: dict[Stat, CapInfo],
     pools: dict[Stat, list[_Part]],
     derived_item: list[DerivedAmount],
 ) -> tuple[list[ScoreWarning], list[str]]:

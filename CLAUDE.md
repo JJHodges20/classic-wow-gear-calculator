@@ -121,3 +121,11 @@ downloads live in `data/raw/`, which git ignores.
 - Git Bash rewrites an argument that looks like a POSIX path for native programs: a lone `/`
   becomes `C:/Program Files/Git/`. Pass a URL path as `""` or prefix the command with
   `MSYS_NO_PATHCONV=1`.
+- To check the app on a throwaway project, run `streamlit run apps/streamlit_app/app.py`
+  from the repository with `WOWGEAR_HOME` naming the project and
+  `--server.fileWatcherType none`, and restart it after a change. The first direct load of
+  a page URL other than the default after a start shows Streamlit's "Page not found"
+  dialog: open the root and use the navigation. Long dropdowns are virtualized: type to
+  filter before choosing an option.
+- In a Bash heredoc, a backslash escape such as `\n` inside generated Python can arrive as
+  a real line break: write such lines with the Edit tool.

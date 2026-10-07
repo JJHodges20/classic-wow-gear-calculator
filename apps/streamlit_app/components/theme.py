@@ -159,6 +159,27 @@ def _css(t: Tokens) -> str:
   vertical-align: top; }}
 .wg-table .wg-num {{ text-align: right; font-variant-numeric: tabular-nums;
   white-space: nowrap; }}
+.wg-slot {{ min-width: 0; }}
+.wg-slot-top {{ display: flex; justify-content: space-between; align-items: center;
+  gap: 0.4rem; min-height: 1.5rem; }}
+.wg-slot-top .wg-eyebrow {{ margin-bottom: 0; }}
+.wg-slot-top .wg-chip {{ font-size: 0.75rem; padding: 0 0.5rem; }}
+.wg-slot-meta {{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+.wg-slot-name {{ font-weight: 600; line-height: 1.3; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; }}
+.wg-slot-none {{ color: var(--wg-muted); font-weight: 400; font-style: italic; }}
+.wg-bar {{ height: 0.38rem; border-radius: 999px; background: var(--wg-neutral-soft);
+  overflow: hidden; margin: 0.3rem 0 0.25rem 0; }}
+.wg-bar > span {{ display: block; height: 100%; border-radius: inherit;
+  background: var(--wg-gold); }}
+.wg-bar.wg-good > span {{ background: var(--wg-good); }}
+.wg-bar.wg-bad > span {{ background: var(--wg-bad); }}
+.wg-cap {{ padding: 0.5rem 0; border-bottom: 1px dashed var(--wg-border); }}
+.wg-cap:last-child {{ border-bottom: none; }}
+.wg-cap-head {{ display: flex; justify-content: space-between; align-items: baseline;
+  gap: 0.5rem; flex-wrap: wrap; }}
+.wg-list {{ margin: 0.2rem 0 0.4rem 1.1rem; padding: 0; }}
+.wg-list li {{ margin: 0.15rem 0; }}
 {quality}
 </style>
 """

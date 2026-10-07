@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from components import advanced, item_input, recommendation
+from components import advanced, exports, item_input, recommendation
 from components.html import eyebrow
 from state import session
 from state.session import Slot
@@ -53,6 +53,7 @@ def render() -> None:
             else:
                 slots = {item.id: slot for slot, item in chosen.items() if item is not None}
                 recommendation.render(result, slots)
+                exports.comparison_downloads(result, ready.context, "calc_export")
 
     st.write("")
     st.html(eyebrow("Advanced"))

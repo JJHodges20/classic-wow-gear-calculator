@@ -31,7 +31,7 @@ class Choice:
     content: ContentMode
 
 
-def _phase_label(ruleset: Ruleset, number: int) -> str:
+def phase_label(ruleset: Ruleset, number: int) -> str:
     phase = next(p for p in ruleset.phases if p.number == number)
     headline = phase.content.split(",")[0].split(" with ")[0].strip()
     return f"{phase.label}: {headline}"
@@ -91,7 +91,7 @@ def render(calc: CalculatorService, ruleset_id: str) -> Choice | None:
         phase = columns[4].selectbox(
             "Phase",
             phases,
-            format_func=lambda number: _phase_label(ruleset, number),
+            format_func=lambda number: phase_label(ruleset, number),
             key=session.PHASE,
             help="Items from later phases are shown as not yet available.",
         )

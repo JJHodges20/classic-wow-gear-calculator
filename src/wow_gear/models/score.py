@@ -28,6 +28,9 @@ class ComponentKind(StrEnum):
     CONTEXT = "context"
 
 
+_UNSCORED_KINDS = frozenset({ComponentKind.PROC, ComponentKind.SET_BONUS})
+
+
 class ScoreComponent(_Frozen):
     """One line of the breakdown: an amount of something, valued at a weight."""
 
@@ -44,6 +47,12 @@ class ScoreComponent(_Frozen):
     weight: float
     contribution: float
     note: str | None = None
+
+    @property
+    def scored(self) -> bool:
+        """Whether the score counts this line. Procs, on-use effects, set bonuses and
+        conditional bonuses whose condition does not hold are listed but not scored."""
+        return self.kind not in _UNSCORED_KINDS and not self.key.startswith("inactive:")
 
 
 class CapEvent(_Frozen):

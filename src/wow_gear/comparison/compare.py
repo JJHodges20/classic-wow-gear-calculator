@@ -33,7 +33,6 @@ WHY_LINES = 4
 """How many component differences the one-line explanation names."""
 
 _EPSILON = 1e-9
-_UNSCORED_KINDS = (ComponentKind.PROC, ComponentKind.SET_BONUS)
 _CONFIDENCE_ORDER = {"low": 0, "medium": 1, "high": 2}
 _HANDS = frozenset({EquipmentSlot.MAIN_HAND, EquipmentSlot.OFF_HAND})
 
@@ -57,7 +56,7 @@ def _signed(value: float) -> str:
     return "0" if abs(value) < 0.05 else f"{value:+.1f}"
 
 
-def _phrase(label: str) -> str:
+def in_sentence(label: str) -> str:
     """A label inside a sentence: "Crit" -> "crit", but "DPS" stays "DPS"."""
     if len(label) > 1 and label[1].islower():
         return label[0].lower() + label[1:]
@@ -71,7 +70,7 @@ def _join(parts: Sequence[str]) -> str:
 
 
 def _unscored(component: ScoreComponent) -> bool:
-    return component.kind in _UNSCORED_KINDS or component.key.startswith("inactive:")
+    return not component.scored
 
 
 def _reduction(component: ScoreComponent, item_name: str) -> str | None:
@@ -95,8 +94,20 @@ def explain(
     unless a cap or an exclusive group cut it down on one of them: "0 from hit" is part of
     the answer when the hit was wasted.
     """
-    a_parts = {c.key: c for c in first.components if not _unscored(c)}
-    b_parts = {c.key: c for c in second.components if not _unscored(c)}
+    return explain_components(
+        first.item_name, first.components, second.item_name, second.components
+    )
+
+
+def explain_components(
+    first_name: str,
+    first_components: Sequence[ScoreComponent],
+    second_name: str,
+    second_components: Sequence[ScoreComponent],
+) -> tuple[tuple[ExplanationLine, ...], tuple[str, ...], tuple[str, ...]]:
+    """``explain`` for any two sets of components - two items, or two whole sets of gear."""
+    a_parts = {c.key: c for c in first_components if not _unscored(c)}
+    b_parts = {c.key: c for c in second_components if not _unscored(c)}
     lines: list[ExplanationLine] = []
     not_valued: list[str] = []
     for key in dict.fromkeys([*a_parts, *b_parts]):
@@ -114,7 +125,7 @@ def explain(
         delta = first_value - second_value
         reasons = [
             reason
-            for part, name in ((a, first.item_name), (b, second.item_name))
+            for part, name in ((a, first_name), (b, second_name))
             if part is not None and sample.kind != ComponentKind.THRESHOLD
             for reason in [_reduction(part, name)]
             if reason
@@ -122,7 +133,7 @@ def explain(
         if abs(delta) <= _EPSILON and not reasons:
             continue
         note = "; ".join(reasons) or None
-        text = f"{_signed(delta)} from {_phrase(sample.label)}" + (f" ({note})" if note else "")
+        text = f"{_signed(delta)} from {in_sentence(sample.label)}" + (f" ({note})" if note else "")
         lines.append(
             ExplanationLine(
                 key=key,
@@ -140,9 +151,9 @@ def explain(
         )
     lines.sort(key=lambda line: (-abs(line.delta), line.label))
     not_scored = [
-        f"{result.item_name}: {component.label}"
-        for result in (first, second)
-        for component in result.components
+        f"{name}: {component.label}"
+        for name, components in ((first_name, first_components), (second_name, second_components))
+        for component in components
         if _unscored(component)
     ]
     return tuple(lines), tuple(dict.fromkeys(not_valued)), tuple(dict.fromkeys(not_scored))

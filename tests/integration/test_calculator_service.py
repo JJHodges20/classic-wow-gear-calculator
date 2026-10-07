@@ -154,6 +154,36 @@ class TestCommandLine:
         payload = json.loads(result.stdout)
         assert payload["winner_id"] == LIONHEART and payload["profile_id"] == "warrior_dps_fury"
 
+    @pytest.mark.parametrize("suffix", [".json", ".csv", ".html", ".txt"])
+    def test_compare_writes_the_result_to_a_file(
+        self, project: Path, monkeypatch: pytest.MonkeyPatch, tmp_path: Path, suffix: str
+    ) -> None:
+        monkeypatch.setenv("WOWGEAR_HOME", str(project))
+        output, parts = tmp_path / f"result{suffix}", tmp_path / "components.csv"
+        args = ["compare", "12640", "13404", "-p", "warrior_dps_fury"]
+        result = self.runner.invoke(
+            app, [*args, "--output", str(output), "--components", str(parts)]
+        )
+        assert result.exit_code == 0, result.output
+        written = output.read_text(encoding="utf-8")
+        expected = {
+            ".json": '"winner_id": "classic_era:12640"',
+            ".csv": "rank,item_id,item_name,score",
+            ".html": "<!doctype html>",
+            ".txt": "Lionheart Helm is better for Fury (dual wield)",
+        }
+        assert expected[suffix] in written
+        assert parts.read_text(encoding="utf-8").startswith("item_id,item_name,component")
+
+    def test_compare_refuses_another_file_type(
+        self, project: Path, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+    ) -> None:
+        monkeypatch.setenv("WOWGEAR_HOME", str(project))
+        args = ["compare", "12640", "-p", "warrior_dps_fury", "--output", str(tmp_path / "a.xlsx")]
+        result = self.runner.invoke(app, args)
+        assert result.exit_code == 2
+        assert ".json, .csv, .html or .txt" in result.output
+
     @pytest.mark.parametrize(
         ("args", "message"),
         [

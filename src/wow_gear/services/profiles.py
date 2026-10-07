@@ -18,7 +18,7 @@ from pathlib import Path
 import yaml
 from pydantic import ValidationError
 
-from wow_gear.calculations.caps import evaluate_cap
+from wow_gear.calculations.caps import resolve_cap
 from wow_gear.core.errors import ConfigError, DataValidationError, NotFoundError
 from wow_gear.core.logging import get_logger
 from wow_gear.models.character import CharacterContext
@@ -124,11 +124,7 @@ class ProfileService:
         context = context or self.default_context(profile)
 
         def value(reference: CapReference) -> tuple[float, str]:
-            if reference.fixed is not None:
-                amount = max(0.0, reference.fixed - reference.reduced_by)
-                return amount, f"fixed at {reference.fixed:g}"
-            assert reference.ruleset_cap is not None
-            evaluated = evaluate_cap(reference.ruleset_cap, ruleset, context, reference.reduced_by)
+            evaluated = resolve_cap(reference, ruleset, context)
             return evaluated.cap, evaluated.derivation
 
         lines = []

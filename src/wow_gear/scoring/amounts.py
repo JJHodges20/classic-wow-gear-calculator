@@ -56,6 +56,24 @@ def stat_label(stat: Stat, ruleset: Ruleset) -> str:
     return stat_def.label if stat_def else stat.value.replace("_", " ").capitalize()
 
 
+def is_percent(stat: Stat, ruleset: Ruleset) -> bool:
+    stat_def = ruleset.stat_def(stat)
+    return stat_def is not None and stat_def.unit == "percent"
+
+
+def number_text(value: float) -> str:
+    """A number as a player reads it: 3,512, 6, 1.5 - at most two decimals."""
+    rounded = round(value, 2)
+    if rounded == int(rounded):
+        return f"{int(rounded):,}"
+    return f"{rounded:,.2f}".rstrip("0").rstrip(".")
+
+
+def amount_text(stat: Stat, value: float, ruleset: Ruleset) -> str:
+    """ "6%" for hit, "120" for Stamina: an amount in the stat's unit."""
+    return number_text(value) + ("%" if is_percent(stat, ruleset) else "")
+
+
 def _condition_text(condition: EffectCondition) -> str:
     if condition.target_creature_types:
         names = [c.value.capitalize() for c in condition.target_creature_types]

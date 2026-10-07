@@ -21,10 +21,12 @@ from wow_gear.data_sources.bundled import read_bundled, read_metadata
 from wow_gear.models.item import Item
 from wow_gear.models.ruleset import Ruleset
 from wow_gear.profiles.loader import ProfileRegistry
+from wow_gear.repositories.characters import CharacterRepository
 from wow_gear.repositories.database import Database
 from wow_gear.repositories.items import ItemRepository
 from wow_gear.rulesets.loader import RulesetRegistry
 from wow_gear.services.calculator import CalculatorService
+from wow_gear.services.characters import CharacterService
 from wow_gear.services.health import BundledStatus, HealthService
 from wow_gear.services.item_entry import ItemEntryService
 from wow_gear.services.item_search import ItemSearchService, OnlineProvider, OnlineState
@@ -80,6 +82,7 @@ class Workspace:
             settings, repository=self.items, bundled=self.bundled, online_detail=setup.detail
         )
         self.calculator = CalculatorService(self.rulesets, self.profiles, self.search)
+        self.characters = CharacterService(CharacterRepository(self.database), self.calculator)
 
     @classmethod
     def open(cls, root: Path | None = None) -> Workspace:

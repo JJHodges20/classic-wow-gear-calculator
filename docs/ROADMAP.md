@@ -15,7 +15,7 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | 6 | Item comparison service + explainable breakdown | Done (2026-10-07) |
 | 7 | Streamlit shell + design system + calculator page | Done (2026-10-07) |
 | 8 | Compare, Profiles, Item Database, and Data Health pages | Done (2026-10-07), with a profile for every class and role in the roadmap's matrix |
-| 9 | Saved character profile + full gear-set context | Not started |
+| 9 | Saved character profile + full gear-set context | Done (2026-10-07): version 1.5 below |
 | 10 | V1 audit: correctness, architecture, UX, tests, docs | Not started |
 
 ## Version 1 acceptance criteria
@@ -31,7 +31,17 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | Traceability | Result records ruleset/profile version and item source | Met: every result, shown in the Raw math tab and on item cards (M3, M6, M7) |
 | Reliability | Provider failure does not prevent manual comparison or cached-item use | Met: services and app, with a UI test for a failing provider (M5-M7) |
 | UI | Core pages are visually consistent, responsive, and handle empty/error/loading states | Met: Calculator, Compare, Build profiles, Item database and Data health (M7, M8) |
-| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | 785 tests pass, with 100 hand-reviewed comparisons (five per profile) and the roadmap's UI tests (M8) |
+| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | 887 tests pass, with 100 hand-reviewed comparisons (five per profile), gear analyses checked by hand and the roadmap's UI tests (M9) |
+
+## Version 1.5 (milestone 9)
+
+| Roadmap item | Status |
+| --- | --- |
+| Save named character/build profiles locally | Met: the Gear set page and `wowgear gear`; characters kept in the local database and versioned on every save |
+| Enter or import a full current gear set | Met: every slot searched on the page, limited to what fits; a character (JSON) or a gear list (CSV) imported |
+| Aggregate stats; show how a replacement changes the whole character, not just one slot | Met: the gear's totals and value, each piece's worth inside the set, and a replacement valued as the change in the whole set - two-handers replacing two weapons, weapons that move the hit cap ([decision 0008](decisions/0008-gear-sets.md)) |
+| Identify capped or wasted stats and under-served priorities | Met: every cap and breakpoint short, reached or over, with what reaching it is worth; stats the profile does not value; the weakest pieces |
+| Export comparison results as JSON/CSV and a shareable report | Met: an Export menu on the calculator and Compare pages and `wowgear compare --output`/`--components`; gear analyses export too |
 
 ## Later versions (not in the build plan)
 

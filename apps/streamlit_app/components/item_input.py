@@ -79,32 +79,41 @@ def _search(slot: Slot, workspace: Workspace, other: Item | None) -> None:
         st.rerun()
 
 
-def picker(prefix: str, workspace: Workspace, *, follow: Item | None = None) -> Item | None:
+def picker(
+    prefix: str,
+    workspace: Workspace,
+    *,
+    follow: Item | None = None,
+    fits: tuple[ItemSlot, ...] = (),
+    placeholder: str = "Name or item id, e.g. Lionheart Helm",
+) -> Item | None:
     """Search the item data and return the item the player chooses, if any.
 
     ``follow`` is an item already chosen elsewhere: the slot filter starts on its slot.
-    Widget keys start with ``prefix``, so several pickers can share a page.
+    ``fits`` limits the search to these item slots (the ones a gear slot takes). Widget keys
+    start with ``prefix``, so several pickers can share a page.
     """
     search = workspace.search
-    columns = st.columns([1.7, 1.0])
-    query = columns[0].text_input(
-        "Search items",
-        key=f"search_{prefix}",
-        placeholder="Name or item id, e.g. Lionheart Helm",
-    )
-    slot_options: list[str] = [ANY_SLOT, *ItemSlot]
+    choose_slot = len(fits) != 1
+    columns = st.columns([1.7, 1.0]) if choose_slot else [st.container()]
+    query = columns[0].text_input("Search items", key=f"search_{prefix}", placeholder=placeholder)
+    slot_options: list[str] = [ANY_SLOT, *(fits or ItemSlot)]
     filter_key, follows = f"slot_filter_{prefix}", f"slot_filter_{prefix}_follows"
     if follow is not None and st.session_state.get(follows) != follow.id:
         # A new item to follow: search its slot first; the player can still widen it.
         st.session_state[filter_key] = follow.slot
         st.session_state[follows] = follow.id
     session.default(filter_key, ANY_SLOT)
-    slot_filter = columns[1].selectbox(
-        "Slot",
-        slot_options,
-        format_func=lambda value: "Any slot" if value == ANY_SLOT else SLOT_LABELS[value],
-        key=filter_key,
-    )
+    session.keep_valid(filter_key, slot_options, ANY_SLOT)
+    any_label = "Any that fits" if fits else "Any slot"
+    slot_filter = ANY_SLOT
+    if choose_slot:
+        slot_filter = columns[1].selectbox(
+            "Slot",
+            slot_options,
+            format_func=lambda value: any_label if value == ANY_SLOT else SLOT_LABELS[value],
+            key=filter_key,
+        )
     online = st.toggle(
         "Also look up online (Blizzard API)",
         key=f"online_{prefix}",
@@ -119,13 +128,15 @@ def picker(prefix: str, workspace: Workspace, *, follow: Item | None = None) -> 
         st.caption("Type part of a name - words in any order - or an item id.")
         return None
     chosen_slot = None if slot_filter == ANY_SLOT else ItemSlot(slot_filter)
-    filters = ItemFilters(slots=(chosen_slot,) if chosen_slot is not None else ())
+    filters = ItemFilters(slots=(chosen_slot,) if chosen_slot is not None else fits)
     with st.spinner("Searching…"):
         outcome = search.search(text, filters, limit=25, online=online)
     for notice in outcome.notices:
         st.warning(notice, icon=":material/cloud_off:")
     if not outcome.hits:
         where = f" for {SLOT_LABELS[chosen_slot]}" if chosen_slot is not None else ""
+        if chosen_slot is None and fits:
+            where = " that fit this slot"
         st.info(f'No items match "{text}"{where}.', icon=":material/search_off:")
         return None
     hits = {hit.item.id: hit for hit in outcome.hits}

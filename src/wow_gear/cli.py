@@ -12,8 +12,19 @@ import typer
 from wow_gear import __version__
 from wow_gear.core import ConfigError, Settings, configure_logging, load_settings
 from wow_gear.core.errors import DataValidationError, NotFoundError
-from wow_gear.models.enums import Stat
-from wow_gear.reporting.text import comparison_text
+from wow_gear.models.character import CharacterContext
+from wow_gear.models.comparison import ComparisonResult
+from wow_gear.models.enums import EquipmentSlot, Stat
+from wow_gear.models.gear import ReplacementResult, SavedCharacter
+from wow_gear.reporting.export import (
+    analysis_json,
+    comparison_csv,
+    comparison_html,
+    comparison_json,
+    components_csv,
+)
+from wow_gear.reporting.text import comparison_text, gear_text
+from wow_gear.services.characters import parse_slot
 from wow_gear.services.workspace import Workspace
 
 app = typer.Typer(
@@ -24,6 +35,7 @@ app = typer.Typer(
 items_app = typer.Typer(help="Find and import items.", no_args_is_help=True)
 app.add_typer(items_app, name="items")
 
+APP_SCRIPT = Path("apps") / "streamlit_app" / "app.py"
 _STATUS_MARK = {"ok": "ok  ", "info": "info", "warning": "WARN", "error": "FAIL"}
 
 
@@ -177,8 +189,18 @@ def compare(
         str | None, typer.Option(help="The equipped item the candidates would replace.")
     ] = None,
     as_json: Annotated[bool, typer.Option("--json", help="Print the full result as JSON.")] = False,
+    output: Annotated[
+        Path | None,
+        typer.Option(help="Also write the result to a .json, .csv, .html or .txt file."),
+    ] = None,
+    components: Annotated[
+        Path | None, typer.Option(help="Also write every score component to a CSV file.")
+    ] = None,
 ) -> None:
     """Compare items for a build profile and explain the difference."""
+    if output is not None and output.suffix.lower() not in COMPARISON_FILES:
+        typer.echo("--output takes a .json, .csv, .html or .txt file", err=True)
+        raise typer.Exit(code=2)
     workspace = _workspace()
     try:
         calculator = workspace.calculator
@@ -199,6 +221,93 @@ def compare(
     finally:
         workspace.close()
     typer.echo(result.model_dump_json(indent=2) if as_json else comparison_text(result))
+    if output is not None:
+        _write(output, _comparison_file(result, context, output.suffix.lower()))
+    if components is not None:
+        _write(components, components_csv(result))
+
+
+COMPARISON_FILES = (".json", ".csv", ".html", ".txt")
+
+
+def _comparison_file(result: ComparisonResult, context: CharacterContext, suffix: str) -> str:
+    if suffix == ".json":
+        return comparison_json(result)
+    if suffix == ".csv":
+        return comparison_csv(result)
+    if suffix == ".html":
+        return comparison_html(result, context)
+    return comparison_text(result) + chr(10)
+
+
+def _write(path: Path, text: str) -> None:
+    try:
+        path.write_text(text, encoding="utf-8")
+    except OSError as error:
+        typer.echo(f"Cannot write {path}: {error}", err=True)
+        raise typer.Exit(code=1) from error
+    typer.echo(f"Wrote {path}")
+
+
+def _character(workspace: Workspace, reference: str) -> SavedCharacter:
+    """A saved character by id, or a character file exported from the app."""
+    path = Path(reference)
+    if path.suffix.lower() == ".json" and path.is_file():
+        return workspace.characters.import_text(path.read_text(encoding="utf-8-sig"), ".json")
+    return workspace.characters.get(reference)
+
+
+@app.command()
+def gear(
+    character: Annotated[
+        str | None,
+        typer.Argument(help="A saved character's id, or a character .json file from the app."),
+    ] = None,
+    trying: Annotated[
+        str | None,
+        typer.Option("--try", help="Try an item in a slot, SLOT=ITEM, such as main_hand=12784."),
+    ] = None,
+    output: Annotated[
+        Path | None, typer.Option(help="Also write the analysis to a .json or .html file.")
+    ] = None,
+) -> None:
+    """Analyse a character's whole gear, or list the saved characters."""
+    workspace = _workspace()
+    try:
+        service = workspace.characters
+        if character is None:
+            saved = service.all()
+            if not saved:
+                typer.echo("No saved characters. Save one on the Gear set page of the app.")
+            for entry in saved:
+                typer.echo(
+                    f"{entry.id:<24} {entry.name} (level {entry.level} {entry.class_name.value}, "
+                    f"{entry.profile_id}, {len(entry.gear.items)} pieces)"
+                )
+            return
+        chosen = _character(workspace, character)
+        analysis, _ = service.analyse(chosen)
+        tried: ReplacementResult | None = None
+        if trying is not None:
+            slot_text, separator, item_text = (part.strip() for part in trying.partition("="))
+            if not separator or not item_text:
+                raise DataValidationError(f"--try takes SLOT=ITEM; got {trying!r}")
+            slot: EquipmentSlot = parse_slot(slot_text)
+            tried = service.try_replacement(chosen, slot, _resolve(workspace, item_text))
+        if output is not None:
+            suffix = output.suffix.lower()
+            if suffix == ".json":
+                _write(output, analysis_json(analysis))
+            elif suffix == ".html":
+                _write(output, service.export_html(chosen, analysis, tried))
+            else:
+                raise DataValidationError("--output takes a .json or .html file")
+    except (DataValidationError, NotFoundError) as error:
+        typer.echo(f"Cannot analyse: {error}", err=True)
+        raise typer.Exit(code=2) from error
+    finally:
+        workspace.close()
+    typer.echo(gear_text(chosen, analysis, tried))
 
 
 @app.command()
@@ -208,7 +317,11 @@ def ui(
 ) -> None:
     """Start the Streamlit app."""
     settings = _settings()
-    script = settings.root / "apps" / "streamlit_app" / "app.py"
+    # The app and its theme (.streamlit/) sit beside the package; WOWGEAR_HOME may name a
+    # separate folder that holds only configuration and data.
+    source = Path(__file__).resolve().parents[2]
+    home = source if (source / APP_SCRIPT).is_file() else Path(settings.root)
+    script = home / APP_SCRIPT
     command = [
         sys.executable,
         "-m",
@@ -223,7 +336,7 @@ def ui(
         "--browser.gatherUsageStats",
         "false",
     ]
-    raise typer.Exit(code=subprocess.call(command, cwd=Path(settings.root)))
+    raise typer.Exit(code=subprocess.call(command, cwd=home))
 
 
 def main() -> None:

@@ -91,9 +91,48 @@ sources every block cites.
 | `notes`, `confidence` | Slot footprints, unusable items, missing current gear; the lower confidence of the deciding items |
 | `profile_*`, `ruleset_*`, `score_unit`, `unit_abbreviation`, `fingerprint` | Traceability, and a hash that is the same for the same inputs in any order |
 
-## GearSet (`models/gear.py`)
+## GearSet and SavedCharacter (`models/gear.py`)
 
-Item ids by equipment slot (`EquipmentSlot`: head ... finger_1, finger_2, trinket_1,
-trinket_2, main_hand, off_hand, ranged). `EQUIPMENT_SLOTS` maps each item slot type to the
-equipment slots it can fill (a one-hander: main or off hand; a ring: either finger); a
-two-handed weapon also leaves the off hand empty. Sets are used from milestone 9.
+`GearSet`: a name and item ids by equipment slot (`EquipmentSlot`: head ... finger_1,
+finger_2, trinket_1, trinket_2, main_hand, off_hand, ranged); an empty slot is absent.
+`EQUIPMENT_SLOTS` maps each item slot type to the equipment slots it can fill (a one-hander:
+main or off hand; a ring: either finger); a two-handed weapon also leaves the off hand empty
+(`BLOCKS_OFF_HAND`).
+
+`SavedCharacter`:
+
+| Field | Meaning |
+| --- | --- |
+| `id` | Lowercase letters, digits and underscores, from the name when first saved |
+| `name`, `notes` | What the player calls it |
+| `ruleset`, `class_name`, `race`, `level`, `phase`, `content_mode` | The character's context; the class follows the profile |
+| `profile_id` | The build profile its gear is valued with |
+| `gear` | Its `GearSet` |
+| `version`, `saved_at` | Goes up with every save; when it was last saved (UTC) |
+
+Saved characters are rows of the `characters` table in `data/user/wowgear.sqlite3` (schema
+version 2): `id`, `name`, `ruleset`, `class_name`, `version`, `saved_at` and the whole
+character as JSON in `payload`. A character exported as JSON is the same object; a gear
+list CSV has the columns `slot`, `item_id`, `item_name`, `item_level` and `value_<unit>`
+(only `slot` and `item_id` are read back; a bare number is a game item id).
+
+## GearAnalysis and ReplacementResult (`models/gear.py`)
+
+| Field | Meaning |
+| --- | --- |
+| `score`, `components` | The whole set's value under the profile and every item's components summed by key, largest first |
+| `totals` | What the gear adds up to, in the ruleset's order of stats: the current gear totals of a calculation |
+| `slots` | `SlotValue` per worn piece: its item level and `score` - what the character loses without it - and whether it is usable |
+| `empty` | Slots with nothing in them (the off hand beside a two-hander is not empty) |
+| `caps` | `CapStatus` per hard cap, soft cap and breakpoint: `label`, `kind`, `target`, `total` (conversions included), `state` (short, reached, over), `worth` (what reaching it adds), `message`, `derivation` |
+| `under_served` | The caps and breakpoints the gear falls short of, with what reaching them is worth |
+| `not_valued` | Stats the gear gives that the profile does not value ("Stamina 79") |
+| `not_scored` | Procs, on-use effects and unmet conditions no score counts |
+| `weakest` | `WeakSlot`s: pieces worth nothing, or ten or more item levels below the set's median |
+| `sets` | `SetPieces`: sets with two or more pieces worn, named from their pieces |
+| `notes`, `fingerprint` | Empty slots, unusable pieces, set bonuses not scored, items missing from the data; a hash of the gear, context, profile, ruleset and engine |
+
+`ReplacementResult`: the slot and candidate, the items it takes off, `delta` (the whole
+set's value with it less as it is), both values, both sets' totals and cap statuses, the
+explanation lines (they add up to `delta`), whether the candidate is usable, and notes (a
+two-hander replacing two weapons, a cap the new weapon moves).

@@ -49,6 +49,10 @@ def test_ui_starts_streamlit_without_usage_statistics(
     result = runner.invoke(app, ["ui", "--no-browser", "--port", "8650"])
     assert result.exit_code == 0, result.output
     command = calls[0]
+    # The app beside the package, even when WOWGEAR_HOME names another folder.
+    assert Path(command[command.index("run") + 1]) == Path(__file__).resolve().parents[2] / (
+        "apps/streamlit_app/app.py"
+    )
     assert command[command.index("--server.port") + 1] == "8650"
     assert command[command.index("--server.headless") + 1] == "true"
     assert command[command.index("--browser.gatherUsageStats") + 1] == "false"

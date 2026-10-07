@@ -12,6 +12,7 @@ from typing import Any, Protocol
 
 from pydantic import ValidationError
 
+from wow_gear.calculations.caps import cap_references, uses_weapon_skill
 from wow_gear.comparison.compare import compare_items
 from wow_gear.core.errors import DataValidationError, NotFoundError
 from wow_gear.models.character import CharacterContext
@@ -19,7 +20,7 @@ from wow_gear.models.comparison import ComparisonResult
 from wow_gear.models.enums import ClassName, Role, Stat
 from wow_gear.models.item import Item
 from wow_gear.models.labels import ROLE_LABELS
-from wow_gear.models.profile import BuildProfile, CapReference
+from wow_gear.models.profile import BuildProfile
 from wow_gear.models.ruleset import Ruleset
 from wow_gear.models.score import ScoreResult
 from wow_gear.processing.validation import validate_item
@@ -73,14 +74,6 @@ class CalculatorService:
     def profile(self, profile_id: str) -> BuildProfile:
         return self._profiles.get(profile_id)
 
-    def _cap_references(self, profile: BuildProfile) -> list[tuple[Stat, CapReference]]:
-        return [
-            *((cap.stat, cap.cap) for cap in profile.hard_caps),
-            *((cap.stat, cap.starts_at) for cap in profile.soft_caps),
-            *((cap.stat, cap.ends_at) for cap in profile.soft_caps if cap.ends_at is not None),
-            *((threshold.stat, threshold.at) for threshold in profile.thresholds),
-        ]
-
     def gear_total_stats(self, profile_id: str) -> list[Stat]:
         """The current gear totals that can change this profile's scores.
 
@@ -89,20 +82,14 @@ class CalculatorService:
         the rest of the gear provides.
         """
         profile = self.profile(profile_id)
-        limited = {stat for stat, _ in self._cap_references(profile)}
+        limited = {stat for stat, _ in cap_references(profile)}
         sources = {rule.source for rule in profile.derived_stats if rule.target in limited}
         return [stat for stat in Stat if stat in limited | sources]
 
     def uses_weapon_skill(self, profile_id: str) -> bool:
         """Whether this profile's caps depend on weapon skill (melee or ranged hit caps)."""
         profile = self.profile(profile_id)
-        ruleset = self.ruleset(profile.ruleset)
-        kinds = {
-            ruleset.caps[reference.ruleset_cap].kind
-            for _, reference in self._cap_references(profile)
-            if reference.ruleset_cap is not None
-        }
-        return bool(kinds & {"melee_miss", "dual_wield_miss", "ranged_miss"})
+        return uses_weapon_skill(profile, self.ruleset(profile.ruleset))
 
     def context(self, profile_id: str, **choices: Any) -> CharacterContext:
         """A checked context for ``profile_id``; unspecified choices take the profile's defaults.
@@ -164,7 +151,7 @@ class CalculatorService:
             raise NotFoundError(f"no item {item_id!r}")
         return item
 
-    def _checked(self, items: Sequence[Item], ruleset: Ruleset) -> None:
+    def check_items(self, items: Sequence[Item], ruleset: Ruleset) -> None:
         """Every item, wherever it came from, passes the same validation before scoring."""
         for item in items:
             report = validate_item(item, ruleset)
@@ -179,7 +166,7 @@ class CalculatorService:
     ) -> ScoreResult:
         self.check(context)
         ruleset = self.ruleset(context.ruleset)
-        self._checked([item, *([replacing] if replacing else [])], ruleset)
+        self.check_items([item, *([replacing] if replacing else [])], ruleset)
         return score_item(
             item, context, self.profile(context.profile_id), ruleset, replacing=replacing
         )
@@ -194,7 +181,7 @@ class CalculatorService:
         """Rank and explain ``items`` (one or more) for ``context``."""
         self.check(context)
         ruleset = self.ruleset(context.ruleset)
-        self._checked([*items, *([replacing] if replacing else [])], ruleset)
+        self.check_items([*items, *([replacing] if replacing else [])], ruleset)
         return compare_items(
             items, context, self.profile(context.profile_id), ruleset, replacing=replacing
         )

@@ -16,6 +16,8 @@ from dataclasses import dataclass
 from wow_gear.calculations.levels import level_gap, target_level, weapon_skill
 from wow_gear.core.errors import ConfigError
 from wow_gear.models.character import CharacterContext
+from wow_gear.models.enums import Stat
+from wow_gear.models.profile import BuildProfile, CapReference
 from wow_gear.models.ruleset import CapDef, MeleeMissParameters, Ruleset, SpellMissParameters
 
 
@@ -135,3 +137,47 @@ def evaluate_cap(
     if reduced_by:
         detail += f"; {reduced_by:g} already provided by the build"
     return EvaluatedCap(name=name, cap=cap, dead_zone=dead_zone, derivation=detail)
+
+
+def resolve_cap(
+    reference: CapReference, ruleset: Ruleset, context: CharacterContext
+) -> EvaluatedCap:
+    """A profile's cap reference as a number for ``context``: a ruleset cap formula
+    evaluated, or a fixed value, less what the build already provides."""
+    if reference.fixed is not None:
+        value = max(0.0, reference.fixed - reference.reduced_by)
+        detail = f"fixed at {reference.fixed:g}"
+        if reference.reduced_by:
+            detail += f"; {reference.reduced_by:g} already provided by the build"
+        return EvaluatedCap(name="fixed", cap=value, dead_zone=0.0, derivation=detail)
+    assert reference.ruleset_cap is not None
+    return evaluate_cap(reference.ruleset_cap, ruleset, context, reference.reduced_by)
+
+
+WEAPON_SKILL_CAP_KINDS = frozenset({"melee_miss", "dual_wield_miss", "ranged_miss"})
+
+
+def cap_references(profile: BuildProfile) -> list[tuple[Stat, CapReference]]:
+    """Every cap and breakpoint reference of ``profile``, with the stat it applies to."""
+    return [
+        *((cap.stat, cap.cap) for cap in profile.hard_caps),
+        *((cap.stat, cap.starts_at) for cap in profile.soft_caps),
+        *((cap.stat, cap.ends_at) for cap in profile.soft_caps if cap.ends_at is not None),
+        *((threshold.stat, threshold.at) for threshold in profile.thresholds),
+    ]
+
+
+def uses_weapon_skill(profile: BuildProfile, ruleset: Ruleset) -> bool:
+    """Whether ``profile``'s caps depend on weapon skill (melee or ranged hit caps)."""
+    return any(
+        reference.ruleset_cap is not None
+        and ruleset.caps[reference.ruleset_cap].kind in WEAPON_SKILL_CAP_KINDS
+        for _, reference in cap_references(profile)
+    )
+
+
+def cap_label(reference: CapReference, stat_name: str, ruleset: Ruleset) -> str:
+    """A cap's name: the ruleset cap's label, or "<stat> cap" for a fixed value."""
+    if reference.ruleset_cap is not None:
+        return ruleset.caps[reference.ruleset_cap].label
+    return f"{stat_name} cap"

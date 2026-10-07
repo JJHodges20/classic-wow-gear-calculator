@@ -13,13 +13,15 @@ build plan is tracked in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Status
 
-Milestones 1 to 8 are complete: the Classic Era ruleset; twenty build profiles covering
+Milestones 1 to 9 are complete: the Classic Era ruleset; twenty build profiles covering
 every class and role in the roadmap's matrix, each with sourced weights (two experimental
 where no source exists) and five hand-reviewed comparisons; the explainable scoring
 engine; manual item entry; the bundled item dataset with optional Blizzard lookups; item
-comparison with a component-by-component explanation; and the app (`wowgear ui`) in light
-and dark: Calculator, Compare, Build profiles (with your own weights), Item database and
-Data health. Saved characters and gear sets arrive in milestone 9.
+comparison with a component-by-component explanation; saved characters with their whole
+gear - what each piece is worth, where the caps stand, what is wasted or missing, and how
+one change moves the whole character; exports as JSON, CSV and a shareable report; and the
+app (`wowgear ui`) in light and dark: Calculator, Compare, Gear set, Build profiles (with
+your own weights), Item database and Data health. Milestone 10 is the version 1 audit.
 
 ## Quick start
 
@@ -41,7 +43,9 @@ The bootstrap script creates `.venv`, installs the app with its development tool
 | `wowgear check` | Validate the configuration, load the data, report each provider's status |
 | `wowgear items search "<name or id>" [--online]` | Find items |
 | `wowgear items import <file.csv or .json>` | Import your own items |
-| `wowgear compare <item> <item>... -p <profile> [--phase 3] [--current hit=5] [--replacing <item>] [--json]` | Compare items for a build profile and explain the difference |
+| `wowgear compare <item> <item>... -p <profile> [--phase 3] [--current hit=5] [--replacing <item>] [--json] [--output result.html] [--components parts.csv]` | Compare items for a build profile and explain the difference; `--output` also writes `.json`, `.csv`, `.html` or `.txt` |
+| `wowgear gear` | List your saved characters (save them on the Gear set page) |
+| `wowgear gear <character or file.json> [--try main_hand=12784] [--output report.html]` | Analyse a character's whole gear, and try an item against the whole character |
 | `wowgear --version` | Print the version |
 
 Development:

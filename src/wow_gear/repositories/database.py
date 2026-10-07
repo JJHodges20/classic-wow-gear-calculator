@@ -18,7 +18,8 @@ from sqlalchemy import (
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+"""2 added the characters table."""
 
 
 def utc_now() -> datetime:
@@ -74,6 +75,20 @@ class ProviderCallRow(Base):
     duration_ms: Mapped[float | None] = mapped_column(Float)
 
 
+class CharacterRow(Base):
+    """A saved character. ``payload`` is the full SavedCharacter as JSON."""
+
+    __tablename__ = "characters"
+
+    id: Mapped[str] = mapped_column(String(60), primary_key=True)
+    name: Mapped[str] = mapped_column(String(60))
+    ruleset: Mapped[str] = mapped_column(String(40))
+    class_name: Mapped[str] = mapped_column(String(16))
+    version: Mapped[int] = mapped_column(Integer)
+    saved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    payload: Mapped[str] = mapped_column(Text)
+
+
 class MetaRow(Base):
     __tablename__ = "meta"
 
@@ -104,8 +119,10 @@ class Database:
         Base.metadata.create_all(self.engine)
         self._sessions = sessionmaker(self.engine, expire_on_commit=False)
         with self.session() as session:
-            if session.get(MetaRow, "schema_version") is None:
-                session.add(MetaRow(key="schema_version", value=str(SCHEMA_VERSION)))
+            # create_all adds the tables a newer schema has; the version records it.
+            stored = session.get(MetaRow, "schema_version")
+            if stored is None or int(stored.value) < SCHEMA_VERSION:
+                session.merge(MetaRow(key="schema_version", value=str(SCHEMA_VERSION)))
                 session.commit()
 
     def session(self) -> Session:

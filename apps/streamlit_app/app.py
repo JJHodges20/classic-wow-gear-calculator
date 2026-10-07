@@ -39,6 +39,12 @@ page = st.navigation(
             url_path="compare",
         ),
         st.Page(
+            "pages/gear_set.py",
+            title="Gear set",
+            icon=":material/checkroom:",
+            url_path="gear",
+        ),
+        st.Page(
             "pages/profiles.py",
             title="Build profiles",
             icon=":material/tune:",

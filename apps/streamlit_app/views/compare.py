@@ -7,7 +7,7 @@ from html import escape
 
 import streamlit as st
 
-from components import advanced, items, recommendation
+from components import advanced, exports, items, recommendation
 from components.html import Tone, chip, eyebrow, signed, tone_of
 from components.item_input import picker
 from views.common import setup
@@ -164,6 +164,7 @@ def render() -> None:
                 st.html(eyebrow("Every component") + _matrix(result))
                 for note in result.notes:
                     st.info(note, icon=":material/info:")
+                exports.comparison_downloads(result, ready.context, "compare_export")
 
     st.write("")
     with st.expander("Current stats used for caps", icon=":material/tune:"):

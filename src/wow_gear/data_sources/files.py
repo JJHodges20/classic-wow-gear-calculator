@@ -38,12 +38,34 @@ def read_item_text(text: str, suffix: str) -> list[dict[str, Any]]:
             raise DataValidationError('a JSON import is a list of items, or {"items": [...]}')
         return data
     if suffix == ".csv":
-        reader = csv.DictReader(io.StringIO(text))
-        if not reader.fieldnames:
-            raise DataValidationError("the CSV file has no header row")
-        return [
-            {key.strip(): (value or "").strip() for key, value in row.items() if key}
-            for row in reader
-            if any((value or "").strip() for value in row.values())
-        ]
+        return _csv_rows(text)
     raise DataValidationError("import files are .json or .csv")
+
+
+def _csv_rows(text: str) -> list[dict[str, Any]]:
+    reader = csv.DictReader(io.StringIO(text))
+    if not reader.fieldnames:
+        raise DataValidationError("the CSV file has no header row")
+    return [
+        {key.strip().lower(): (value or "").strip() for key, value in row.items() if key}
+        for row in reader
+        if any((value or "").strip() for value in row.values())
+    ]
+
+
+def read_gear_text(text: str, suffix: str) -> dict[str, Any] | list[dict[str, Any]]:
+    """A gear import, untouched: a saved character as a JSON object, or a CSV gear list."""
+    if len(text.encode("utf-8")) > MAX_IMPORT_BYTES:
+        raise DataValidationError(f"the file is larger than {MAX_IMPORT_BYTES // 1_000_000} MB")
+    text = text.removeprefix("\ufeff")
+    if suffix == ".json":
+        try:
+            data = json.loads(text)
+        except ValueError as error:
+            raise DataValidationError(f"the file is not valid JSON: {error}") from error
+        if not isinstance(data, dict):
+            raise DataValidationError("a JSON gear import is one saved character (an object)")
+        return data
+    if suffix == ".csv":
+        return _csv_rows(text)
+    raise DataValidationError("gear files are .json or .csv")

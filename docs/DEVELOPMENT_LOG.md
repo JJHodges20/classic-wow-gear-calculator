@@ -3,6 +3,67 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 9 - Saved characters and whole gear sets (2026-10-07)
+
+**Built**
+
+- **Gear set page**: a named character (class from its build profile, race, level, phase,
+  content) with all seventeen slots; each slot searched for items that fit it, with what
+  the piece is worth inside the set; the set's value and where it comes from; every cap and
+  breakpoint as a bar - short, reached or over - with what reaching it is worth; stats the
+  profile does not value; the weakest pieces; set pieces; a replacement tried against the
+  whole character and put on in one click; the totals sent to the calculator as current
+  gear; save, new, delete, import and export. Unsaved changes are flagged and survive
+  changing page.
+- **Whole-set valuation** ([decision 0008](decisions/0008-gear-sets.md)):
+  `scoring/gear.py` scores the set with the engine, item on top of item, in the set's own
+  context (its weapon types and weapon skill); `comparison/gear.py` values each piece as
+  what the set loses without it, a replacement as the change in the set's value (two-handers
+  replacing two weapons, off hands taking a two-hander off, weapons that move the hit cap),
+  explained by the two sets' summed components, and reports caps, under-served priorities,
+  stats not valued, weakest pieces and sets.
+- **Saved characters** in the local database (`characters` table, schema version 2),
+  versioned on every save; items missing from the data are reported, the rest analysed.
+- **Files**: a character as JSON (and back), a gear list as CSV (and back), a comparison as
+  JSON, ranking CSV and components CSV, and comparisons and gear analyses as one
+  self-contained HTML report. The calculator and Compare pages have an Export menu;
+  `wowgear compare` takes `--output` and `--components`; `wowgear gear` lists, analyses and
+  tries items (`--try main_hand=12784`) and writes reports.
+- Shared pieces: one cap resolver for the engine, the profile service and the gear analysis;
+  the engine's cap curves and measured totals public; `ScoreComponent.scored`; the item
+  picker limited to the slots a gear slot takes; totals in the ruleset's order of stats.
+
+**Found on the way**
+
+- A weapon's type sets racial weapon skill and so the hit cap: the whole set is valued in
+  its own context. Weapon skill is still not valued as a stat (version 2), so a piece with
+  weapon skill can show a loss in hit value; the replacement note says why.
+- The VMaNGOS world database has no item set names (they live in the game client's files):
+  sets are named from their pieces and only listed when two or more are worn.
+- `wowgear ui` looked for the app and its theme under `WOWGEAR_HOME`; it now serves the app
+  beside the package, so a separate data folder works.
+- A score takes about 1 ms, mostly hashing the ruleset and profile for its fingerprint; a
+  full analysis about 0.1 s, a replacement 40 ms.
+- Browser checks: Streamlit shows "Page not found" on the first direct load of a page URL
+  after a start, and long dropdowns are virtualized (notes in `CLAUDE.md`).
+
+**Assumptions**
+
+- The weakest pieces are those worth nothing, or ten or more item levels below the set's
+  median: item level is a rough sign of an item's budget, and the page says so.
+- A two-handed weapon's damage and an off-hand weapon's are valued as each profile states
+  (the Fury profile's assumption that an off-hand weapon counts like a main-hand one
+  stands).
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | 102 new tests: gear analysis by hand (37), gear files (10), exports (9), the character service and `wowgear gear` (27), the Gear set page (4), `compare --output` (5), and the layer rules for the new modules; 887 pass |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict, package and app) clean |
+| Secrets | None added; exports hold results only; reports load nothing from elsewhere |
+| UI smoke test | Chromium, light and dark at 1440 px and a 420 px phone, served by `wowgear ui` on a separate project: a full Fury set (17 pieces, values, the hit cap), Arcanite Reaper tried against the dual-wield pair (-382.0 AP, the cap moving from 6% to 9%), a helm changed (unsaved), the four downloads, the calculator's Export menu; no exceptions or page errors |
+
 ## Milestone 8, part 2 - The class and role matrix profiles (2026-10-07)
 
 **Built**
