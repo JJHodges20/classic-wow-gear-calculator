@@ -1,0 +1,18 @@
+# Application settings. Paths are relative to the project root.
+# Environment variables override a few of these (see .env.example).
+
+app:
+  name: Classic Gear Calculator
+  default_ruleset: classic_era
+
+paths:
+  data_dir: data
+  cache_dir: data/cache
+  user_dir: data/user
+
+logging:
+  level: INFO
+
+cache:
+  # How long a looked-up item is trusted before the search service asks its provider again.
+  item_ttl_days: 30

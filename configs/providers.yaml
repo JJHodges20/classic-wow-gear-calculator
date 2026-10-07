@@ -1,0 +1,47 @@
+# Item data providers, in the order the item search service consults them (roadmap section 7).
+#
+# Secrets are never written here. A provider lists the names of the environment variables
+# that hold its credentials; they are read from the environment or from .env.
+#
+# status:
+#   active          implemented and used
+#   planned         described by the roadmap, not implemented yet
+#   reference_only  a human reference; the app links to it and never fetches from it
+
+providers:
+  - id: bundled
+    kind: bundled_dataset
+    priority: 1
+    enabled: true
+    status: planned
+    description: Curated Classic Era item dataset shipped with the app; the offline baseline.
+
+  - id: warcraft_logs
+    kind: warcraft_logs
+    priority: 2
+    enabled: false
+    status: planned
+    description: Warcraft Logs API v2 (OAuth 2.0) game data.
+    secrets: [WOWGEAR_WCL_CLIENT_ID, WOWGEAR_WCL_CLIENT_SECRET]
+
+  - id: blizzard
+    kind: blizzard_game_data
+    priority: 3
+    enabled: false
+    status: planned
+    description: Blizzard Battle.net Game Data API (OAuth 2.0 client credentials).
+    secrets: [WOWGEAR_BLIZZARD_CLIENT_ID, WOWGEAR_BLIZZARD_CLIENT_SECRET]
+
+  - id: file_import
+    kind: file_import
+    priority: 4
+    enabled: true
+    status: planned
+    description: Items you import from CSV or JSON files.
+
+  - id: wowhead
+    kind: reference_only
+    priority: 99
+    enabled: false
+    status: reference_only
+    description: Wowhead Classic database, a human reference. Never fetched or scraped.

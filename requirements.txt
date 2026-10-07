@@ -1,0 +1,11 @@
+# Runtime dependencies, pinned to the versions the test suite last passed with.
+# pyproject.toml holds the compatible ranges; install the project itself with
+#   pip install -e .
+pydantic==2.13.5
+PyYAML==6.0.3
+SQLAlchemy==2.1.4
+httpx==0.28.1
+streamlit==1.65.0
+plotly==7.1.0
+typer==0.27.3
+python-dotenv==1.2.4
