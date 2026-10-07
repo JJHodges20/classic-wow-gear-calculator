@@ -1,0 +1,54 @@
+{
+  "fixture": "healer_exclusive_regeneration",
+  "description": "An exclusive group: only the larger of mana and health regeneration counts.",
+  "profile": "fixture_priest_healer",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "priest",
+    "role": "healer",
+    "profile_id": "fixture_priest_healer",
+    "content_mode": "raid_pve"
+  },
+  "item": {
+    "id": "custom:fixture-gem",
+    "name": "Fixture Gem",
+    "ruleset": "classic_era",
+    "slot": "trinket",
+    "stats": {
+      "healing_power": 40,
+      "mp5": 5,
+      "hp5": 10
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Healing 40 x 1 = 40",
+    "Mana per 5: 5 x 2 = 10; health per 5: 10 x 0.4 = 4; only the larger (mana) counts",
+    "Score: 40 + 10 = 50"
+  ],
+  "expected": {
+    "score": 50.0,
+    "eligible": true,
+    "components": {
+      "stat:healing_power": 40.0,
+      "stat:mp5": 10.0,
+      "stat:hp5": 0.0
+    },
+    "capped_stats": {},
+    "threshold_events": {},
+    "warnings": [],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

@@ -56,8 +56,39 @@ the game math.
 
 Unknown keys in any configuration file are errors, so a typing slip is caught at load time.
 
+## The scoring pipeline
+
+`wow_gear.scoring.engine.score_item(item, context, profile, ruleset, replacing=...)`:
+
+1. **Check the inputs agree**: one ruleset for item, context and profile; the context names
+   the profile; the profile fits the class and role.
+2. **Eligibility** (`rulesets/eligibility.py`): level, phase, class and race restrictions,
+   armor by level, weapon proficiency, shields, relics, dual wield. An unusable item is still
+   scored and marked, so a player sees what it would have been worth.
+3. **What the item provides** (`scoring/amounts.py`): its stats, its weapon damage per second,
+   and the effects that apply. A conditional bonus ("+81 Attack Power when fighting Undead")
+   counts only when the context meets it; a weapon-skill bonus only with a weapon of its
+   type; procs and on-use effects are listed with no value.
+4. **Conversions** (`calculations/conversions.py`): each of the profile's derived rules turns
+   a primary stat into what the profile values (Agility into crit), at the ruleset's rate
+   for the class.
+5. **Caps** (`calculations/caps.py`, `calculations/curves.py`): each capped stat gets a value
+   curve - a dead zone (suppressed hit), full value up to the cap, an optional soft band at
+   a fraction, nothing beyond. The amount that counts is the area under the curve between
+   what the character already has and what it has with the item. What it already has is
+   the context's current gear totals minus the replaced item; without them, zero, and a
+   warning.
+6. **Thresholds**: reaching a breakpoint (crit immunity) adds the profile's bonus once.
+7. **Exclusive groups**: where stats cannot all count, only the most valuable does.
+8. **The result** (`ScoreResult`): the score is the sum of its components and nothing else;
+   cap and threshold events say what happened; warnings, assumptions, confidence, and every
+   version and hash needed to reproduce it.
+
+Cap formulas are implemented once per kind (melee, dual-wield, ranged and spell miss, crit
+immunity); a ruleset names caps of those kinds and supplies their inputs; a profile refers to
+a ruleset cap and says what its talents already provide (`reduced_by`).
+
 ## Sections to complete
 
-This document grows with the milestones: the scoring pipeline (milestone 3), item entry and
-validation (4), the repository, providers and cache (5), comparison (6), the app (7 and 8),
-characters and gear sets (9).
+This document grows with the milestones: item entry and validation (4), the repository,
+providers and cache (5), comparison (6), the app (7 and 8), characters and gear sets (9).

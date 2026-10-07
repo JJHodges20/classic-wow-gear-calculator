@@ -9,7 +9,7 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | --- | --- | --- |
 | 1 | Repository skeleton, CLAUDE.md, configuration, CI/test foundation | Done (2026-10-07) |
 | 2 | Canonical models + ruleset/profile loaders + fixtures | Done (2026-10-07) |
-| 3 | Core scoring engine + caps/threshold hooks + golden tests | Not started |
+| 3 | Core scoring engine + caps/threshold hooks + golden tests | Done (2026-10-07) |
 | 4 | Manual item-entry service and validation | Not started |
 | 5 | Item repository + first lookup provider + cache | Not started |
 | 6 | Item comparison service + explainable breakdown | Not started |

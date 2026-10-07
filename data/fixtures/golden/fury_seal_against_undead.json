@@ -1,0 +1,73 @@
+{
+  "fixture": "fury_seal_against_undead",
+  "description": "A conditional bonus that counts because the target is Undead.",
+  "profile": "fixture_warrior_fury",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "fixture_warrior_fury",
+    "content_mode": "raid_pve",
+    "target_creature_type": "undead"
+  },
+  "item": {
+    "id": "custom:fixture-seal",
+    "name": "Fixture Seal",
+    "ruleset": "classic_era",
+    "slot": "trinket",
+    "equip_effects": [
+      {
+        "trigger": "equip",
+        "description": "Equip: +60 Attack Power when fighting Undead.",
+        "stat": "attack_power",
+        "value": 60,
+        "condition": {
+          "target_creature_types": [
+            "undead"
+          ]
+        }
+      },
+      {
+        "trigger": "equip",
+        "description": "Equip: +60 Attack Power when fighting Undead.",
+        "stat": "ranged_attack_power",
+        "value": 60,
+        "condition": {
+          "target_creature_types": [
+            "undead"
+          ]
+        }
+      }
+    ],
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Attack power against Undead: 60 x 1 = 60 (the target is Undead)",
+    "Ranged attack power against Undead: not valued by the profile, 0",
+    "Score: 60"
+  ],
+  "expected": {
+    "score": 60.0,
+    "eligible": true,
+    "components": {
+      "context:attack_power": 60.0,
+      "context:ranged_attack_power": 0.0
+    },
+    "capped_stats": {},
+    "threshold_events": {},
+    "warnings": [],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

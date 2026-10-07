@@ -1,0 +1,78 @@
+{
+  "fixture": "fury_helm_replacing_a_hit_helm",
+  "description": "Replacing a helm that gives 2% of the 8% current hit: the baseline drops to 6%.",
+  "profile": "fixture_warrior_fury",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "fixture_warrior_fury",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 8,
+      "strength": 10
+    }
+  },
+  "item": {
+    "id": "custom:fixture-plate-helm",
+    "name": "Fixture Plate Helm",
+    "ruleset": "classic_era",
+    "slot": "head",
+    "armor_type": "plate",
+    "required_level": 60,
+    "stats": {
+      "strength": 20,
+      "agility": 10,
+      "stamina": 15,
+      "hit": 2,
+      "armor": 500
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": {
+    "id": "custom:fixture-old-helm",
+    "name": "Fixture Old Helm",
+    "ruleset": "classic_era",
+    "slot": "head",
+    "armor_type": "plate",
+    "stats": {
+      "strength": 10,
+      "hit": 2
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "hand_calculation": [
+    "Baseline hit: 8% current - 2% from the replaced helm = 6%",
+    "Hit: from 6% to 8%, all below the 9% cap: 2 x 10 = 20",
+    "Score: 40 + 10 + 20 = 70"
+  ],
+  "expected": {
+    "score": 70.0,
+    "eligible": true,
+    "components": {
+      "derived:strength->attack_power": 40.0,
+      "derived:agility->crit": 10.0,
+      "stat:hit": 20.0
+    },
+    "capped_stats": {},
+    "threshold_events": {},
+    "warnings": [],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

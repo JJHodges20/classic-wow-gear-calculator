@@ -1,0 +1,73 @@
+{
+  "fixture": "fury_seal_without_a_target_type",
+  "description": "The same bonus with no target creature type set: it does not count.",
+  "profile": "fixture_warrior_fury",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "fixture_warrior_fury",
+    "content_mode": "raid_pve"
+  },
+  "item": {
+    "id": "custom:fixture-seal",
+    "name": "Fixture Seal",
+    "ruleset": "classic_era",
+    "slot": "trinket",
+    "equip_effects": [
+      {
+        "trigger": "equip",
+        "description": "Equip: +60 Attack Power when fighting Undead.",
+        "stat": "attack_power",
+        "value": 60,
+        "condition": {
+          "target_creature_types": [
+            "undead"
+          ]
+        }
+      },
+      {
+        "trigger": "equip",
+        "description": "Equip: +60 Attack Power when fighting Undead.",
+        "stat": "ranged_attack_power",
+        "value": 60,
+        "condition": {
+          "target_creature_types": [
+            "undead"
+          ]
+        }
+      }
+    ],
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "No target creature type: the conditional bonus counts 0",
+    "Score: 0"
+  ],
+  "expected": {
+    "score": 0.0,
+    "eligible": true,
+    "components": {
+      "inactive:0": 0.0,
+      "inactive:1": 0.0
+    },
+    "capped_stats": {},
+    "threshold_events": {},
+    "warnings": [
+      "conditional_not_counted"
+    ],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

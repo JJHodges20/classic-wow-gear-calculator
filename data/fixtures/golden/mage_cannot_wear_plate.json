@@ -1,0 +1,57 @@
+{
+  "fixture": "mage_cannot_wear_plate",
+  "description": "An item the class cannot use is still scored, and marked unusable.",
+  "profile": "fixture_mage_frost",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "mage",
+    "role": "caster_dps",
+    "profile_id": "fixture_mage_frost",
+    "content_mode": "raid_pve"
+  },
+  "item": {
+    "id": "custom:fixture-plate-helm",
+    "name": "Fixture Plate Helm",
+    "ruleset": "classic_era",
+    "slot": "head",
+    "armor_type": "plate",
+    "required_level": 60,
+    "stats": {
+      "strength": 20,
+      "agility": 10,
+      "stamina": 15,
+      "hit": 2,
+      "armor": 500
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Nothing on the helm is valued by the caster profile: 0",
+    "Mages cannot wear plate"
+  ],
+  "expected": {
+    "score": 0.0,
+    "eligible": false,
+    "components": {
+      "stat:strength": 0.0
+    },
+    "capped_stats": {},
+    "threshold_events": {},
+    "warnings": [
+      "ineligible"
+    ],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

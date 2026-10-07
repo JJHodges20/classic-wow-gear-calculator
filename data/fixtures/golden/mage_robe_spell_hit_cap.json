@@ -1,0 +1,71 @@
+{
+  "fixture": "mage_robe_spell_hit_cap",
+  "description": "Spell hit past a talent-reduced cap, and Intellect converted into spell crit.",
+  "profile": "fixture_mage_frost",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "mage",
+    "role": "caster_dps",
+    "profile_id": "fixture_mage_frost",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 8
+    }
+  },
+  "item": {
+    "id": "custom:fixture-robe",
+    "name": "Fixture Robe",
+    "ruleset": "classic_era",
+    "slot": "chest",
+    "armor_type": "cloth",
+    "required_level": 60,
+    "stats": {
+      "spell_power": 30,
+      "spell_hit": 3,
+      "intellect": 20,
+      "spell_crit": 1
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Spell hit cap: 99% - 83% against level 63 = 16%, minus 6% from talents = 10%",
+    "Spell hit: from 8% to 11%; 2 counts, 1 is wasted: 2 x 10 = 20",
+    "Spell power: 30 x 1 = 30",
+    "Spell crit: 1% x 8 = 8",
+    "Intellect into spell crit: 20 / 59.5 = 0.336134% x 8 = 2.689076",
+    "Intellect directly: 20 x 0.5 = 10",
+    "Score: 30 + 20 + 8 + 2.689076 + 10 = 70.689076"
+  ],
+  "expected": {
+    "score": 70.689076,
+    "eligible": true,
+    "components": {
+      "stat:spell_power": 30.0,
+      "stat:spell_hit": 20.0,
+      "stat:spell_crit": 8.0,
+      "derived:intellect->spell_crit": 2.689076,
+      "stat:intellect": 10.0
+    },
+    "capped_stats": {
+      "spell_hit": {
+        "counted_amount": 2.0,
+        "wasted_amount": 1.0
+      }
+    },
+    "threshold_events": {},
+    "warnings": [],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

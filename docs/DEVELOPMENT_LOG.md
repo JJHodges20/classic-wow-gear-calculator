@@ -3,6 +3,51 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 3 - Scoring engine, cap and threshold hooks, golden tests (2026-10-07)
+
+**Built**
+
+- `calculations/`: target level and weapon skill for a context (`levels.py`); the cap
+  formulas - melee, dual-wield and ranged miss with hit suppression, spell miss, crit
+  immunity (`caps.py`); value curves with a dead zone, a full band and a soft band
+  (`curves.py`); per-class stat conversions (`conversions.py`).
+- `rulesets/eligibility.py`: level, phase, class and race restrictions, armor by level,
+  weapon proficiency, shields, relics and dual wield, with readable reasons.
+- `scoring/amounts.py` and `scoring/engine.py`: an item scored for a context and profile,
+  as a sum of components (stats, conversions, weapon damage, conditional bonuses,
+  thresholds, and zero-valued procs and set bonuses), with cap and threshold events,
+  warnings, assumptions, confidence and a reproducibility fingerprint. Exclusive groups keep
+  only the most valuable stat.
+- Eleven hand-calculated golden fixtures (`data/fixtures/golden`), each with its working
+  written out: the hit dead zone and soft band with and without current gear, replacing an
+  item, weapon damage, the crit-immunity breakpoint reached and missed, a talent-reduced
+  spell hit cap with Intellect converted to crit, an exclusive group, a conditional bonus
+  on and off, and an unusable item.
+
+**Decisions** ([0003](decisions/0003-scoring-model.md))
+
+- A score is the sum of its components; caps are curves evaluated from the character's
+  current gear minus the replaced item; eligibility marks rather than blocks; confidence is
+  a count of reasons for doubt; every result records the versions and a fingerprint.
+- A weapon-skill bonus counts only with a weapon of its type (the context's main-hand or
+  ranged weapon).
+
+**Assumptions**
+
+- Procs, on-use effects and set bonuses are worth zero in version 1, and say so.
+- Weapon damage per second is valued at a flat weight; weapon speed and normalization are
+  version 2.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | Calculation, eligibility, engine and golden tests pass; the full suite passes on the committed snapshot |
+| Golden fixtures | 11 hand-calculated cases, each score equal to its components' sum; scoring is deterministic |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict) clean |
+| Architecture | Boundary test passes: calculations import only core, models and rulesets |
+| UI smoke test | No UI change; the shell renders under `streamlit.testing` |
+
 ## Milestone 2 - Canonical models, ruleset and profile loaders, fixtures (2026-10-07)
 
 **Built**

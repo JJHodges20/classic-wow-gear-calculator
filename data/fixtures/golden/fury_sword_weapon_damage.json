@@ -1,0 +1,64 @@
+{
+  "fixture": "fury_sword_weapon_damage",
+  "description": "A one-hand sword: weapon damage per second valued like a stat.",
+  "profile": "fixture_warrior_fury",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "fixture_warrior_fury",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 5
+    }
+  },
+  "item": {
+    "id": "custom:fixture-sword",
+    "name": "Fixture Sword",
+    "ruleset": "classic_era",
+    "slot": "one_hand",
+    "weapon_type": "sword",
+    "required_level": 60,
+    "weapon": {
+      "min_damage": 100,
+      "max_damage": 150,
+      "speed": 2.5
+    },
+    "stats": {
+      "strength": 10,
+      "crit": 1
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Weapon: (100 + 150) / 2 = 125 average damage / 2.5 speed = 50 damage per second x 14 = 700",
+    "Strength: 10 x 2 = 20 attack power x 1 = 20",
+    "Crit: 1% x 20 = 20",
+    "Score: 700 + 20 + 20 = 740"
+  ],
+  "expected": {
+    "score": 740.0,
+    "eligible": true,
+    "components": {
+      "weapon:melee_weapon_dps": 700.0,
+      "derived:strength->attack_power": 20.0,
+      "stat:crit": 20.0
+    },
+    "capped_stats": {},
+    "threshold_events": {},
+    "warnings": [],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "fixture": "fury_helm_near_the_hit_cap",
+  "description": "The same helm with 8% hit from current gear: part of the hit lands in the soft-cap band.",
+  "profile": "fixture_warrior_fury",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "fixture_warrior_fury",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 8
+    }
+  },
+  "item": {
+    "id": "custom:fixture-plate-helm",
+    "name": "Fixture Plate Helm",
+    "ruleset": "classic_era",
+    "slot": "head",
+    "armor_type": "plate",
+    "required_level": 60,
+    "stats": {
+      "strength": 20,
+      "agility": 10,
+      "stamina": 15,
+      "hit": 2,
+      "armor": 500
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Hit: from 8% to 10%; 8-9% counts in full (1), 9-10% is past the 9% cap and counts at 50% (0.5): 1.5 x 10 = 15",
+    "Score: 40 + 10 + 15 = 65"
+  ],
+  "expected": {
+    "score": 65.0,
+    "eligible": true,
+    "components": {
+      "derived:strength->attack_power": 40.0,
+      "derived:agility->crit": 10.0,
+      "stat:hit": 15.0
+    },
+    "capped_stats": {
+      "hit": {
+        "counted_amount": 1.5,
+        "wasted_amount": 0.5
+      }
+    },
+    "threshold_events": {},
+    "warnings": [],
+    "confidence": "medium"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

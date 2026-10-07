@@ -1,0 +1,69 @@
+{
+  "fixture": "fury_helm_without_current_gear",
+  "description": "Conversions, and hit falling in the suppressed first 1% when no current gear is given.",
+  "profile": "fixture_warrior_fury",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "fixture_warrior_fury",
+    "content_mode": "raid_pve"
+  },
+  "item": {
+    "id": "custom:fixture-plate-helm",
+    "name": "Fixture Plate Helm",
+    "ruleset": "classic_era",
+    "slot": "head",
+    "armor_type": "plate",
+    "required_level": 60,
+    "stats": {
+      "strength": 20,
+      "agility": 10,
+      "stamina": 15,
+      "hit": 2,
+      "armor": 500
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Strength: 20 x 2 attack power = 40 attack power x 1 = 40",
+    "Agility: 10 / 20 = 0.5% crit x 20 = 10",
+    "Hit: from 0 to 2%; 0-1% is suppressed against a level 63 target, 1-2% counts in full: 1 x 10 = 10",
+    "Stamina and armor: not valued by the profile, 0",
+    "Score: 40 + 10 + 10 = 60"
+  ],
+  "expected": {
+    "score": 60.0,
+    "eligible": true,
+    "components": {
+      "derived:strength->attack_power": 40.0,
+      "derived:agility->crit": 10.0,
+      "stat:hit": 10.0,
+      "stat:stamina": 0.0,
+      "stat:armor": 0.0
+    },
+    "capped_stats": {
+      "hit": {
+        "counted_amount": 1.0,
+        "wasted_amount": 1.0
+      }
+    },
+    "threshold_events": {},
+    "warnings": [
+      "cap_sensitive_without_current_stats"
+    ],
+    "confidence": "low"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "fixture": "tank_shield_without_current_gear",
+  "description": "The same shield with no current gear: 7 defense is far short of the breakpoint.",
+  "profile": "fixture_warrior_tank",
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "tank",
+    "profile_id": "fixture_warrior_tank",
+    "content_mode": "raid_pve"
+  },
+  "item": {
+    "id": "custom:fixture-shield",
+    "name": "Fixture Shield",
+    "ruleset": "classic_era",
+    "slot": "shield",
+    "required_level": 60,
+    "stats": {
+      "armor": 2000,
+      "stamina": 20,
+      "defense": 7,
+      "block_value": 50
+    },
+    "provenance": {
+      "provider": "fixture",
+      "source": "Golden fixture (invented item)",
+      "data_version": "fixture-1",
+      "custom": true
+    }
+  },
+  "replacing": null,
+  "hand_calculation": [
+    "Defense 0 -> 7, short of 140: no bonus",
+    "Score: 20 + 200 + 7 + 25 = 252"
+  ],
+  "expected": {
+    "score": 252.0,
+    "eligible": true,
+    "components": {
+      "stat:stamina": 20.0,
+      "stat:armor": 200.0,
+      "stat:defense": 7.0,
+      "stat:block_value": 25.0,
+      "threshold:defense:Crit immunity": 0.0
+    },
+    "capped_stats": {},
+    "threshold_events": {
+      "Crit immunity": {
+        "reached": false,
+        "bonus": 0.0
+      }
+    },
+    "warnings": [
+      "cap_sensitive_without_current_stats"
+    ],
+    "confidence": "low"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  }
+}
