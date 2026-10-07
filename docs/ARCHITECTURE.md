@@ -88,7 +88,25 @@ Cap formulas are implemented once per kind (melee, dual-wield, ranged and spell 
 immunity); a ruleset names caps of those kinds and supplies their inputs; a profile refers to
 a ruleset cap and says what its talents already provide (`reduced_by`).
 
+## Item entry and validation
+
+A manual item takes the same path as a looked-up one. `services/item_entry.py` offers the
+item types that make sense for a slot (armor types for armor, weapon types by hands, relic
+types) and the ruleset's stats grouped for the form; `processing/manual.py` turns the
+submitted `ManualItemForm` into a canonical `Item` with an id derived from its contents (the
+same form gives the same item); `processing/tooltip.py` reads Classic tooltip lines into
+stats, so a pasted tooltip can fill the form; and `processing/validation.py` checks the item
+against the ruleset:
+
+- **error** - the calculator cannot use it (a stat or phase the ruleset lacks);
+- **warning** - unlike any game item (plate below level 40, a sword in a two-hand slot, an
+  odd weapon speed, a large percentage); a custom (theorycrafted) item may be so on purpose;
+- **info** - what will not be scored (procs and on-use effects kept as text).
+
+A custom item is usable when it has no errors; an item claimed to be from the game must also
+have no warnings.
+
 ## Sections to complete
 
-This document grows with the milestones: item entry and validation (4), the repository,
-providers and cache (5), comparison (6), the app (7 and 8), characters and gear sets (9).
+This document grows with the milestones: the repository, providers and cache (5),
+comparison (6), the app (7 and 8), characters and gear sets (9).

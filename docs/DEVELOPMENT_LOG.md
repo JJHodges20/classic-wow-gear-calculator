@@ -3,6 +3,43 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 4 - Manual item entry and validation (2026-10-07)
+
+**Built**
+
+- `models/forms.py`: the manual form - slot and type first, numeric stats, an optional
+  weapon block, effect rows (a stat, a conditional stat against creature types, or text),
+  and a custom flag.
+- `processing/manual.py`: a form into a canonical item (content-derived id, manual
+  provenance); a pasted tooltip into a form (name, slot and type line, damage and speed,
+  required level, stat and effect lines; what it cannot place is listed).
+- `processing/tooltip.py`: Classic tooltip wordings into stats - primary stats, armor,
+  block, resistances, hit and crit, spell hit and crit, attack power (melee and ranged, and
+  against creature types), feral attack power, spell damage and healing (including the
+  split wording), school spell damage, regeneration, defense, dodge, parry, block, weapon
+  skills, spell penetration. Procs, on-use effects and unknown lines are kept as text.
+- `processing/validation.py`: errors, warnings and notes against the ruleset.
+- `services/item_entry.py`: type choices by slot, stat fields grouped for the slot, and a
+  preview with readable form errors and validation.
+
+**Decisions**
+
+- Manual items get a content-derived id, so entering the same item twice is harmless.
+- A custom item may break plausibility rules; an item claimed to be from the game may not.
+
+**Assumptions**
+
+- "Unusually high" means more than 5% of a percentage stat on one item, and usual weapon
+  speeds are 1.0 to 4.0 seconds; both are review prompts, not rules of the game.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | Tooltip, manual entry, validation and service tests pass, including a pasted Lionheart Helm scoring 116 AP for Fury exactly as hand-calculated; the full suite passes on the committed snapshot |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict) clean |
+| UI smoke test | No UI change; the shell renders under `streamlit.testing` |
+
 ## Milestone 3 - Scoring engine, cap and threshold hooks, golden tests (2026-10-07)
 
 **Built**
