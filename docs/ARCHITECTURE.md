@@ -137,7 +137,45 @@ data/bundled (VMaNGOS-built)   Blizzard Game Data API   CSV / JSON files   manua
 
 See [DATA_SOURCES.md](DATA_SOURCES.md) for the terms of each source.
 
+## Comparison and the explanation
+
+`wow_gear.comparison.compare.compare_items(items, context, profile, ruleset, replacing=...)`:
+
+1. **Score every item from one baseline** - current gear totals minus the equipped item
+   (`replacing`) - so the scores are directly comparable.
+2. **Rank**: usable items first, then by score; ties in name and id keep the order
+   deterministic. Each result gets its `rank` and a `recommendation_label`.
+3. **Decide the outcome**: `winner` (the best usable item beats the next usable one by more
+   than the tie margin), `tie` (within 0.05 points or 0.5% of the larger score - weights are
+   not that precise), `only_usable` (one usable item, measured against the best unusable
+   one), `none_usable`, or `single` (one item, scored).
+4. **Explain** the two items that decide it, component by component: each
+   `ExplanationLine` is the first item's contribution minus the second's ("+36.0 from
+   Strength into attack power"). Equal components are left out unless a cap or an exclusive
+   group cut one side ("0 from hit (Gauntlets of Might: none of its 1 counts)"). The lines
+   add up to the score difference. `why` joins the largest few into one phrase, ending with
+   a wasted stat when there is one - the roadmap's "+12.4 from healing power ... and 0 from
+   excess hit beyond the selected cap".
+5. **Say what is not in the number**: stats the profile does not value, effects and set
+   memberships version 1 does not score, and notes - items worn in different slots (a
+   two-handed weapon against a one-hander is flagged: it also takes the off hand), unusable
+   items with the reason, cap-sensitive stats scored without current gear.
+6. **Against the equipped item**: with `replacing`, the equipped item is scored from the same
+   baseline and each candidate's change (`Upgrade.delta`) is reported.
+
+The comparison's confidence is the lower of the two deciding items'; its fingerprint is a
+hash of every item's score fingerprint, so the same inputs in any order give the same
+result.
+
+## The calculator service
+
+`services/calculator.py` is what the app and the command line call: it lists the classes,
+roles and profiles a ruleset has, builds a checked `CharacterContext` from a profile and the
+player's choices (the profile supplies defaults: level, content mode, phase), runs every
+item - manual, imported or looked up - through the same validation, and calls the scoring
+engine and the comparison layer. `reporting/text.py` formats a comparison as plain text;
+`wowgear compare` prints it (or `--json`).
+
 ## Sections to complete
 
-This document grows with the milestones: comparison (6), the app (7 and 8), characters and
-gear sets (9).
+This document grows with the milestones: the app (7 and 8), characters and gear sets (9).

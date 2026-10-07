@@ -11,6 +11,9 @@ import typer
 
 from wow_gear import __version__
 from wow_gear.core import ConfigError, Settings, configure_logging, load_settings
+from wow_gear.core.errors import DataValidationError, NotFoundError
+from wow_gear.models.enums import Stat
+from wow_gear.reporting.text import comparison_text
 from wow_gear.services.workspace import Workspace
 
 app = typer.Typer(
@@ -117,6 +120,87 @@ def items_import(
     raise typer.Exit(code=0 if report.imported or not report.rejected else 1)
 
 
+def _resolve(workspace: Workspace, reference: str) -> str:
+    """An item id from an id or an exact name; a vague name is an error listing candidates."""
+    hits = workspace.search.search(reference, limit=10).hits
+    wanted = reference.strip().lower()
+    exact = {hit.item.id for hit in hits if wanted in (hit.item.id.lower(), hit.item.name.lower())}
+    if len(exact) == 1:
+        return exact.pop()
+    if len(hits) == 1:
+        return hits[0].item.id
+    if not hits:
+        raise NotFoundError(f"no item matches {reference!r}")
+    names = "; ".join(f"{hit.item.name} ({hit.item.id})" for hit in hits[:5])
+    raise NotFoundError(f"{reference!r} matches several items: {names}")
+
+
+def _gear_totals(values: list[str]) -> dict[str, float] | None:
+    if not values:
+        return None
+    totals: dict[str, float] = {}
+    known = {stat.value for stat in Stat}
+    for value in values:
+        stat, separator, number = (part.strip() for part in value.partition("="))
+        try:
+            amount = float(number)
+        except ValueError:
+            separator = ""
+        if not separator:
+            raise DataValidationError(f"--current takes STAT=NUMBER, such as hit=5; got {value!r}")
+        if stat not in known:
+            raise DataValidationError(
+                f"--current: {stat!r} is not a stat; use names such as hit, crit, spell_hit, "
+                "defense or strength"
+            )
+        totals[stat] = amount
+    return totals
+
+
+@app.command()
+def compare(
+    items: Annotated[list[str], typer.Argument(help="Item ids or exact names (one or more).")],
+    profile: Annotated[str, typer.Option("--profile", "-p", help="Build profile id.")],
+    phase: Annotated[
+        int | None, typer.Option(help="Content phase (default: the profile's).")
+    ] = None,
+    level: Annotated[
+        int | None, typer.Option(help="Character level (default: the profile's).")
+    ] = None,
+    race: Annotated[str | None, typer.Option(help="Race, for racial weapon skill.")] = None,
+    content: Annotated[str | None, typer.Option(help="Content mode, such as raid_pve.")] = None,
+    current: Annotated[
+        list[str] | None,
+        typer.Option(help="A gear total from your other items, STAT=NUMBER; repeat it."),
+    ] = None,
+    replacing: Annotated[
+        str | None, typer.Option(help="The equipped item the candidates would replace.")
+    ] = None,
+    as_json: Annotated[bool, typer.Option("--json", help="Print the full result as JSON.")] = False,
+) -> None:
+    """Compare items for a build profile and explain the difference."""
+    workspace = _workspace()
+    try:
+        calculator = workspace.calculator
+        context = calculator.context(
+            profile,
+            phase=phase,
+            level=level,
+            race=race,
+            content_mode=content,
+            current_stats=_gear_totals(current or []),
+        )
+        ids = [_resolve(workspace, reference) for reference in items]
+        replaced = _resolve(workspace, replacing) if replacing else None
+        result = calculator.compare_ids(ids, context, replacing_id=replaced)
+    except (DataValidationError, NotFoundError) as error:
+        typer.echo(f"Cannot compare: {error}", err=True)
+        raise typer.Exit(code=2) from error
+    finally:
+        workspace.close()
+    typer.echo(result.model_dump_json(indent=2) if as_json else comparison_text(result))
+
+
 @app.command()
 def ui(
     port: int = typer.Option(8501, help="Port to serve the app on."),
@@ -135,6 +219,9 @@ def ui(
         str(port),
         "--server.headless",
         "true" if no_browser else "false",
+        # A local tool: Streamlit's usage statistics would otherwise be sent to Streamlit.
+        "--browser.gatherUsageStats",
+        "false",
     ]
     raise typer.Exit(code=subprocess.call(command, cwd=Path(settings.root)))
 

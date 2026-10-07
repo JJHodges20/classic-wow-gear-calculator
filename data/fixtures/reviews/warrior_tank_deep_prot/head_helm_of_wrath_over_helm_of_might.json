@@ -1,0 +1,142 @@
+{
+  "title": "Helm of Wrath over Helm of Might",
+  "question": "A Protection warrior chooses between the tier 2 and tier 1 helms.",
+  "profile": {
+    "id": "warrior_tank_deep_prot",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "tank",
+    "profile_id": "warrior_tank_deep_prot",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "warrior"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16963",
+        "vmangos": "16963"
+      },
+      "id": "classic_era:16963",
+      "item_level": 76,
+      "name": "Helm of Wrath",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "218",
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 696.0,
+        "defense": 11.0,
+        "frost_resistance": 10.0,
+        "shadow_resistance": 10.0,
+        "stamina": 40.0,
+        "strength": 17.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "warrior"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16866",
+        "vmangos": "16866"
+      },
+      "id": "classic_era:16866",
+      "item_level": 66,
+      "name": "Helm of Might",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "209",
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 608.0,
+        "defense": 7.0,
+        "dodge": 1.0,
+        "fire_resistance": 10.0,
+        "stamina": 35.0,
+        "strength": 15.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16963",
+    "first": "classic_era:16963",
+    "second": "classic_era:16866",
+    "score_delta": 15.71,
+    "scores": {
+      "classic_era:16963": 121.745,
+      "classic_era:16866": 106.035
+    },
+    "component_deltas": {
+      "stat:defense": 16.0,
+      "stat:stamina": 7.5,
+      "stat:dodge": -10.0,
+      "stat:armor": 1.76,
+      "stat:strength": 0.45
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Helm of Wrath: 696 armor x 0.02 = 13.92; 11 Defense x 4 = 44; 40 Stamina x 1.5 = 60; 17 Strength x 0.225 = 3.825. Total 121.745.",
+    "Helm of Might: 608 x 0.02 = 12.16; 7 Defense x 4 = 28; 1% dodge x 10 = 10; 35 Stamina x 1.5 = 52.5; 15 Strength x 0.225 = 3.375. Total 106.035."
+  ],
+  "review": "The tier 2 helm has more Defense, Stamina and armor - the survivability this profile weighs most - and gives up 1% dodge. Neither set bonus is scored.",
+  "reviewed": "2026-10-07"
+}

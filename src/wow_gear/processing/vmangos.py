@@ -206,26 +206,56 @@ def _effect_value(spell: Row, index: int) -> float:
     return float(base + dice)
 
 
-def render_description(spell: Row) -> str:
-    """The spell's tooltip text with its numbers filled in."""
+def _effect_text(spell: Row, index: int, divisor: str | None) -> str:
+    """An effect's value as the tooltip shows it: one number, or "min to max" for a range."""
+    base = spell.get(f"effectBasePoints{index}") or 0
+    dice = spell.get(f"effectDieSides{index}") or 0
+    scale = float(divisor) if divisor else 1.0
+    high = abs(base + dice) / scale
+    if dice > 1:
+        return f"{abs(base + 1) / scale:g} to {high:g}"
+    return f"{high:g}"
+
+
+def render_description(spell: Row, spells: Mapping[int, Row] | None = None) -> str:
+    """The spell's tooltip text with its numbers filled in.
+
+    ``$s1`` is the spell's own first value; ``$18817s1`` is another spell's (a proc names the
+    spell it triggers), looked up in ``spells`` - without it the number stays unknown.
+    """
     text = str(spell.get("description") or "").strip()
 
-    def value(match: re.Match[str]) -> str:
-        divisor = match.group(1)
-        index = int(match.group(3))
-        number = abs(_effect_value(spell, index))
-        if divisor:
-            number /= float(divisor)
-        return f"{number:g}"
+    def source(other: str | None) -> Row | None:
+        return spell if other is None else (spells or {}).get(int(other))
 
-    text = re.sub(r"\$(?:/(\d+);)?(\d+)?s([123])", value, text)
+    def value(match: re.Match[str]) -> str:
+        divisor, other, index = match.group(1), match.group(2), int(match.group(3))
+        row = source(other)
+        return "[amount]" if row is None else _effect_text(row, index, divisor)
+
+    def period(match: re.Match[str]) -> str:
+        row = source(match.group(1))
+        amplitude = (row or {}).get(f"effectAmplitude{match.group(2)}") or 0
+        return f"{amplitude / 1000:g}" if amplitude else "[period]"
+
+    def chain(match: re.Match[str]) -> str:
+        row = source(match.group(1))
+        targets = (row or {}).get(f"effectChainTarget{match.group(2)}") or 0
+        return f"{targets:g}" if targets else "[targets]"
+
+    text = re.sub(r"\$(?:/(\d+);)?(\d+)?[sS]([123])", value, text)
     text = re.sub(
         r"\$m([123])", lambda m: f"{abs(_effect_value(spell, int(m.group(1)))):g}", text, flags=re.I
     )
+    text = re.sub(r"\$(\d+)?t([123])", period, text)
+    text = re.sub(r"\$(\d+)?x([123])", chain, text)
     text = text.replace("$h", f"{spell.get('procChance') or 0:g}")
-    # Durations and totals over time live in client tables the snapshot does not have.
-    text = re.sub(r"\$o[123]", "[amount]", text)
-    text = re.sub(r"\$d(?![a-z])", "[duration]", text)
+    text = re.sub(r"\$l(\w+):(\w+);", r"\2", text)  # singular:plural
+    text = re.sub(r"\$g(\w+):(\w+);", r"\1/\2", text)  # male:female
+    # Durations, radii and totals over time live in client tables the snapshot does not have.
+    text = re.sub(r"\$(\d+)?o[123]", "[amount]", text)
+    text = re.sub(r"\$(\d+)?a[123]", "[radius]", text)
+    text = re.sub(r"\$(\d+)?d\d?(?![a-z])", "[duration]", text)
     return re.sub(r"\s+", " ", text) or str(spell.get("name") or "Unnamed effect")
 
 
@@ -454,7 +484,7 @@ def normalize_item(
         if not spell_id:
             continue
         spell = spells.get(spell_id)
-        text = render_description(spell) if spell else f"Spell {spell_id}"
+        text = render_description(spell, spells) if spell else f"Spell {spell_id}"
         if trigger == 0:
             use.append(
                 ItemEffect(

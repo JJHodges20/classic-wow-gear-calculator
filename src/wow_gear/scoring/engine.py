@@ -312,7 +312,7 @@ def score_item(
         components.append(
             ScoreComponent(
                 key="set_bonus",
-                label=f"Set: {item.set_name or item.set_id}",
+                label=f"Set: {item.set_name}" if item.set_name else f"Item set {item.set_id}",
                 kind=ComponentKind.SET_BONUS,
                 amount=0.0,
                 effective_amount=0.0,

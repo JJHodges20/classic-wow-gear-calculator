@@ -1,0 +1,140 @@
+{
+  "title": "Mantle of Prophecy, because priests cannot wear leather",
+  "question": "A Holy priest sees Wild Growth Spaulders drop.",
+  "profile": {
+    "id": "priest_healer_holy",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "priest",
+    "role": "healer",
+    "profile_id": "priest_healer_holy",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "priest"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16816",
+        "vmangos": "16816"
+      },
+      "id": "classic_era:16816",
+      "item_level": 66,
+      "name": "Mantle of Prophecy",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "202",
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "armor": 76.0,
+        "intellect": 23.0,
+        "shadow_resistance": 7.0,
+        "spell_power": 9.0,
+        "spirit": 10.0,
+        "stamina": 13.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18810",
+        "vmangos": "18810"
+      },
+      "id": "classic_era:18810",
+      "item_level": 71,
+      "name": "Wild Growth Spaulders",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "armor": 159.0,
+        "healing_power": 62.0,
+        "intellect": 12.0,
+        "spirit": 10.0,
+        "stamina": 11.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:16816",
+    "first": "classic_era:16816",
+    "second": "classic_era:18810",
+    "score_delta": -36.494945946,
+    "scores": {
+      "classic_era:16816": 54.410567568,
+      "classic_era:18810": 90.905513514
+    },
+    "component_deltas": {
+      "stat:healing_power": -62.0,
+      "stat:intellect": 15.576,
+      "stat:spell_power": 9.0,
+      "derived:intellect->spell_crit": 0.929054054
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:18810": [
+        "Priests cannot wear leather armor"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Mantle of Prophecy: 9 spell power (counts as healing); 23 Intellect x 1.416 = 32.568, plus 23 at 59.2 per 1% x 5 = 1.9426; 10 Spirit x 1.09 = 10.9. Total 54.4106.",
+    "Wild Growth Spaulders: 62 healing; 12 Intellect (16.992 + 1.0135); 10 Spirit (10.9). Total 90.9055."
+  ],
+  "review": "The leather shoulders would be worth far more, but priests wear cloth only: the calculator recommends the usable item and shows why the other is excluded.",
+  "reviewed": "2026-10-07"
+}

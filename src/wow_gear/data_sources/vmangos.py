@@ -51,6 +51,21 @@ EQUIPPABLE_INVENTORY_TYPES = (
 MAX_PATCH = 10
 """Patch index of 1.12, the patch Classic Era is based on (0 is 1.2)."""
 
+SUMMONED_RAID_BOSSES: dict[int, int] = {
+    11502: 409,  # Ragnaros, Molten Core
+    11583: 469,  # Nefarian, Blackwing Lair
+    14515: 309,  # High Priestess Arlokk, Zul'Gurub
+    15082: 309,  # Gri'lek, Zul'Gurub (Edge of Madness)
+    15083: 309,  # Hazza'rah, Zul'Gurub (Edge of Madness)
+    15084: 309,  # Renataki, Zul'Gurub (Edge of Madness)
+    15085: 309,  # Wushoolay, Zul'Gurub (Edge of Madness)
+    15517: 531,  # Ouro, Temple of Ahn'Qiraj
+    15989: 533,  # Sapphiron, Naxxramas
+}
+"""Raid bosses VMaNGOS summons from its encounter scripts, so the snapshot has no spawn row
+to say where they are: creature id to raid map. ``unplaced_bosses`` lists any boss a newer
+snapshot adds to this situation."""
+
 
 @dataclass(frozen=True)
 class LootSource:
@@ -118,10 +133,13 @@ class VmangosDatabase:
             self._spells = {row["entry"]: row for row in rows}
         return self._spells
 
-    def loot_sources(self) -> dict[int, list[LootSource]]:
-        """Where each item drops, through creature, object and reference loot tables.
+    def loot_sources(self, patch: int = MAX_PATCH) -> dict[int, list[LootSource]]:
+        """Where each item drops at ``patch``, through creature, object and reference loot.
 
-        Reference tables are followed one level deep, as VMaNGOS uses them for boss loot.
+        Reference tables are followed one level deep, as VMaNGOS uses them for boss loot. Loot
+        rows that do not apply at ``patch`` are left out: in patches 1.2 and 1.3, for example,
+        some Molten Core bosses dropped pieces that 1.12 moved to Blackwing Lair. A summoned
+        boss has no spawn row; ``SUMMONED_RAID_BOSSES`` places it.
         """
         references: dict[int, list[Row]] = defaultdict(list)
         for row in self._rows(
@@ -132,6 +150,8 @@ class VmangosDatabase:
         creature_maps: dict[int, set[int]] = defaultdict(set)
         for row in self._rows("select id, map from creature"):
             creature_maps[row["id"]].add(row["map"])
+        for boss, map_id in SUMMONED_RAID_BOSSES.items():
+            creature_maps.setdefault(boss, {map_id})
         object_maps: dict[int, set[int]] = defaultdict(set)
         for row in self._rows("select id, map from gameobject"):
             object_maps[row["id"]].add(row["map"])
@@ -148,6 +168,8 @@ class VmangosDatabase:
         sources: dict[int, list[LootSource]] = defaultdict(list)
 
         def add(item: int, kind: str, entry: int, maps: set[int], low: int, high: int) -> None:
+            if not low <= patch <= high:
+                return
             for map_id in maps:
                 sources[item].append(LootSource(kind, entry, map_id, low, high))
 
@@ -176,6 +198,23 @@ class VmangosDatabase:
                     else:
                         add(row["item"], kind, owner, maps, row["patch_min"], row["patch_max"])
         return dict(sources)
+
+    def unplaced_bosses(self) -> list[Row]:
+        """Bosses with loot but no spawn row that ``SUMMONED_RAID_BOSSES`` does not place.
+
+        Their drops fall back to the first-patch phase. In snapshot db-4641790 they are
+        battleground, world-event and quest bosses; the dataset build lists them so a
+        maintainer can check that a newer snapshot has not added a raid boss.
+        """
+        rows = self._rows(
+            """
+            select t.entry, t.name from creature_template t
+            where t.loot_id > 0 and t.`rank` = 3
+              and not exists (select 1 from creature c where c.id = t.entry)
+            group by t.entry order by t.entry
+            """
+        )
+        return [row for row in rows if row["entry"] not in SUMMONED_RAID_BOSSES]
 
     def snapshot_label(self) -> str:
         """The snapshot's name, from its folder or file (for provenance)."""

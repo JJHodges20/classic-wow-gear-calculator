@@ -28,12 +28,12 @@ Opener = Callable[..., Workspace]
 class TestBundledDataset:
     def test_it_is_loaded_once_per_version(self, open_workspace: Opener) -> None:
         first = open_workspace()
-        assert first.bundled.version == "fixture-1" and first.bundled.loaded == 15
+        assert first.bundled.version == "fixture-2" and first.bundled.loaded == 15
         assert first.items.counts() == {"bundled": 15}
         second = open_workspace()
         assert (
             second.bundled.loaded == 15
-            and second.database.get_meta("bundled_version") == "fixture-1"
+            and second.database.get_meta("bundled_version") == "fixture-2"
         )
 
     def test_health_reports_it(self, open_workspace: Opener) -> None:

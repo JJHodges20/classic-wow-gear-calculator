@@ -1,0 +1,138 @@
+{
+  "title": "Robes of Transcendence over Robes of Prophecy",
+  "question": "A Holy priest chooses between the tier 2 and tier 1 robes.",
+  "profile": {
+    "id": "priest_healer_holy",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "priest",
+    "role": "healer",
+    "profile_id": "priest_healer_holy",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "priest"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16923",
+        "vmangos": "16923"
+      },
+      "id": "classic_era:16923",
+      "item_level": 76,
+      "name": "Robes of Transcendence",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "211",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 116.0,
+        "fire_resistance": 10.0,
+        "healing_power": 57.0,
+        "intellect": 27.0,
+        "nature_resistance": 10.0,
+        "spirit": 16.0,
+        "stamina": 17.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "priest"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16815",
+        "vmangos": "16815"
+      },
+      "id": "classic_era:16815",
+      "item_level": 66,
+      "name": "Robes of Prophecy",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "202",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 102.0,
+        "fire_resistance": 10.0,
+        "healing_power": 22.0,
+        "intellect": 27.0,
+        "spirit": 17.0,
+        "stamina": 20.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16923",
+    "first": "classic_era:16923",
+    "second": "classic_era:16815",
+    "score_delta": 33.91,
+    "scores": {
+      "classic_era:16923": 114.952405405,
+      "classic_era:16815": 81.042405405
+    },
+    "component_deltas": {
+      "stat:healing_power": 35.0,
+      "stat:spirit": -1.09
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Robes of Transcendence: 57 healing; 27 Intellect x 1.416 = 38.232, plus 27 at 59.2 per 1% spell crit x 5 = 2.2804; 16 Spirit x 1.09 = 17.44. Total 114.9524.",
+    "Robes of Prophecy: 22 healing; the same Intellect (40.5124); 17 Spirit x 1.09 = 18.53. Total 81.0424."
+  ],
+  "review": "The same Intellect, one Spirit less and 35 more healing: tier 2 over tier 1.",
+  "reviewed": "2026-10-07"
+}

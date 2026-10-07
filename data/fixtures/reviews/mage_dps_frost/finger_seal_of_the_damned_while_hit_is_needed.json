@@ -1,0 +1,129 @@
+{
+  "title": "Seal of the Damned over Ring of Spell Power below the spell hit cap",
+  "question": "A Frost mage with 6% spell hit from other gear chooses a ring.",
+  "profile": {
+    "id": "mage_dps_frost",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 6,
+    "level": 60,
+    "class_name": "mage",
+    "role": "caster_dps",
+    "profile_id": "mage_dps_frost",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "23025",
+        "vmangos": "23025"
+      },
+      "id": "classic_era:23025",
+      "item_level": 85,
+      "name": "Seal of the Damned",
+      "on_use_effects": [],
+      "phase": 6,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "spell_crit": 1.0,
+        "spell_hit": 1.0,
+        "spell_power": 21.0,
+        "stamina": 17.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19147",
+        "vmangos": "19147"
+      },
+      "id": "classic_era:19147",
+      "item_level": 66,
+      "name": "Ring of Spell Power",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "spell_power": 33.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:23025",
+    "first": "classic_era:23025",
+    "second": "classic_era:19147",
+    "score_delta": 8.1,
+    "scores": {
+      "classic_era:23025": 41.1,
+      "classic_era:19147": 33.0
+    },
+    "component_deltas": {
+      "stat:spell_hit": 12.16,
+      "stat:spell_power": -12.0,
+      "stat:spell_crit": 7.94
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Seal of the Damned: 21 spell power; 1% spell crit x 7.94; 1% spell hit from 6% to 7% x 12.16 (the cap is 10% from gear: 16% less 6% from Elemental Precision). Total 41.10.",
+    "Ring of Spell Power: 33 spell power. Total 33."
+  ],
+  "review": "Below the spell hit cap, 1% hit and 1% crit together (20.10) beat 12 more spell power.",
+  "reviewed": "2026-10-07"
+}

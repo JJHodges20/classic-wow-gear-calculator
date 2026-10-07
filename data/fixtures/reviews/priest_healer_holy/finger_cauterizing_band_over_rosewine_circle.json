@@ -1,0 +1,128 @@
+{
+  "title": "Cauterizing Band over Rosewine Circle",
+  "question": "A Holy priest chooses a ring for three-minute raid fights.",
+  "profile": {
+    "id": "priest_healer_holy",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "priest",
+    "role": "healer",
+    "profile_id": "priest_healer_holy",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19140",
+        "vmangos": "19140"
+      },
+      "id": "classic_era:19140",
+      "item_level": 71,
+      "name": "Cauterizing Band",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "healing_power": 46.0,
+        "intellect": 12.0,
+        "stamina": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "13178",
+        "vmangos": "13178"
+      },
+      "id": "classic_era:13178",
+      "item_level": 60,
+      "name": "Rosewine Circle",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 55,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "healing_power": 29.0,
+        "mp5": 5.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19140",
+    "first": "classic_era:19140",
+    "second": "classic_era:13178",
+    "score_delta": 18.055513514,
+    "scores": {
+      "classic_era:19140": 64.005513514,
+      "classic_era:13178": 45.95
+    },
+    "component_deltas": {
+      "stat:healing_power": 17.0,
+      "stat:intellect": 16.992,
+      "stat:mp5": -16.95,
+      "derived:intellect->spell_crit": 1.013513514
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Cauterizing Band: 46 healing; 12 Intellect x 1.416 = 16.992, plus 12 at 59.2 per 1% x 5 = 1.0135. Total 64.0055.",
+    "Rosewine Circle: 29 healing; 5 mana per 5 x 3.39 = 16.95. Total 45.95."
+  ],
+  "review": "17 more healing and 12 Intellect against 5 mana per 5: the Molten Core ring wins for three-minute fights.",
+  "reviewed": "2026-10-07"
+}

@@ -71,8 +71,11 @@ in the wrong layer: move it, do not widen the rule.
 - Run the full suite before closing a milestone.
 - Warnings are errors (`filterwarnings = error`); add a targeted ignore, with a reason, only
   for warnings raised inside third-party code.
-- No test touches the real `data/` directory or the network. Tests that need the network are
-  marked `network` and deselected by default.
+- No test writes under `data/` or reads the user's data (`data/user`, `data/cache`,
+  `data/raw`); tests read only the committed fixtures and, read-only, the bundled dataset. No
+  test touches the network: tests that need it are marked `network` and deselected by default.
+- Each shipped profile keeps at least five hand-reviewed comparisons in
+  `data/fixtures/reviews/<profile id>/`, run by `tests/regression/test_profile_reviews.py`.
 
 ## Development
 
@@ -113,3 +116,6 @@ downloads live in `data/raw/`, which git ignores.
   UTF-8 first (`wowgear` does).
 - A browser check of the UI must not run beside a parallel test run; restart the Streamlit
   server after any code change before taking screenshots.
+- Git Bash rewrites an argument that looks like a POSIX path for native programs: a lone `/`
+  becomes `C:/Program Files/Git/`. Pass a URL path as `""` or prefix the command with
+  `MSYS_NO_PATHCONV=1`.

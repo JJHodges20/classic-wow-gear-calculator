@@ -1,0 +1,129 @@
+{
+  "title": "Briarwood Reed over Eye of the Beast",
+  "question": "A Holy priest chooses a trinket.",
+  "profile": {
+    "id": "priest_healer_holy",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "priest",
+    "role": "healer",
+    "profile_id": "priest_healer_holy",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12930",
+        "vmangos": "12930"
+      },
+      "id": "classic_era:12930",
+      "item_level": 60,
+      "name": "Briarwood Reed",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 55,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "spell_power": 29.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "priest",
+        "shaman",
+        "mage",
+        "warlock",
+        "druid"
+      ],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "13968",
+        "vmangos": "13968"
+      },
+      "id": "classic_era:13968",
+      "item_level": 63,
+      "name": "Eye of the Beast",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 0,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "spell_crit": 2.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:12930",
+    "first": "classic_era:12930",
+    "second": "classic_era:13968",
+    "score_delta": 19.0,
+    "scores": {
+      "classic_era:12930": 29.0,
+      "classic_era:13968": 10.0
+    },
+    "component_deltas": {
+      "stat:spell_power": 29.0,
+      "stat:spell_crit": -10.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Briarwood Reed: 29 damage and healing, which counts fully as healing. Total 29.",
+    "Eye of the Beast: 2% spell crit x 5 = 10. Total 10."
+  ],
+  "review": "Spell power that heals is worth more to this profile than 2% spell crit.",
+  "reviewed": "2026-10-07"
+}

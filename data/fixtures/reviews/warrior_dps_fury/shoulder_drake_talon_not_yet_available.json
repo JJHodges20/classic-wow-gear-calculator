@@ -1,0 +1,148 @@
+{
+  "title": "Truestrike Shoulders while Drake Talon Pauldrons are not available",
+  "question": "The same choice in phase 1, before Blackwing Lair opens.",
+  "profile": {
+    "id": "warrior_dps_fury",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "warrior_dps_fury",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 9.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12927",
+        "vmangos": "12927"
+      },
+      "id": "classic_era:12927",
+      "item_level": 61,
+      "name": "Truestrike Shoulders",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "armor": 129.0,
+        "attack_power": 24.0,
+        "hit": 2.0,
+        "ranged_attack_power": 24.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19394",
+        "vmangos": "19394"
+      },
+      "id": "classic_era:19394",
+      "item_level": 75,
+      "name": "Drake Talon Pauldrons",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "agility": 20.0,
+        "armor": 634.0,
+        "dodge": 1.0,
+        "stamina": 17.0,
+        "strength": 20.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:12927",
+    "first": "classic_era:12927",
+    "second": "classic_era:19394",
+    "score_delta": -16.0,
+    "scores": {
+      "classic_era:12927": 44.0,
+      "classic_era:19394": 60.0
+    },
+    "component_deltas": {
+      "derived:strength->attack_power": -40.0,
+      "stat:attack_power": 24.0,
+      "derived:agility->crit": -20.0,
+      "stat:hit": 20.0
+    },
+    "capped_stats": {
+      "classic_era:12927": {
+        "hit": {
+          "cap": 9.0,
+          "before": 9.0,
+          "after": 11.0,
+          "counted_amount": 1.0,
+          "wasted_amount": 1.0
+        }
+      }
+    },
+    "not_usable": {
+      "classic_era:19394": [
+        "Available from phase 3; phase 1 is selected"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Scores as at the hit cap: Truestrike Shoulders 44, Drake Talon Pauldrons 60.",
+    "Drake Talon Pauldrons drop in Blackwing Lair: phase 3 in the bundled dataset."
+  ],
+  "review": "In phase 1 the better item cannot be had: the calculator recommends the usable one and still shows what the other would be worth.",
+  "reviewed": "2026-10-07"
+}

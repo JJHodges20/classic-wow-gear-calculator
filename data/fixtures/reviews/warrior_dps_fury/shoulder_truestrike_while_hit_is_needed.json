@@ -1,0 +1,134 @@
+{
+  "title": "Truestrike Shoulders over Drake Talon Pauldrons below the hit cap",
+  "question": "A Fury warrior with 5% hit from other gear chooses shoulders.",
+  "profile": {
+    "id": "warrior_dps_fury",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "warrior_dps_fury",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 5.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12927",
+        "vmangos": "12927"
+      },
+      "id": "classic_era:12927",
+      "item_level": 61,
+      "name": "Truestrike Shoulders",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "armor": 129.0,
+        "attack_power": 24.0,
+        "hit": 2.0,
+        "ranged_attack_power": 24.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19394",
+        "vmangos": "19394"
+      },
+      "id": "classic_era:19394",
+      "item_level": 75,
+      "name": "Drake Talon Pauldrons",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "agility": 20.0,
+        "armor": 634.0,
+        "dodge": 1.0,
+        "stamina": 17.0,
+        "strength": 20.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:12927",
+    "first": "classic_era:12927",
+    "second": "classic_era:19394",
+    "score_delta": 4.0,
+    "scores": {
+      "classic_era:12927": 64.0,
+      "classic_era:19394": 60.0
+    },
+    "component_deltas": {
+      "stat:hit": 40.0,
+      "derived:strength->attack_power": -40.0,
+      "stat:attack_power": 24.0,
+      "derived:agility->crit": -20.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Truestrike Shoulders: 24 attack power = 24; 2% hit from 5% to 7% x 20 = 40. Total 64.",
+    "Drake Talon Pauldrons: 20 Strength x 2 = 40; 20 Agility at 20 per 1% = 1% crit x 20 = 20; dodge, Stamina and armor are not valued. Total 60."
+  ],
+  "review": "Below the special-attack cap, 2% hit is worth 40 attack power under this profile, as much as the pauldrons' Strength, so the shoulders with hit win narrowly. The next review shows the answer reverse at the cap.",
+  "reviewed": "2026-10-07"
+}

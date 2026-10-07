@@ -3,6 +3,74 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 6 - Item comparison service and explainable breakdown (2026-10-07)
+
+**Built**
+
+- `comparison/compare.py` and `models/comparison.py`: two or more items scored from one
+  baseline (current gear minus the equipped item), ranked with usable items first, and an
+  outcome - a winner, a tie (within 0.05 points or 0.5%), the only usable item, none usable,
+  or one item scored. The explanation is the per-component difference between the two
+  deciding items; its lines add up to the score difference, keep a stat a cap wasted ("0
+  from hit (Gauntlets of Might: none of its 1 counts)"), and list separately the stats the
+  profile does not value and the effects version 1 does not score. Items that do not fill
+  the same slot are flagged (a two-hander against a one-hander especially). With an equipped
+  item, each candidate's change against it is reported.
+- `services/calculator.py`: what the app and command line call - the classes, roles and
+  profiles a ruleset offers, a checked context with the profile's defaults, the same
+  validation for every item whatever its source, scoring and comparing.
+- `reporting/text.py` and `wowgear compare <items> -p <profile> [--phase] [--current
+  hit=5] [--replacing] [--json]`.
+- Twenty hand-reviewed comparisons of real items, five per shipped profile, in
+  `data/fixtures/reviews/` (`tests/regression/test_profile_reviews.py`). Several are pairs
+  whose answer reverses with the player's current hit (Truestrike Shoulders and Drake Talon
+  Pauldrons for Fury; Seal of the Damned and Ring of Spell Power for Frost) or with the
+  phase, class or armor type (an unavailable, a restricted or an unwearable item recommended
+  against). Every expected number was worked out by hand first; the engine agreed with all
+  twenty on the first run.
+
+**Decisions** ([0005](decisions/0005-comparison-and-explanation.md))
+
+- One baseline for all candidates; usable items rank first; ties below the precision of the
+  weights; the explanation is a difference of components; slot mismatches are flagged, not
+  refused; reviews use real items and a check that they still match the bundled dataset.
+
+**Assumptions**
+
+- The tie margin (0.05 points or 0.5% of the larger score) is a judgment about how precise
+  community stat weights are, not a sourced value.
+
+**Found on the way**
+
+- The phase heuristic counted loot rows from patches 1.2 and 1.3 (when some Molten Core
+  bosses dropped tier 2 belts and bracers) and missed raid bosses VMaNGOS summons by script,
+  which have no spawn row (Nefarian, Ragnaros, the Zul'Gurub summons, Ouro, Sapphiron). 40
+  Blackwing Lair items were marked phase 1, two Ragnaros items phase 3, three Ouro items
+  phase 6 and 26 world drops phase 2. Loot is now read at patch 1.12 only, the summoned
+  bosses are placed by a documented table, and the build lists any boss it cannot place.
+- 118 of Blizzard's stat-budget test items ("90 Epic Frost Belt", "63 Green ...") had passed
+  the placeholder filter; the dataset now holds 7,741 items.
+- Proc and use-effect texts showed wrong numbers: a proc takes its number from the spell it
+  triggers (`$18817s1`), which the renderer ignored ("stealing 1 life" for 35). It now
+  follows the reference and writes ranges, periods and chain targets as the game does; 143
+  texts were corrected and no stat changed.
+- The dataset version now ends with a digest of its items, so a rebuilt dataset is reloaded
+  by existing workspaces even on the same day and snapshot.
+- The log handler kept the stderr of the moment it was created; a second command in one
+  process wrote to a closed stream. It now writes to the current stderr.
+- Streamlit sends usage statistics to Streamlit's servers by default; `wowgear ui` turns
+  them off.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | Comparison, service, command line, reviews, VMaNGOS reader and build tests pass; the full suite passes on the committed snapshot (495 tests, from 385) |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict) clean |
+| Secrets | None added; hygiene tests pass |
+| Real data | `wowgear compare 12640 "Mask of the Unforgiven" -p warrior_dps_fury --current hit=5`: Lionheart Helm by 56.0 AP, with its explanation; unknown items, profiles and stats are refused with a reason |
+| UI smoke test | No UI change; the shell renders in a real browser in light and dark with no exceptions or page errors, and no longer contacts Streamlit's servers |
+
 ## Milestone 5 - Item repository, first lookup provider, cache (2026-10-07)
 
 **Built**

@@ -36,3 +36,19 @@ def test_check_fails_clearly_on_a_broken_configuration(
     result = runner.invoke(app, ["check"])
     assert result.exit_code == 2
     assert "default_ruleset" in result.output
+
+
+def test_ui_starts_streamlit_without_usage_statistics(
+    tmp_project: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls: list[list[str]] = []
+    monkeypatch.setenv("WOWGEAR_HOME", str(tmp_project))
+    monkeypatch.setattr(
+        "wow_gear.cli.subprocess.call", lambda command, cwd: calls.append(command) or 0
+    )
+    result = runner.invoke(app, ["ui", "--no-browser", "--port", "8650"])
+    assert result.exit_code == 0, result.output
+    command = calls[0]
+    assert command[command.index("--server.port") + 1] == "8650"
+    assert command[command.index("--server.headless") + 1] == "true"
+    assert command[command.index("--browser.gatherUsageStats") + 1] == "false"

@@ -1,0 +1,153 @@
+{
+  "title": "Gauntlets of Wrath over Gauntlets of Might at the hit cap",
+  "question": "A Protection warrior with 9% hit chooses gloves.",
+  "profile": {
+    "id": "warrior_tank_deep_prot",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "tank",
+    "profile_id": "warrior_tank_deep_prot",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 9.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "warrior"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16964",
+        "vmangos": "16964"
+      },
+      "id": "classic_era:16964",
+      "item_level": 76,
+      "name": "Gauntlets of Wrath",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "218",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 535.0,
+        "defense": 7.0,
+        "parry": 1.0,
+        "shadow_resistance": 10.0,
+        "stamina": 20.0,
+        "strength": 15.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "warrior"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16863",
+        "vmangos": "16863"
+      },
+      "id": "classic_era:16863",
+      "item_level": 66,
+      "name": "Gauntlets of Might",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "209",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 468.0,
+        "defense": 5.0,
+        "fire_resistance": 7.0,
+        "hit": 1.0,
+        "stamina": 17.0,
+        "strength": 22.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16964",
+    "first": "classic_era:16964",
+    "second": "classic_era:16863",
+    "score_delta": 24.765,
+    "scores": {
+      "classic_era:16964": 84.575,
+      "classic_era:16863": 59.81
+    },
+    "component_deltas": {
+      "stat:parry": 12.5,
+      "stat:defense": 8.0,
+      "stat:stamina": 4.5,
+      "stat:armor": 1.34,
+      "stat:strength": -1.575,
+      "stat:hit": 0.0
+    },
+    "capped_stats": {
+      "classic_era:16863": {
+        "hit": {
+          "cap": 9.0,
+          "before": 9.0,
+          "after": 10.0,
+          "counted_amount": 0.0,
+          "wasted_amount": 1.0
+        }
+      }
+    },
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Gauntlets of Wrath: 535 armor x 0.02 = 10.7; 7 Defense x 4 = 28; 1% parry x 12.5 = 12.5; 20 Stamina x 1.5 = 30; 15 Strength x 0.225 = 3.375. Total 84.575.",
+    "Gauntlets of Might: 468 x 0.02 = 9.36; 5 Defense x 4 = 20; 1% hit past the 9% hard cap = 0; 17 Stamina x 1.5 = 25.5; 22 Strength x 0.225 = 4.95. Total 59.81."
+  ],
+  "review": "At the hit cap the tier 1 gloves' hit is worth nothing; the tier 2 gloves win on parry, Defense and Stamina.",
+  "reviewed": "2026-10-07"
+}

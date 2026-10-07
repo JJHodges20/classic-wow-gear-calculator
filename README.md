@@ -13,9 +13,11 @@ build plan is tracked in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Status
 
-Milestone 1 (repository foundation) is complete: the package layers, configuration,
-logging, command line, CI and test foundation. The calculator itself arrives over
-milestones 2 to 10.
+Milestones 1 to 6 are complete: the Classic Era ruleset and four sourced build profiles
+(Fury and Deep Protection warrior, Frost mage, Holy priest, all draft), the explainable
+scoring engine, manual item entry, the bundled item dataset with optional Blizzard lookups,
+and item comparison with a component-by-component explanation, available from the command
+line. The Streamlit app arrives in milestones 7 and 8, saved characters and gear sets in 9.
 
 ## Quick start
 
@@ -37,6 +39,7 @@ The bootstrap script creates `.venv`, installs the app with its development tool
 | `wowgear check` | Validate the configuration, load the data, report each provider's status |
 | `wowgear items search "<name or id>" [--online]` | Find items |
 | `wowgear items import <file.csv or .json>` | Import your own items |
+| `wowgear compare <item> <item>... -p <profile> [--phase 3] [--current hit=5] [--replacing <item>] [--json]` | Compare items for a build profile and explain the difference |
 | `wowgear --version` | Print the version |
 
 Development:

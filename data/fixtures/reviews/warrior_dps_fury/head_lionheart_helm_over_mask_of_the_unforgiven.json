@@ -1,0 +1,132 @@
+{
+  "title": "Lionheart Helm over Mask of the Unforgiven",
+  "question": "A Fury warrior with 5% hit from other gear chooses a helm.",
+  "profile": {
+    "id": "warrior_dps_fury",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "warrior",
+    "role": "melee_dps",
+    "profile_id": "warrior_dps_fury",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 5.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12640",
+        "vmangos": "12640"
+      },
+      "id": "classic_era:12640",
+      "item_level": 61,
+      "name": "Lionheart Helm",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 565.0,
+        "crit": 2.0,
+        "hit": 2.0,
+        "strength": 18.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "13404",
+        "vmangos": "13404"
+      },
+      "id": "classic_era:13404",
+      "item_level": 57,
+      "name": "Mask of the Unforgiven",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 52,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 132.0,
+        "crit": 1.0,
+        "hit": 2.0,
+        "stamina": 12.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:12640",
+    "first": "classic_era:12640",
+    "second": "classic_era:13404",
+    "score_delta": 56.0,
+    "scores": {
+      "classic_era:12640": 116.0,
+      "classic_era:13404": 60.0
+    },
+    "component_deltas": {
+      "derived:strength->attack_power": 36.0,
+      "stat:crit": 20.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Lionheart Helm: 18 Strength x 2 attack power per Strength x 1 = 36; 2% crit x 20 = 40; 2% hit, from 5% to 7% (below the 9% special-attack cap), x 20 = 40. Total 116.",
+    "Mask of the Unforgiven: 1% crit x 20 = 20; 2% hit (5% to 7%) x 20 = 40; Stamina and armor are not valued. Total 60.",
+    "Difference 56: +36 from Strength, +20 from the second 1% of crit; the hit is equal."
+  ],
+  "review": "Lionheart Helm has at least as much of every stat this profile values - twice the crit, the same hit and 18 Strength - so it must win under any positive weights.",
+  "reviewed": "2026-10-07"
+}

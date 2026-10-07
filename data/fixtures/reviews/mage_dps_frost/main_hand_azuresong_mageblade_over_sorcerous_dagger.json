@@ -1,0 +1,143 @@
+{
+  "title": "Azuresong Mageblade over Sorcerous Dagger",
+  "question": "A Frost mage chooses a main-hand weapon in Molten Core.",
+  "profile": {
+    "id": "mage_dps_frost",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "mage",
+    "role": "caster_dps",
+    "profile_id": "mage_dps_frost",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "17103",
+        "vmangos": "17103"
+      },
+      "id": "classic_era:17103",
+      "item_level": 71,
+      "name": "Azuresong Mageblade",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "main_hand",
+      "stats": {
+        "intellect": 12.0,
+        "spell_crit": 1.0,
+        "spell_power": 40.0,
+        "stamina": 7.0
+      },
+      "unique": false,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 140.0,
+        "min_damage": 64.0,
+        "speed": 2.4
+      },
+      "weapon_type": "sword"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18878",
+        "vmangos": "18878"
+      },
+      "id": "classic_era:18878",
+      "item_level": 65,
+      "name": "Sorcerous Dagger",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "main_hand",
+      "stats": {
+        "intellect": 17.0,
+        "spell_power": 20.0,
+        "stamina": 8.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 79.0,
+        "min_damage": 39.0,
+        "speed": 1.4
+      },
+      "weapon_type": "dagger"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:17103",
+    "first": "classic_era:17103",
+    "second": "classic_era:18878",
+    "score_delta": 27.272773109,
+    "scores": {
+      "classic_era:17103": 49.541344538,
+      "classic_era:18878": 22.268571429
+    },
+    "component_deltas": {
+      "stat:spell_power": 20.0,
+      "stat:spell_crit": 7.94,
+      "derived:intellect->spell_crit": -0.667226891
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Azuresong Mageblade: 49.5413, as in the review against the mace.",
+    "Sorcerous Dagger: 20 spell power + 17 Intellect at 59.5 per 1% x 7.94 = 2.2686. Total 22.2686."
+  ],
+  "review": "Twice the spell power and 1% spell crit, against 5 more Intellect.",
+  "reviewed": "2026-10-07"
+}

@@ -76,7 +76,24 @@ sources every block cites.
 | `validation_status`, `confidence` | How far to trust it |
 | `rank`, `recommendation_label` | Set when items are compared |
 
+## ComparisonResult (`models/comparison.py`)
+
+| Field | Meaning |
+| --- | --- |
+| `results` | Every item's `ScoreResult`, ranked (usable first, then by score), with `rank` and `recommendation_label` |
+| `outcome` | `winner`, `tie`, `only_usable`, `none_usable` or `single` |
+| `winner_id` | The recommended item (`winner` and `only_usable`) |
+| `first_id`, `second_id`, `score_delta` | The two items the explanation compares, and the first's score minus the second's |
+| `headline`, `why` | The answer in one sentence, and the largest component differences in one phrase |
+| `lines` | `ExplanationLine`s: per component, each item's amount and contribution, the difference, a note when a cap or an exclusive group cut an amount, and the line as a phrase |
+| `not_valued`, `not_scored` | Stats the profile gives no value; effects and set memberships version 1 does not score |
+| `replaced`, `upgrades` | The equipped item scored from the same gear, and each candidate's change against it |
+| `notes`, `confidence` | Slot footprints, unusable items, missing current gear; the lower confidence of the deciding items |
+| `profile_*`, `ruleset_*`, `score_unit`, `unit_abbreviation`, `fingerprint` | Traceability, and a hash that is the same for the same inputs in any order |
+
 ## GearSet (`models/gear.py`)
 
 Item ids by equipment slot (`EquipmentSlot`: head ... finger_1, finger_2, trinket_1,
-trinket_2, main_hand, off_hand, ranged). Used from milestone 9.
+trinket_2, main_hand, off_hand, ranged). `EQUIPMENT_SLOTS` maps each item slot type to the
+equipment slots it can fill (a one-hander: main or off hand; a ring: either finger); a
+two-handed weapon also leaves the off hand empty. Sets are used from milestone 9.

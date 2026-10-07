@@ -41,7 +41,9 @@ OUTPUT = ROOT / "data" / "bundled" / "classic_era_items.json.gz"
 METADATA = ROOT / "data" / "bundled" / "classic_era_items.meta.json"
 MIN_QUALITY = 2  # uncommon
 PLACEHOLDER = re.compile(
-    r"(^monster - |^zz|\[ph\]|\bdeprecated\b|\btest\b|^old |\(old\)|\bunused\b|^qa |\bdnd\b|^npc )",
+    r"(^monster - |^zz|\[ph\]|\bdeprecated\b|\btest\b|^old |\(old\)|\bunused\b|^qa |\bdnd\b|^npc "
+    # Blizzard's stat-budget test items, such as "90 Epic Frost Belt" and "63 Green Agility Ring".
+    r"|^\d+ (?:green|blue|rare|epic) )",
     re.IGNORECASE,
 )
 
@@ -55,7 +57,7 @@ def cross_check(spells: dict[int, dict[str, object]], spell_ids: set[int]) -> di
         if not mapped:
             continue
         by_aura = sorted((stat.value, value) for stat, value, _ in mapped)
-        parsed = parse_line(render_description(spell))  # type: ignore[arg-type]
+        parsed = parse_line(render_description(spell, spells))  # type: ignore[arg-type]
         if not parsed.recognized:
             text_only_unknown += 1
             continue
@@ -81,6 +83,7 @@ def build(database: Path, snapshot: str, archive_sha256: str | None) -> dict[str
     with VmangosDatabase(database) as db:
         spells = db.spells()
         loot = db.loot_sources()
+        unplaced = [f"{row['name']} ({row['entry']})" for row in db.unplaced_bosses()]
         for row in db.items():
             for index in range(1, 6):
                 if row.get(f"spelltrigger_{index}") == 1 and row.get(f"spellid_{index}"):
@@ -108,11 +111,16 @@ def build(database: Path, snapshot: str, archive_sha256: str | None) -> dict[str
     )
     by_slot = Counter(item.slot.value for item in items)
     by_phase = Counter(str(item.phase) for item in items)
+    records = [item.model_dump(mode="json") for item in items]
+    digest = hashlib.sha256(
+        json.dumps(records, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()[:8]
     payload = {
         "dataset": "classic_era_items",
-        "version": f"{built_at:%Y.%m.%d}-{snapshot}",
+        # The digest changes whenever the items do, so a workspace reloads a rebuilt dataset.
+        "version": f"{built_at:%Y.%m.%d}-{snapshot}-{digest}",
         "ruleset": "classic_era",
-        "items": [item.model_dump(mode="json") for item in items],
+        "items": records,
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with gzip.open(OUTPUT, "wt", encoding="utf-8", compresslevel=9) as handle:
@@ -131,9 +139,10 @@ def build(database: Path, snapshot: str, archive_sha256: str | None) -> dict[str
             "without developer placeholders."
         ),
         "phase_heuristic": (
-            "Raid and world-boss drops take the phase that content opened in; other items "
-            "take the phase of the first patch they exist in."
+            "Raid and world-boss drops (patch 1.12 loot tables) take the phase that content "
+            "opened in; other items take the phase of the first patch they exist in."
         ),
+        "bosses_without_a_spawn": unplaced,
         "counts": {
             "items": len(items),
             "dropped": dict(dropped),

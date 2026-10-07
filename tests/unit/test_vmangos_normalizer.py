@@ -236,6 +236,32 @@ class TestSpellMapping:
         bleed = spell(1, "Wounds the target for $o1 damage over $d.", (3, 0, 9))
         assert render_description(bleed) == "Wounds the target for [amount] damage over [duration]."
 
+    def test_a_proc_takes_its_numbers_from_the_spell_it_triggers(self) -> None:
+        proc = spell(18815, "A 3% chance of stealing $18817s1 life.", (42, 0, 0))
+        drain = spell(18817, "Drains life.", (9, 0, 34))
+        flame = {
+            **spell(18818, "Fire damage.", (2, 0, 74)),
+            "effectDieSides1": 51,
+        }
+        nova = spell(18816, "A 1% chance of dealing $18818s1 Fire damage.", (42, 0, 0))
+        spells = {18817: drain, 18818: flame}
+        assert render_description(proc, spells) == "A 3% chance of stealing 35 life."
+        assert render_description(nova, spells) == "A 1% chance of dealing 75 to 125 Fire damage."
+        assert render_description(proc) == "A 3% chance of stealing [amount] life."
+
+    def test_periods_word_forms_and_unknown_durations(self) -> None:
+        regen = {
+            **spell(1, "Restores 10 health every $t1 sec.", (8, 0, 9)),
+            "effectAmplitude1": 5000,
+        }
+        assert render_description(regen) == "Restores 10 health every 5 sec."
+        cure = spell(2, "Cures 1 poison $leffect:effects; for $d1.", (0, 0, 0))
+        assert render_description(cure) == "Cures 1 poison effects for [duration]."
+        freeze = spell(3, "Freezes them for $18798d and lowers $ghis:her; armor.", (0, 0, 0))
+        assert render_description(freeze) == "Freezes them for [duration] and lowers his/her armor."
+        scaled = spell(4, "Lasts $/1000;S1 sec longer.", (0, 0, 499))
+        assert render_description(scaled) == "Lasts 0.5 sec longer."
+
 
 class TestPhases:
     def test_raid_drops_take_the_raid_phase(self) -> None:

@@ -12,7 +12,7 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | 3 | Core scoring engine + caps/threshold hooks + golden tests | Done (2026-10-07) |
 | 4 | Manual item-entry service and validation | Done (2026-10-07) |
 | 5 | Item repository + first lookup provider + cache | Done (2026-10-07) |
-| 6 | Item comparison service + explainable breakdown | Not started |
+| 6 | Item comparison service + explainable breakdown | Done (2026-10-07) |
 | 7 | Streamlit shell + design system + calculator page | Not started |
 | 8 | Compare, Profiles, Item Database, and Data Health pages | Not started |
 | 9 | Saved character profile + full gear-set context | Not started |
@@ -25,13 +25,13 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | Context | User can select Classic Era, phase, level, class, role, and build profile | Open |
 | Manual item | User can enter an item manually and receive validation plus a score | Open |
 | Lookup | User can search/select a known item through the provider/cache layer | Open |
-| Comparison | User can compare at least two items and see a winner, score delta, and component explanation | Open |
-| Caps | At least one cap-sensitive profile demonstrates reduced/zero marginal value correctly | Open |
+| Comparison | User can compare at least two items and see a winner, score delta, and component explanation | Service and command line (M6); app in M7 |
+| Caps | At least one cap-sensitive profile demonstrates reduced/zero marginal value correctly | Met: Fury, Deep Protection and Frost reviews reverse at the hit cap (M6) |
 | Profiles | User can inspect the profile weights/thresholds used for the result | Open |
-| Traceability | Result records ruleset/profile version and item source | Open |
-| Reliability | Provider failure does not prevent manual comparison or cached-item use | Open |
+| Traceability | Result records ruleset/profile version and item source | Met in results (M3, M6); shown in the app in M7 |
+| Reliability | Provider failure does not prevent manual comparison or cached-item use | Met in services (M5, M6); app in M7 |
 | UI | Core pages are visually consistent, responsive, and handle empty/error/loading states | Open |
-| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | Open |
+| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | 20 reviewed comparisons pass (M6); UI tests grow in M7 and M8 |
 
 ## Later versions (not in the build plan)
 

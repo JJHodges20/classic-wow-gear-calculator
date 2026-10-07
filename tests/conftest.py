@@ -1,4 +1,4 @@
-"""Shared test fixtures. No test touches the real data directory or the network."""
+"""Shared test fixtures. No test writes under data/, reads the user's data or uses the network."""
 
 from __future__ import annotations
 

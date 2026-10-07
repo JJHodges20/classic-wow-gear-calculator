@@ -23,8 +23,15 @@ snapshot gives the same dataset.
   Warcraft Logs has no item stats).
 - The data reproduces patch 1.12. The current Classic Era client (1.15) may differ for a few
   items. Every item links to Wowhead, a human reference, for checking.
-- Phases are a heuristic: raid and world-boss drops take the phase that content opened in;
-  other items take the phase of the first patch they exist in.
+- Phases are a heuristic: raid and world-boss drops take the phase that content opened in,
+  read from the patch 1.12 loot tables (earlier patches dropped some Blackwing Lair pieces
+  in Molten Core); other items take the phase of the first patch they exist in. Raid bosses
+  VMaNGOS summons by script have no spawn row, so `SUMMONED_RAID_BOSSES` in
+  `wow_gear/data_sources/vmangos.py` places them (Ragnaros, Nefarian, the Zul'Gurub
+  summons, Ouro, Sapphiron). The metadata lists the bosses still unplaced - battleground,
+  world-event and quest bosses whose drops take the first-patch phase.
+- The version ends with a digest of the items, so a rebuilt dataset is reloaded by every
+  workspace even when the snapshot and date are unchanged.
 - Procs, on-use effects and spell-specific bonuses are kept as text and reported as not
   scored; the calculator never invents a value for them.
 
