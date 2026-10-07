@@ -1,0 +1,27 @@
+# FIXTURE: not a real build. Round weights and a talent-reduced spell hit cap.
+id: fixture_mage_frost
+version: 1.0.0
+label: Fixture Frost
+class_name: mage
+role: caster_dps
+specialization: Frost
+summary: Test fixture with a spell hit cap reduced by talents.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: fixture points
+validation_status: experimental
+stat_weights:
+  - {stat: spell_power, weight: 1.0, basis: derived, note: The unit.}
+  - {stat: spell_damage, weight: 1.0, basis: derived}
+  - {stat: frost_spell_power, weight: 1.0, basis: derived}
+  - {stat: spell_hit, weight: 10.0, basis: assumption}
+  - {stat: spell_crit, weight: 8.0, basis: assumption}
+  - {stat: intellect, weight: 0.5, basis: assumption}
+derived_stats:
+  - {source: intellect, target: spell_crit}
+hard_caps:
+  - stat: spell_hit
+    cap: {ruleset_cap: spell_hit, reduced_by: 6}
+assumptions:
+  - Fixture profile for engine tests.

@@ -1,0 +1,62 @@
+id: priest_healer_holy
+version: 1.0.0
+label: Holy (raid, 3-minute fights)
+class_name: priest
+role: healer
+specialization: Holy
+summary: >-
+  A raid healing priest, valued in +healing, for fights of about three minutes. Longer
+  fights make mana per 5 worth more and Intellect less.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: healing equivalents (+heal)
+validation_status: draft
+
+stat_weights:
+  - stat: healing_power
+    weight: 1.0
+    basis: derived
+    note: The score unit.
+  - stat: spell_power
+    weight: 1.0
+    basis: derived
+    note: Damage-and-healing spell power counts fully as healing.
+  - stat: mp5
+    weight: 3.39
+    basis: sourced
+    sources: [umber_priest]
+    note: 3-minute fight; the source gives 2.65 for 1 minute and 4.41 for 10 minutes.
+  - stat: spirit
+    weight: 1.09
+    basis: sourced
+    sources: [umber_priest]
+  - stat: spell_crit
+    weight: 5.0
+    basis: sourced
+    sources: [umber_priest]
+  - stat: intellect
+    weight: 1.416
+    basis: derived
+    sources: [umber_priest]
+    note: >-
+      The source values Intellect at 1.50 including its crit; 1 Intellect gives 1/59.2% crit
+      worth 0.084, which the conversion below adds, so the direct (mana) part is 1.416.
+
+derived_stats:
+  - {source: intellect, target: spell_crit}
+
+assumptions:
+  - Fights of about three minutes; for 10-minute fights Intellect falls to about 0.64 and mana per 5 rises to 4.41.
+  - Spirit is valued for its mana regeneration, which stops for five seconds after each cast.
+
+proc_assumptions:
+  - On-use effects are not valued.
+set_bonus_rules:
+  - Set bonuses (for example Transcendence 8-piece) are not valued in version 1.
+
+sources:
+  - id: umber_priest
+    title: "Umber: priest healing stat weights spreadsheet (Priest Discord, based on Jeniwyn's data)"
+    url: https://docs.google.com/spreadsheets/d/15heFli2p4yjWeOVR8VtLPM9jIKRlBwlYcjC4BH6gOzw
+    retrieved: 2026-10-07

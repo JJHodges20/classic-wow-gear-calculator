@@ -1,0 +1,30 @@
+# FIXTURE: not a real build. Round weights and a defense breakpoint for the golden tests.
+id: fixture_warrior_tank
+version: 1.0.0
+label: Fixture Tank
+class_name: warrior
+role: tank
+specialization: Protection
+summary: Test fixture with a crit-immunity threshold.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: fixture points
+validation_status: experimental
+stat_weights:
+  - {stat: stamina, weight: 1.0, basis: assumption}
+  - {stat: armor, weight: 0.1, basis: assumption}
+  - {stat: defense, weight: 1.0, basis: assumption}
+  - {stat: dodge, weight: 10.0, basis: assumption}
+  - {stat: block_value, weight: 0.5, basis: assumption}
+derived_stats:
+  - {source: agility, target: dodge}
+  - {source: strength, target: block_value}
+thresholds:
+  - stat: defense
+    at: {ruleset_cap: crit_immunity_defense}
+    label: Crit immunity
+    bonus: 50.0
+    basis: assumption
+assumptions:
+  - Fixture profile for engine tests.

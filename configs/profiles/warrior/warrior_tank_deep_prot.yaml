@@ -1,0 +1,55 @@
+id: warrior_tank_deep_prot
+version: 1.0.0
+label: Deep Protection
+class_name: warrior
+role: tank
+specialization: Protection
+summary: >-
+  A shield-tanking Protection warrior, valued in tank points: survivability first, with hit
+  and weapon damage for threat.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: tank points (TP)
+validation_status: draft
+
+stat_weights:
+  - {stat: stamina, weight: 1.5, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: agility, weight: 1.5, basis: sourced, sources: [undertanker_tank_points], note: "Includes its armor, dodge and crit."}
+  - {stat: strength, weight: 0.225, basis: sourced, sources: [undertanker_tank_points], note: Includes its attack power and block value.}
+  - {stat: armor, weight: 0.02, basis: sourced, sources: [undertanker_tank_points], note: "\"50 Armor = 1 TP\"."}
+  - {stat: defense, weight: 4.0, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: dodge, weight: 10.0, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: parry, weight: 12.5, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: block, weight: 2.0, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: block_value, weight: 0.33, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: hit, weight: 18.0, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: crit, weight: 9.0, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: attack_power, weight: 0.1, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: melee_weapon_dps, weight: 3.5, basis: sourced, sources: [undertanker_tank_points]}
+  - {stat: sword_skill, weight: 2.0, basis: sourced, sources: [undertanker_tank_points], note: Counts only with a sword.}
+  - {stat: axe_skill, weight: 2.0, basis: sourced, sources: [undertanker_tank_points], note: Counts only with an axe.}
+  - {stat: mace_skill, weight: 2.0, basis: sourced, sources: [undertanker_tank_points], note: Counts only with a mace.}
+  - {stat: dagger_skill, weight: 2.0, basis: sourced, sources: [undertanker_tank_points], note: Counts only with a dagger.}
+  - {stat: fist_skill, weight: 2.0, basis: sourced, sources: [undertanker_tank_points], note: Counts only with a fist weapon.}
+
+hard_caps:
+  - stat: hit
+    cap: {ruleset_cap: melee_hit}
+    note: Hit improves threat by removing special-attack misses, up to the melee cap.
+
+assumptions:
+  - The source's values for Stamina, Agility and Strength already include what they convert into, so this profile uses no conversions.
+  - Crit immunity (440 defense) is not given a bonus; the source aims for 400 or more and Wowhead says 440 is rarely needed.
+  - The weights are a judgment-based scale from one tank's spreadsheet, not a simulation.
+
+proc_assumptions:
+  - Procs and on-use effects are not valued.
+set_bonus_rules:
+  - Set bonuses are not valued in version 1.
+
+sources:
+  - id: undertanker_tank_points
+    title: "Twinstar forum: Tank Points by Undertanker (2016)"
+    url: https://forum.twinstar.cz/threads/tank-points-by-undertanker.115007/
+    retrieved: 2026-10-07

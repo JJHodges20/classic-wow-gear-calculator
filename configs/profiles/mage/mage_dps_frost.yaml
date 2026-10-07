@@ -1,0 +1,67 @@
+id: mage_dps_frost
+version: 1.0.0
+label: Frost (raid)
+class_name: mage
+role: caster_dps
+specialization: Frost
+summary: >-
+  A Frostbolt mage in raids, valued in spell damage, with 6% spell hit from Elemental
+  Precision.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: spell damage equivalents (SP)
+validation_status: draft
+
+stat_weights:
+  - stat: spell_power
+    weight: 1.0
+    basis: derived
+    note: The score unit.
+  - stat: spell_damage
+    weight: 1.0
+    basis: derived
+    note: Damage-only spell power counts fully for a damage dealer.
+  - stat: frost_spell_power
+    weight: 1.0
+    basis: derived
+    note: Frost damage counts fully; Frostbolt is the main spell.
+  - stat: spell_hit
+    weight: 12.16
+    basis: sourced
+    sources: [zephriel_frost]
+    note: 1% spell hit = 12.16 SP at 545 spell power (Sheepstick 2015 gives 12.97).
+  - stat: spell_crit
+    weight: 7.94
+    basis: sourced
+    sources: [zephriel_frost]
+    note: 1% spell crit = 7.94 SP at 545 spell power. Intellect reaches it at 59.5 per 1%.
+
+derived_stats:
+  - {source: intellect, target: spell_crit}
+
+hard_caps:
+  - stat: spell_hit
+    cap: {ruleset_cap: spell_hit, reduced_by: 6}
+    note: 6% comes from Elemental Precision, so 10% from gear reaches the 99% maximum against a level 63 boss.
+    sources: [elemental_precision]
+
+assumptions:
+  - Intellect is valued only for its crit, as in the source; mana is assumed sufficient.
+  - Fire and Arcane spell damage are not valued; Spirit and mana per 5 are not valued.
+  - Weights were computed at 545 spell power; they shift as spell power grows.
+
+proc_assumptions:
+  - On-use trinkets (Talisman of Ephemeral Power, Mind Quickening Gem) are not valued.
+set_bonus_rules:
+  - Set bonuses are not valued in version 1.
+
+sources:
+  - id: zephriel_frost
+    title: "Zephriel: Frost mage stat weights spreadsheet (2019-11-02)"
+    url: https://docs.google.com/spreadsheets/d/1WgQzyXeemIGIlY6GXIEZtYDa8vEFr5FxsPuaeFf9ZxA
+    retrieved: 2026-10-07
+  - id: elemental_precision
+    title: "warcraft.wiki.gg: Elemental Precision (mage talent)"
+    url: https://warcraft.wiki.gg/wiki/Elemental_Precision_(mage_talent)
+    retrieved: 2026-10-07

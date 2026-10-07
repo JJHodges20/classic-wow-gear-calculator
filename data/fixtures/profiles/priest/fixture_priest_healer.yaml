@@ -1,0 +1,24 @@
+# FIXTURE: not a real build. Round weights and an exclusive group for the engine tests.
+id: fixture_priest_healer
+version: 1.0.0
+label: Fixture Healer
+class_name: priest
+role: healer
+specialization: Holy
+summary: Test fixture with an exclusive group.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: fixture points
+validation_status: experimental
+stat_weights:
+  - {stat: healing_power, weight: 1.0, basis: derived, note: The unit.}
+  - {stat: spell_power, weight: 1.0, basis: derived}
+  - {stat: mp5, weight: 2.0, basis: assumption}
+  - {stat: spirit, weight: 0.5, basis: assumption}
+  - {stat: hp5, weight: 0.4, basis: assumption}
+exclusive_groups:
+  - stats: [mp5, hp5]
+    note: Fixture rule - only the larger of mana and health regeneration counts.
+assumptions:
+  - Fixture profile for engine tests.

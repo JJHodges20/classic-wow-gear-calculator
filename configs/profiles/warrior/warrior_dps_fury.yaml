@@ -1,0 +1,88 @@
+id: warrior_dps_fury
+version: 1.0.0
+label: Fury (dual wield)
+class_name: warrior
+role: melee_dps
+specialization: Fury
+summary: >-
+  A dual-wielding Fury warrior in raids, valued in attack power. Weights are the early-raid
+  values the sources give; with world buffs and late-raid gear crit is worth more.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: attack power equivalents (AP)
+validation_status: draft
+
+stat_weights:
+  - stat: attack_power
+    weight: 1.0
+    basis: derived
+    note: The score unit. Strength reaches it through the ruleset's 2 attack power per Strength.
+  - stat: crit
+    weight: 20.0
+    basis: sourced
+    sources: [su_fury_ep, twinstar_fury_weights]
+    note: >-
+      1% crit = 20 AP (Sixty Upgrades Fury preset; Twinstar 2016 gives 20 pre-raid and "30+"
+      with world buffs and epics). Agility reaches crit through 20 Agility per 1%.
+  - stat: hit
+    weight: 20.0
+    basis: sourced
+    sources: [su_fury_ep, twinstar_fury_weights]
+    note: >-
+      1% hit = 20 AP below the special-attack cap (Sixty Upgrades preset; Twinstar 2016 gives
+      15 pre-raid). Past that cap see the soft cap below.
+  - stat: melee_weapon_dps
+    weight: 14.0
+    basis: mechanic
+    sources: [icy_veins_fury]
+    note: 14 attack power = 1 weapon damage per second.
+
+derived_stats:
+  - {source: strength, target: attack_power}
+  - {source: agility, target: crit}
+
+soft_caps:
+  - stat: hit
+    starts_at: {ruleset_cap: melee_hit}
+    multiplier: 0.5
+    ends_at: {ruleset_cap: dual_wield_hit}
+    note: >-
+      Past the special-attack cap, hit still removes white-hit misses up to the dual-wield
+      cap. Half value there is an assumption; Nostalrius 2016 says only that it is worth
+      "less than 20 AP".
+    sources: [nostalrius_fury_hit]
+
+weapon_preferences:
+  preferred_types: [sword, axe, mace, fist, dagger]
+  note: Weapon speed is not valued in version 1; slow main hands are usually preferred.
+
+assumptions:
+  - Weights are for early raid gear; with world buffs and late-raid gear 1% crit is worth 30 AP or more.
+  - Weapon damage per second is valued at the white-hit rate; instant attacks use a normalized weapon speed since patch 1.8.
+  - Weapon skill is not valued (weight 0); its value depends on the weapon type and it lowers the hit cap, which version 2 will model.
+  - An off-hand weapon is valued like a main-hand weapon, although off-hand damage is halved.
+
+proc_assumptions:
+  - Procs and on-use effects (Hand of Justice, Crusader, Diamond Flask) are not valued.
+set_bonus_rules:
+  - Set bonuses are not valued in version 1.
+
+sources:
+  - id: su_fury_ep
+    title: "Sixty Upgrades: Fury EP preset (Classic Era gear planner)"
+    url: https://sixtyupgrades.com/
+    retrieved: 2026-10-07
+    note: Crit 20, hit 20, Strength 2, Agility 1, weapon DPS 14.
+  - id: twinstar_fury_weights
+    title: "Twinstar forum: DPS warrior stat weights (vido, 2016)"
+    url: https://forum.twinstar.cz/threads/dps-warrior-stat-weights.112557/
+    retrieved: 2026-10-07
+  - id: nostalrius_fury_hit
+    title: "Nostalrius forum: warrior hit past the cap (HammerDeath, 2016)"
+    url: https://forum.nostalrius.org/viewtopic.php?t=19010
+    retrieved: 2026-10-07
+  - id: icy_veins_fury
+    title: "Icy Veins: Fury Warrior DPS stat priority (WoW Classic, November 2024)"
+    url: https://www.icy-veins.com/wow-classic/fury-warrior-dps-pve-stat-priority
+    retrieved: 2026-10-07

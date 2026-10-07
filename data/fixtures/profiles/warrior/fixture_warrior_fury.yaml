@@ -1,0 +1,29 @@
+# FIXTURE: not a real build. Round weights that make hand calculation easy; the golden
+# tests check the engine's arithmetic against them. Real profiles live in configs/profiles.
+id: fixture_warrior_fury
+version: 1.0.0
+label: Fixture Fury
+class_name: warrior
+role: melee_dps
+specialization: Fury
+summary: Test fixture with round weights, a dead zone and a soft cap on hit.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: fixture points
+validation_status: experimental
+stat_weights:
+  - {stat: attack_power, weight: 1.0, basis: derived, note: The unit.}
+  - {stat: crit, weight: 20.0, basis: assumption}
+  - {stat: hit, weight: 10.0, basis: assumption}
+  - {stat: melee_weapon_dps, weight: 14.0, basis: assumption}
+derived_stats:
+  - {source: strength, target: attack_power}
+  - {source: agility, target: crit}
+soft_caps:
+  - stat: hit
+    starts_at: {ruleset_cap: melee_hit}
+    multiplier: 0.5
+    ends_at: {ruleset_cap: dual_wield_hit}
+assumptions:
+  - Fixture profile for engine tests.

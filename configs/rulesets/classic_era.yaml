@@ -1,0 +1,583 @@
+# Classic Era: the original World of Warcraft Classic rules (patch 1.12 basis) as played on
+# Blizzard's Classic Era realms. Every block cites its sources (listed at the end); the
+# research notes behind them are in docs/research/. Change a value only with a source, and
+# bump the version when anything changes: stored results name the version they used.
+
+id: classic_era
+version: 1.0.0
+label: Classic Era
+game_family: classic
+rules_basis: Patch 1.12 (Classic was "based on patch 1.12.0, ported to a modern infrastructure")
+summary: >-
+  The original World of Warcraft Classic: level 60, six content phases from Molten Core to
+  Naxxramas, all of them open on Classic Era realms.
+min_level: 1
+max_level: 60
+max_target_level: 63
+default_phase: 6
+validation_status: draft
+
+phases:
+  - number: 1
+    label: Phase 1
+    content: Molten Core, Onyxia's Lair and Maraudon, with the launch dungeons (August 2019)
+    sources: [wiki_classic]
+  - number: 2
+    label: Phase 2
+    content: Dire Maul, Azuregos and Lord Kazzak, the honor system and PvP rank rewards (November 2019)
+    sources: [wiki_classic]
+  - number: 3
+    label: Phase 3
+    content: Blackwing Lair, the Darkmoon Faire, Alterac Valley and Warsong Gulch (February 2020)
+    sources: [wiki_classic]
+  - number: 4
+    label: Phase 4
+    content: Zul'Gurub, the green dragons and Arathi Basin (March 2020)
+    sources: [wiki_classic]
+  - number: 5
+    label: Phase 5
+    content: The Ahn'Qiraj raids, Tier 0.5 dungeon gear and relics (July 2020)
+    sources: [wiki_classic]
+  - number: 6
+    label: Phase 6
+    content: Naxxramas, the Scourge Invasion and world PvP objectives (December 2020)
+    sources: [wiki_classic]
+
+content_modes:
+  - mode: raid_pve
+    label: Raid
+    target_level_offset: 3
+    note: Raid bosses count as three levels above the player - level 63 against a level 60.
+    sources: [wiki_boss, magey_attack_table]
+  - mode: dungeon_pve
+    label: Dungeon
+    target_level_offset: 2
+    note: >-
+      End-game dungeon bosses range from the player's level to three above; two above is an
+      assumption in the middle. Set the target level to override it.
+    sources: [wiki_boss]
+  - mode: leveling
+    label: Leveling
+    target_level_offset: 0
+    note: Assumes enemies of the character's own level. Set the target level to override it.
+    sources: [wowwiki_miss_2006]
+  - mode: solo
+    label: Solo
+    target_level_offset: 0
+    note: Assumes enemies of the character's own level. Set the target level to override it.
+    sources: [wowwiki_miss_2006]
+  - mode: pvp
+    label: PvP
+    target_level_offset: 0
+    note: Assumes opponents of the character's own level.
+    sources: [wowwiki_resistance_2006]
+
+classes:
+  - name: warrior
+    label: Warrior
+    races: [human, dwarf, night_elf, gnome, orc, undead, tauren, troll]
+    armor:
+      - {type: cloth}
+      - {type: leather}
+      - {type: mail}
+      - {type: plate, from_level: 40}
+    weapons: [dagger, fist, axe, two_handed_axe, mace, two_handed_mace, sword, two_handed_sword, polearm, staff, bow, crossbow, gun, thrown]
+    shields: true
+    dual_wield_from_level: 20
+    roles: [tank, melee_dps]
+    sources: [wt_warrior, wiki_plate, wiki_dual_wield_ability, wiki_shield, wt_races]
+  - name: paladin
+    label: Paladin
+    races: [human, dwarf]
+    armor:
+      - {type: cloth}
+      - {type: leather}
+      - {type: mail}
+      - {type: plate, from_level: 40}
+    weapons: [axe, two_handed_axe, mace, two_handed_mace, sword, two_handed_sword, polearm]
+    shields: true
+    relic: libram
+    roles: [healer, tank, melee_dps]
+    sources: [wt_paladin, wiki_plate, wiki_shield, wiki_relic, wiki_paladin, wt_races]
+  - name: hunter
+    label: Hunter
+    races: [dwarf, night_elf, orc, tauren, troll]
+    armor:
+      - {type: cloth}
+      - {type: leather}
+      - {type: mail, from_level: 40}
+    weapons: [dagger, fist, axe, two_handed_axe, sword, two_handed_sword, polearm, staff, bow, crossbow, gun, thrown]
+    shields: false
+    dual_wield_from_level: 20
+    roles: [ranged_dps]
+    sources: [wt_hunter, wiki_mail, wiki_dual_wield_ability, wiki_thrown, wt_races]
+  - name: rogue
+    label: Rogue
+    races: [human, dwarf, night_elf, gnome, orc, undead, troll]
+    armor:
+      - {type: cloth}
+      - {type: leather}
+    weapons: [dagger, sword, mace, fist, bow, crossbow, gun, thrown]
+    shields: false
+    dual_wield_from_level: 10
+    roles: [melee_dps]
+    sources: [wt_rogue, wiki_dual_wield_ability, wt_races]
+  - name: priest
+    label: Priest
+    races: [human, dwarf, night_elf, undead, troll]
+    armor:
+      - {type: cloth}
+    weapons: [dagger, mace, staff, wand]
+    shields: false
+    roles: [healer, caster_dps]
+    sources: [wt_priest, wt_weapon_trainers, wt_races]
+  - name: shaman
+    label: Shaman
+    races: [orc, tauren, troll]
+    armor:
+      - {type: cloth}
+      - {type: leather}
+      - {type: mail, from_level: 40}
+    weapons: [dagger, fist, axe, mace, staff, two_handed_axe, two_handed_mace]
+    shields: true
+    relic: totem
+    roles: [healer, melee_dps, caster_dps]
+    sources: [wt_shaman, wiki_mail, wiki_shield, wiki_relic, wiki_two_handed_axes_maces, wiki_shaman, wt_races]
+  - name: mage
+    label: Mage
+    races: [human, gnome, undead, troll]
+    armor:
+      - {type: cloth}
+    weapons: [dagger, sword, staff, wand]
+    shields: false
+    roles: [caster_dps]
+    sources: [wt_mage, wt_weapon_trainers, wt_races, thegamer_gnome]
+  - name: warlock
+    label: Warlock
+    races: [human, gnome, orc, undead]
+    armor:
+      - {type: cloth}
+    weapons: [dagger, sword, staff, wand]
+    shields: false
+    roles: [caster_dps]
+    sources: [wt_warlock, wt_weapon_trainers, wt_races, thegamer_gnome]
+  - name: druid
+    label: Druid
+    races: [night_elf, tauren]
+    armor:
+      - {type: cloth}
+      - {type: leather}
+    weapons: [dagger, fist, mace, two_handed_mace, staff]
+    shields: false
+    relic: idol
+    roles: [tank, healer, melee_dps, caster_dps]
+    sources: [wt_druid, wiki_relic, wt_races]
+
+races:
+  - name: human
+    label: Human
+    faction: alliance
+    weapon_skill_bonus: {sword: 5, two_handed_sword: 5, mace: 5, two_handed_mace: 5}
+    sources: [wt_races, wiki_sword_specialization, wiki_mace_specialization]
+  - name: dwarf
+    label: Dwarf
+    faction: alliance
+    weapon_skill_bonus: {gun: 5}
+    sources: [wt_races, wiki_gun_specialization]
+  - name: night_elf
+    label: Night Elf
+    faction: alliance
+    sources: [wt_races]
+  - name: gnome
+    label: Gnome
+    faction: alliance
+    sources: [wt_races, thegamer_gnome]
+  - name: orc
+    label: Orc
+    faction: horde
+    weapon_skill_bonus: {axe: 5, two_handed_axe: 5}
+    sources: [wt_races, wiki_axe_specialization]
+  - name: undead
+    label: Undead
+    faction: horde
+    sources: [wt_races]
+  - name: tauren
+    label: Tauren
+    faction: horde
+    sources: [wt_races]
+  - name: troll
+    label: Troll
+    faction: horde
+    weapon_skill_bonus: {bow: 5, thrown: 5}
+    sources: [wt_races, wiki_bow_specialization, wiki_throwing_specialization]
+
+stats:
+  - {stat: strength, label: Strength, unit: points, group: primary, description: Primary stat.}
+  - {stat: agility, label: Agility, unit: points, group: primary, description: Primary stat.}
+  - {stat: stamina, label: Stamina, unit: points, group: primary, description: Primary stat.}
+  - {stat: intellect, label: Intellect, unit: points, group: primary, description: Primary stat.}
+  - {stat: spirit, label: Spirit, unit: points, group: primary, description: Primary stat.}
+  - {stat: armor, label: Armor, unit: points, group: defense, description: The item's armor value.}
+  - {stat: defense, label: Defense, unit: skill, group: defense, description: "\"Increased Defense +X.\""}
+  - {stat: dodge, label: Dodge, unit: percent, group: defense, description: "\"Increases your chance to dodge an attack by X%.\""}
+  - {stat: parry, label: Parry, unit: percent, group: defense, description: "\"Increases your chance to parry an attack by X%.\""}
+  - {stat: block, label: Block chance, unit: percent, group: defense, description: "\"Increases your chance to block attacks with a shield by X%.\""}
+  - {stat: block_value, label: Block value, unit: points, group: defense, description: "A shield's block value, and \"Increases the block value of your shield by X.\""}
+  - {stat: attack_power, label: Attack power, unit: points, group: physical, description: "Melee attack power. \"+X Attack Power.\" on an item gives this and as much ranged attack power."}
+  - {stat: ranged_attack_power, label: Ranged attack power, unit: points, group: physical, description: "Ranged attack power: \"+X ranged Attack Power.\", and the ranged half of \"+X Attack Power.\""}
+  - {stat: feral_attack_power, label: Feral attack power, unit: points, group: physical, description: "Attack power in Cat, Bear and Dire Bear forms only."}
+  - {stat: hit, label: Hit, unit: percent, group: physical, description: "\"Improves your chance to hit by X%.\" Melee and ranged."}
+  - {stat: crit, label: Crit, unit: percent, group: physical, description: "\"Improves your chance to get a critical strike by X%.\" Melee and ranged."}
+  - {stat: dagger_skill, label: Dagger skill, unit: skill, group: weapon, description: "\"Increased Daggers +X.\""}
+  - {stat: sword_skill, label: Sword skill, unit: skill, group: weapon, description: "\"Increased Swords +X.\""}
+  - {stat: two_handed_sword_skill, label: Two-handed sword skill, unit: skill, group: weapon, description: "\"Increased Two-handed Swords +X.\""}
+  - {stat: axe_skill, label: Axe skill, unit: skill, group: weapon, description: "\"Increased Axes +X.\""}
+  - {stat: two_handed_axe_skill, label: Two-handed axe skill, unit: skill, group: weapon, description: "\"Increased Two-handed Axes +X.\""}
+  - {stat: mace_skill, label: Mace skill, unit: skill, group: weapon, description: "\"Increased Maces +X.\""}
+  - {stat: two_handed_mace_skill, label: Two-handed mace skill, unit: skill, group: weapon, description: "\"Increased Two-handed Maces +X.\""}
+  - {stat: fist_skill, label: Fist weapon skill, unit: skill, group: weapon, description: "\"Increased Fist Weapons +X.\""}
+  - {stat: polearm_skill, label: Polearm skill, unit: skill, group: weapon, description: "\"Increased Polearms +X.\""}
+  - {stat: staff_skill, label: Staff skill, unit: skill, group: weapon, description: "\"Increased Staves +X.\""}
+  - {stat: bow_skill, label: Bow skill, unit: skill, group: weapon, description: "\"Increased Bows +X.\""}
+  - {stat: gun_skill, label: Gun skill, unit: skill, group: weapon, description: "\"Increased Guns +X.\""}
+  - {stat: crossbow_skill, label: Crossbow skill, unit: skill, group: weapon, description: "\"Increased Crossbows +X.\""}
+  - {stat: spell_power, label: Spell damage and healing, unit: points, group: caster, description: "\"Increases damage and healing done by magical spells and effects by up to X.\""}
+  - {stat: spell_damage, label: Spell damage, unit: points, group: caster, description: "\"Increases damage done by magical spells and effects by up to X.\" Damage only."}
+  - {stat: healing_power, label: Healing, unit: points, group: caster, description: "\"Increases healing done by spells and effects by up to X.\""}
+  - {stat: arcane_spell_power, label: Arcane spell damage, unit: points, group: caster, description: "\"Increases damage done by Arcane spells and effects by up to X.\""}
+  - {stat: fire_spell_power, label: Fire spell damage, unit: points, group: caster, description: "\"Increases damage done by Fire spells and effects by up to X.\""}
+  - {stat: frost_spell_power, label: Frost spell damage, unit: points, group: caster, description: "\"Increases damage done by Frost spells and effects by up to X.\""}
+  - {stat: holy_spell_power, label: Holy spell damage, unit: points, group: caster, description: "\"Increases damage done by Holy spells and effects by up to X.\""}
+  - {stat: nature_spell_power, label: Nature spell damage, unit: points, group: caster, description: "\"Increases damage done by Nature spells and effects by up to X.\""}
+  - {stat: shadow_spell_power, label: Shadow spell damage, unit: points, group: caster, description: "\"Increases damage done by Shadow spells and effects by up to X.\""}
+  - {stat: spell_hit, label: Spell hit, unit: percent, group: caster, description: "\"Improves your chance to hit with spells by X%.\""}
+  - {stat: spell_crit, label: Spell crit, unit: percent, group: caster, description: "\"Improves your chance to get a critical strike with spells by X%.\""}
+  - {stat: spell_penetration, label: Spell penetration, unit: points, group: caster, description: "\"Decreases the magical resistances of your spell targets by X.\""}
+  - {stat: mp5, label: Mana per 5 sec., unit: points, group: regen, description: "\"Restores X mana per 5 sec.\""}
+  - {stat: hp5, label: Health per 5 sec., unit: points, group: regen, description: "\"Restores X health per 5 sec.\""}
+  - {stat: arcane_resistance, label: Arcane resistance, unit: points, group: resistance, description: "\"+X Arcane Resistance\""}
+  - {stat: fire_resistance, label: Fire resistance, unit: points, group: resistance, description: "\"+X Fire Resistance\""}
+  - {stat: frost_resistance, label: Frost resistance, unit: points, group: resistance, description: "\"+X Frost Resistance\""}
+  - {stat: nature_resistance, label: Nature resistance, unit: points, group: resistance, description: "\"+X Nature Resistance\""}
+  - {stat: shadow_resistance, label: Shadow resistance, unit: points, group: resistance, description: "\"+X Shadow Resistance\""}
+  - {stat: melee_weapon_dps, label: Weapon DPS, unit: dps, group: weapon, description: "A melee weapon's damage per second, read from its damage and speed."}
+  - {stat: ranged_weapon_dps, label: Ranged weapon DPS, unit: dps, group: weapon, description: "A ranged weapon's damage per second, read from its damage and speed."}
+
+conversions:
+  level: 60
+  note: >-
+    Level-60 values. At other levels crit and dodge per Agility and spell crit per Intellect
+    differ, and the calculator says its conversions are approximate there. Conflicts between
+    sources are noted on the values they affect; docs/research/STAT_CONVERSIONS.md has them all.
+  sources: [wowwiki_attack_power_2006, wowwiki_ranged_attack_power_2006, wowwiki_strength_2006, wowwiki_crit_formulas_2006, wowhead_classic_stats, vmangos_stat_system]
+  by_class:
+    warrior:
+      strength->attack_power: {per_point: 2}
+      agility->ranged_attack_power: {per_point: 1, note: "1 per Agility (Wowhead, VMaNGOS); two 2006 wiki pages give 2."}
+      agility->crit: {points_per_unit: 20}
+      agility->dodge: {points_per_unit: 20}
+      agility->armor: {per_point: 2}
+      strength->block_value: {points_per_unit: 20, note: "Wowhead: 1 per 20 Strength. VMaNGOS subtracts 1 from the total, which does not change what an item adds."}
+    paladin:
+      strength->attack_power: {per_point: 2}
+      agility->crit: {points_per_unit: 20, note: "Wowhead and the 2006 wiki give 20; VMaNGOS's tables give 19.76."}
+      agility->dodge: {points_per_unit: 19.767}
+      agility->armor: {per_point: 2}
+      strength->block_value: {points_per_unit: 20}
+      intellect->spell_crit: {points_per_unit: 54, note: "Wowhead's value. VMaNGOS gives 53.77; other sources 29.5 or 59.9. Unresolved."}
+    hunter:
+      strength->attack_power: {per_point: 1}
+      agility->attack_power: {per_point: 1}
+      agility->ranged_attack_power: {per_point: 2}
+      agility->crit: {points_per_unit: 53, note: "Blizzard (quoted by the 2006 wiki): 53 Agility per 1%."}
+      agility->dodge: {points_per_unit: 26.5}
+      agility->armor: {per_point: 2}
+    rogue:
+      strength->attack_power: {per_point: 1}
+      agility->attack_power: {per_point: 1}
+      agility->ranged_attack_power: {per_point: 1}
+      agility->crit: {points_per_unit: 29, note: "Blizzard (quoted by the 2006 wiki): 29 Agility per 1%."}
+      agility->dodge: {points_per_unit: 14.5}
+      agility->armor: {per_point: 2}
+    priest:
+      strength->attack_power: {per_point: 1}
+      agility->crit: {points_per_unit: 20}
+      agility->dodge: {points_per_unit: 20}
+      agility->armor: {per_point: 2}
+      intellect->spell_crit: {points_per_unit: 59.2}
+    shaman:
+      strength->attack_power: {per_point: 2}
+      agility->crit: {points_per_unit: 20, note: "Wowhead and the 2006 wiki give 20; VMaNGOS's tables give 19.69."}
+      agility->dodge: {points_per_unit: 19.697}
+      agility->armor: {per_point: 2}
+      strength->block_value: {points_per_unit: 20}
+      intellect->spell_crit: {points_per_unit: 59.5}
+    mage:
+      strength->attack_power: {per_point: 1}
+      agility->armor: {per_point: 2}
+      intellect->spell_crit: {points_per_unit: 59.5}
+    warlock:
+      strength->attack_power: {per_point: 1}
+      agility->crit: {points_per_unit: 20}
+      agility->armor: {per_point: 2}
+      intellect->spell_crit: {points_per_unit: 60.6}
+    druid:
+      strength->attack_power: {per_point: 2}
+      agility->attack_power: {per_point: 1, note: "In Cat Form only (patch 1.7.0: each point of Agility adds 1 attack power)."}
+      agility->crit: {points_per_unit: 20}
+      agility->dodge: {points_per_unit: 20}
+      agility->armor: {per_point: 2}
+      intellect->spell_crit: {points_per_unit: 60}
+
+caps:
+  melee_hit:
+    kind: melee_miss
+    stat: hit
+    label: Melee hit cap
+    description: >-
+      Hit from gear that removes special-attack misses: the target's miss chance plus the hit
+      that is suppressed when the target's defense exceeds weapon skill by more than 10.
+    sources: [magey_attack_table, wowwiki_miss_2006, marrow_mechanics]
+  dual_wield_hit:
+    kind: dual_wield_miss
+    stat: hit
+    label: Dual-wield hit cap
+    description: >-
+      Hit from gear that removes white-hit misses while dual wielding: the melee cap plus the
+      dual-wield penalty.
+    sources: [magey_attack_table]
+  ranged_hit:
+    kind: ranged_miss
+    stat: hit
+    label: Ranged hit cap
+    description: Hit from gear that removes ranged misses; ranged attacks use the melee formula.
+    sources: [wowwiki_miss_2006, magey_attack_table]
+  spell_hit:
+    kind: spell_miss
+    stat: spell_hit
+    label: Spell hit cap
+    description: Spell hit from gear that lifts the chance to hit to its 99% maximum.
+    sources: [wowwiki_resistance_2006, blizzard_resistances_2006, wowwiki_crit_2006]
+  crit_immunity_defense:
+    kind: defense_crit_immunity
+    stat: defense
+    label: Crit immunity
+    description: >-
+      Defense from gear that removes the target's chance to land a critical strike on you;
+      440 total defense against a level 63 boss.
+    sources: [wowwiki_defense_2006, wiki_defense]
+
+mechanics:
+  melee_miss:
+    base_miss: 5.0
+    small_gap_limit: 10
+    per_point_small_gap: 0.1
+    per_point_large_gap: 0.2
+    suppression_per_point_beyond_limit: 0.2
+    dual_wield_penalty: 19.0
+    skill_per_level: 5
+    sources: [magey_attack_table, wowwiki_miss_2006, marrow_mechanics]
+  spell_miss:
+    hit_chance_by_level_gap: {0: 96.0, 1: 95.0, 2: 94.0, 3: 83.0}
+    per_level_beyond_table: 11.0
+    max_hit_chance: 99.0
+    sources: [wowwiki_resistance_2006, blizzard_resistances_2006, wowwiki_crit_2006]
+  defense:
+    base_crit_chance: 5.0
+    crit_change_per_skill_point: 0.04
+    skill_per_level: 5
+    sources: [wowwiki_defense_2006, wiki_defense]
+
+assumptions:
+  - >-
+    Melee hit suppression between 301 and 304 weapon skill follows the magey wiki: (defense
+    gap - 10) x 0.2%. The Marrow compendium adds a flat 1% instead. Both give 1% at 300 skill
+    and none at 305.
+  - Ranged attacks are assumed to suffer the same hit suppression as melee; no direct test was found.
+  - >-
+    The dual-wield white-hit penalty is the flat 19% measured in 2021 (a 28% cap at 300 skill).
+    An older formula, 0.8 x miss + 20%, gives 26.4% miss instead of 27%.
+  - A character's base weapon skill and defense are level x 5, as if trained to the maximum.
+  - Dungeon targets default to two levels above the character; leveling, solo and PvP targets to the character's own level.
+  - >-
+    Hunters may use thrown weapons (warcraft.wiki.gg says hunters knew Throw until patch 4.0.1;
+    one Classic guide leaves it out).
+  - >-
+    Eligibility does not check talents or trainer levels other than plate and mail at 40 and
+    dual wield: shaman two-handed axes and maces need the Enhancement talent, polearms need level 20.
+  - The base crit chance of an equal-level attacker (5%) is derived from the 440-defense breakpoint and 0.04% per defense point.
+  - Item stats follow patch 1.12, as Classic Era does; the Era client (1.15) may differ for a few items.
+
+sources:
+  - id: wowwiki_attack_power_2006
+    title: "WoWWiki: Formulas:Attack Power (2006-06-11, Wayback Machine)"
+    url: https://web.archive.org/web/20061017114614/http://www.wowwiki.com:80/Formulas:Attack_Power
+    retrieved: 2026-10-07
+  - id: wowwiki_ranged_attack_power_2006
+    title: "WoWWiki: Formulas:Ranged Attack Power (2006-06-30, Wayback Machine)"
+    url: https://web.archive.org/web/20061026042943/http://www.wowwiki.com:80/Formulas:Ranged_Attack_Power
+    retrieved: 2026-10-07
+  - id: wowwiki_strength_2006
+    title: "WoWWiki: Strength, quoting Blizzard on crit per Agility (2006-11-13, Wayback Machine)"
+    url: https://web.archive.org/web/20061119183106/http://www.wowwiki.com:80/Strength
+    retrieved: 2026-10-07
+  - id: wowwiki_crit_formulas_2006
+    title: "WoWWiki: Formulas:Critical hit chance (2006-11-15, Wayback Machine)"
+    url: https://web.archive.org/web/20061117212018/http://www.wowwiki.com:80/Formulas%3ACritical_hit_chance
+    retrieved: 2026-10-07
+  - id: wowhead_classic_stats
+    title: "Wowhead: Classic WoW stats and attributes overview (patch 1.15.8; read from a Wayback Machine copy)"
+    url: https://web.archive.org/web/20250319092954/https://www.wowhead.com/classic/guide/classic-wow-stats-and-attributes-overview
+    retrieved: 2026-10-07
+  - id: vmangos_stat_system
+    title: "VMaNGOS source: StatSystem.cpp and Player.cpp, per-class stat tables"
+    url: https://github.com/vmangos/core
+    retrieved: 2026-10-07
+  - id: wiki_classic
+    title: "warcraft.wiki.gg: World of Warcraft: Classic"
+    url: https://warcraft.wiki.gg/wiki/World_of_Warcraft:_Classic
+    retrieved: 2026-10-07
+  - id: wiki_boss
+    title: "warcraft.wiki.gg: Boss"
+    url: https://warcraft.wiki.gg/wiki/Boss
+    retrieved: 2026-10-07
+  - id: magey_attack_table
+    title: "Classic Warrior wiki (magey): Attack table, quoting Blizzard's 2019 hit-table posts"
+    url: https://github.com/magey/classic-warrior/wiki/Attack-table
+    retrieved: 2026-10-07
+  - id: marrow_mechanics
+    title: "Marrow's Compendium: Mechanics"
+    url: https://bookdown.org/marrowwar/marrow_compendium/mechanics.html
+    retrieved: 2026-10-07
+  - id: wowwiki_miss_2006
+    title: "WoWWiki: Miss (revision of 2006-11-30)"
+    url: https://warcraft.wiki.gg/wiki/Miss?oldid=3933316
+    retrieved: 2026-10-07
+  - id: wowwiki_resistance_2006
+    title: "WoWWiki: Resistance (revision of 2006-10-22), spell hit table from Blizzard"
+    url: https://warcraft.wiki.gg/wiki/Resistance?oldid=288678
+    retrieved: 2026-10-07
+  - id: blizzard_resistances_2006
+    title: "Blizzard: Resistances (worldofwarcraft.com, archived 2006-06-14)"
+    url: https://web.archive.org/web/20060614091913/http://www.worldofwarcraft.com/info/basics/resistances.html
+    retrieved: 2026-10-07
+  - id: wowwiki_crit_2006
+    title: "WoWWiki: Critical strike (revision of December 2006)"
+    url: https://warcraft.wiki.gg/wiki/Critical_strike?oldid=2034005
+    retrieved: 2026-10-07
+  - id: wowwiki_defense_2006
+    title: "WoWWiki: Defense (revision of 2006-09-08)"
+    url: https://warcraft.wiki.gg/wiki/Defense?oldid=4881609
+    retrieved: 2026-10-07
+  - id: wiki_defense
+    title: "warcraft.wiki.gg: Defense"
+    url: https://warcraft.wiki.gg/wiki/Defense
+    retrieved: 2026-10-07
+  - id: wiki_plate
+    title: "warcraft.wiki.gg: Plate armor"
+    url: https://warcraft.wiki.gg/wiki/Plate_armor
+    retrieved: 2026-10-07
+  - id: wiki_mail
+    title: "warcraft.wiki.gg: Mail armor"
+    url: https://warcraft.wiki.gg/wiki/Mail_armor
+    retrieved: 2026-10-07
+  - id: wiki_dual_wield_ability
+    title: "warcraft.wiki.gg: Dual Wield (ability), patch history"
+    url: https://warcraft.wiki.gg/wiki/Dual_Wield
+    retrieved: 2026-10-07
+  - id: wiki_shield
+    title: "warcraft.wiki.gg: Shield"
+    url: https://warcraft.wiki.gg/wiki/Shield
+    retrieved: 2026-10-07
+  - id: wiki_relic
+    title: "warcraft.wiki.gg: Relic"
+    url: https://warcraft.wiki.gg/wiki/Relic
+    retrieved: 2026-10-07
+  - id: wiki_thrown
+    title: "warcraft.wiki.gg: Thrown"
+    url: https://warcraft.wiki.gg/wiki/Thrown
+    retrieved: 2026-10-07
+  - id: wiki_two_handed_axes_maces
+    title: "warcraft.wiki.gg: Two-Handed Axes and Maces"
+    url: https://warcraft.wiki.gg/wiki/Two-Handed_Axes_and_Maces
+    retrieved: 2026-10-07
+  - id: wiki_paladin
+    title: "warcraft.wiki.gg: Paladin"
+    url: https://warcraft.wiki.gg/wiki/Paladin
+    retrieved: 2026-10-07
+  - id: wiki_shaman
+    title: "warcraft.wiki.gg: Shaman"
+    url: https://warcraft.wiki.gg/wiki/Shaman
+    retrieved: 2026-10-07
+  - id: wiki_sword_specialization
+    title: "warcraft.wiki.gg: Sword Specialization (racial)"
+    url: https://warcraft.wiki.gg/wiki/Sword_Specialization_(racial)
+    retrieved: 2026-10-07
+  - id: wiki_mace_specialization
+    title: "warcraft.wiki.gg: Mace Specialization (human racial)"
+    url: https://warcraft.wiki.gg/wiki/Mace_Specialization_(human_racial)
+    retrieved: 2026-10-07
+  - id: wiki_axe_specialization
+    title: "warcraft.wiki.gg: Axe Specialization (orc racial)"
+    url: https://warcraft.wiki.gg/wiki/Axe_Specialization_(orc_racial)
+    retrieved: 2026-10-07
+  - id: wiki_gun_specialization
+    title: "warcraft.wiki.gg: Gun Specialization"
+    url: https://warcraft.wiki.gg/wiki/Gun_Specialization
+    retrieved: 2026-10-07
+  - id: wiki_bow_specialization
+    title: "warcraft.wiki.gg: Bow Specialization"
+    url: https://warcraft.wiki.gg/wiki/Bow_Specialization
+    retrieved: 2026-10-07
+  - id: wiki_throwing_specialization
+    title: "warcraft.wiki.gg: Throwing Specialization"
+    url: https://warcraft.wiki.gg/wiki/Throwing_Specialization
+    retrieved: 2026-10-07
+  - id: wt_races
+    title: "Warcraft Tavern: WoW Classic races"
+    url: https://www.warcrafttavern.com/wow-classic/guides/races/
+    retrieved: 2026-10-07
+  - id: thegamer_gnome
+    title: "TheGamer: WoW Classic race guide, Gnome"
+    url: https://www.thegamer.com/wow-classic-race-guide-gnome/
+    retrieved: 2026-10-07
+  - id: wt_weapon_trainers
+    title: "Warcraft Tavern: Weapon skill trainers and locations"
+    url: https://warcrafttavern.com/wow-classic/guides/weapon-skill-trainers-and-locations
+    retrieved: 2026-10-07
+  - id: wt_warrior
+    title: "Warcraft Tavern: Warrior class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/warrior
+    retrieved: 2026-10-07
+  - id: wt_paladin
+    title: "Warcraft Tavern: Paladin class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/paladin/
+    retrieved: 2026-10-07
+  - id: wt_hunter
+    title: "Warcraft Tavern: Hunter class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/hunter/
+    retrieved: 2026-10-07
+  - id: wt_rogue
+    title: "Warcraft Tavern: Rogue class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/rogue/
+    retrieved: 2026-10-07
+  - id: wt_priest
+    title: "Warcraft Tavern: Priest class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/priest/
+    retrieved: 2026-10-07
+  - id: wt_shaman
+    title: "Warcraft Tavern: Shaman class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/shaman/
+    retrieved: 2026-10-07
+  - id: wt_mage
+    title: "Warcraft Tavern: Mage class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/mage/
+    retrieved: 2026-10-07
+  - id: wt_warlock
+    title: "Warcraft Tavern: Warlock class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/warlock/
+    retrieved: 2026-10-07
+  - id: wt_druid
+    title: "Warcraft Tavern: Druid class guide"
+    url: https://warcrafttavern.com/wow-classic/guides/druid/
+    retrieved: 2026-10-07

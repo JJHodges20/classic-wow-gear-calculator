@@ -9,7 +9,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from wow_gear.core import Settings
+from wow_gear.core import ConfigError, Settings
+from wow_gear.profiles.loader import ProfileRegistry
+from wow_gear.rulesets.loader import RulesetRegistry
 
 CheckStatus = Literal["ok", "warning", "error", "info"]
 CredentialState = Literal["not_needed", "present", "missing"]
@@ -71,14 +73,8 @@ class HealthService:
 
     def checks(self) -> list[HealthCheck]:
         settings = self._settings
-        checks = [
-            HealthCheck("configuration", "ok", f"Read configs/ under {settings.root}"),
-            HealthCheck(
-                "default ruleset",
-                "info",
-                f"{settings.app.app.default_ruleset} (rulesets are loaded from milestone 2)",
-            ),
-        ]
+        checks = [HealthCheck("configuration", "ok", f"Read configs/ under {settings.root}")]
+        checks.extend(self._ruleset_and_profile_checks())
         for provider in self.provider_statuses():
             if provider.status == "reference_only":
                 checks.append(
@@ -100,4 +96,36 @@ class HealthService:
                 )
             else:
                 checks.append(HealthCheck(f"provider {provider.id}", "ok", "Ready"))
+        return checks
+
+    def _ruleset_and_profile_checks(self) -> list[HealthCheck]:
+        settings = self._settings
+        try:
+            rulesets = RulesetRegistry.from_directory(settings.config_dir / "rulesets")
+        except ConfigError as error:
+            return [HealthCheck("rulesets", "error", str(error))]
+        checks = [
+            HealthCheck(
+                f"ruleset {ruleset.id}",
+                "ok",
+                f"{ruleset.label} {ruleset.version} ({ruleset.validation_status}), "
+                f"{len(ruleset.sources)} sources",
+            )
+            for ruleset in rulesets
+        ]
+        default = settings.app.app.default_ruleset
+        if default not in rulesets.ids():
+            checks.append(HealthCheck("default ruleset", "error", f"{default} is not configured"))
+        try:
+            profiles = ProfileRegistry.from_directory(settings.config_dir / "profiles", rulesets)
+        except ConfigError as error:
+            return [*checks, HealthCheck("profiles", "error", str(error))]
+        statuses = sorted({profile.validation_status.value for profile in profiles})
+        checks.append(
+            HealthCheck(
+                "profiles",
+                "ok" if len(profiles) else "warning",
+                f"{len(profiles)} build profiles ({', '.join(statuses) or 'none'})",
+            )
+        )
         return checks
