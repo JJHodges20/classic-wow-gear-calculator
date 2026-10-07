@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import shutil
 from collections.abc import Callable, Iterator
 from pathlib import Path
 
@@ -16,7 +15,6 @@ from wow_gear.services.workspace import Workspace
 
 ROOT = Path(__file__).resolve().parents[2]
 BLIZZARD = ROOT / "data" / "fixtures" / "providers" / "blizzard"
-BUNDLED = ROOT / "data" / "fixtures" / "bundled"
 
 
 def blizzard_handler(fail: str | None = None) -> Callable[[httpx.Request], httpx.Response]:
@@ -52,19 +50,6 @@ def blizzard_handler(fail: str | None = None) -> Callable[[httpx.Request], httpx
         return httpx.Response(404)
 
     return handler
-
-
-@pytest.fixture
-def project(tmp_path: Path) -> Path:
-    """A project root using the fixture dataset and its own empty data directory."""
-    root = tmp_path / "project"
-    shutil.copytree(ROOT / "configs", root / "configs")
-    app = root / "configs" / "app.yaml"
-    text = app.read_text(encoding="utf-8").replace(
-        "bundled_dir: data/bundled", f"bundled_dir: {BUNDLED.as_posix()}"
-    )
-    app.write_text(text, encoding="utf-8")
-    return root
 
 
 @pytest.fixture

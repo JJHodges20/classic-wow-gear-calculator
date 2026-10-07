@@ -36,6 +36,17 @@ from wow_gear.repositories.items import (
     StoredItem,
 )
 
+__all__ = [
+    "NO_FILTERS",
+    "ImportReport",
+    "ItemFilters",
+    "ItemSearchService",
+    "OnlineProvider",
+    "OnlineState",
+    "SearchHit",
+    "SearchOutcome",
+]
+
 LOG = get_logger(__name__)
 ID_QUERY = re.compile(r"^(?:classic_era:)?(\d{1,6})$")
 OnlineState = Literal["not_requested", "not_configured", "disabled", "ok", "failed"]

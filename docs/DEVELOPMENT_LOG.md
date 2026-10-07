@@ -3,6 +3,58 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 7 - Streamlit shell, design system and calculator page (2026-10-07)
+
+**Built**
+
+- `.streamlit/config.toml`: light and dark palettes - a warm neutral page, navy and
+  charcoal text, gold for what is selected or recommended, green and red kept for
+  differences - with Streamlit's bundled fonts, no Deploy button and no usage statistics.
+- The shell (`app.py`): page setup, the design system, top navigation, a footer.
+- The calculator page, in the roadmap's layout: the context bar and breadcrumb; item A and
+  item B by search (slot filter that follows the other item, optional online lookup) or by
+  hand (a tooltip reader, the stat fields the slot needs, a validated preview before use);
+  the recommendation (recommended item, scores, the difference with ▲/▼, the component
+  lines, notes, confidence, "recommended under this profile and these assumptions"); and
+  advanced tabs for assumptions, caps, current stats and the raw math.
+- The current stats tab asks only for the totals that can change the answer
+  (`CalculatorService.gear_total_stats`), plus race and main-hand weapon when a hit cap
+  depends on weapon skill, and which item is worn now so its stats come out of the totals.
+- `services/errors.py` so the app can catch service errors without importing `core`.
+- App tests under `streamlit.testing` on a throwaway fixture project: choosing class, role
+  and profile; search to comparison; a manual item previewed, validated and scored; an
+  invalid manual item refused; current stats reversing a cap-sensitive answer; the worn item
+  taken out of the totals; an unusable item explained; a failing provider leaving a message
+  and local results. The fixture dataset gained Truestrike Shoulders and Drake Talon
+  Pauldrons for the cap test.
+- `mypy` strict now covers the app as well as the package.
+
+**Decisions** ([0006](decisions/0006-app-design-system.md))
+
+- The palette lives in Streamlit's theme; custom elements are escaped HTML styled by CSS
+  variables for the reported theme; colour never signals alone; pages are functions behind
+  `st.navigation`; one cached workspace per project.
+
+**Assumptions**
+
+- "Phone width" is checked at 420 pixels; Streamlit stacks the columns there.
+
+**Found on the way**
+
+- Streamlit treats a `None` stored in session state as "nothing chosen", so options such as
+  "Any slot" and "Not given" use string sentinels.
+- The app's first test opened the user's own workspace; app tests now always run on a
+  fixture project.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | App tests and the service additions pass; the full suite passes on the committed snapshot (515 tests) |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict, package and app) clean |
+| Secrets | None added; `.streamlit/secrets.toml` ignored; hygiene tests pass |
+| UI smoke test | In Chromium: the empty page, a search comparison, the current-stats change and the manual entry flow in light and dark, and the comparison at 420 pixels wide - no exceptions, no page errors, no requests leaving the machine |
+
 ## Milestone 6 - Item comparison service and explainable breakdown (2026-10-07)
 
 **Built**

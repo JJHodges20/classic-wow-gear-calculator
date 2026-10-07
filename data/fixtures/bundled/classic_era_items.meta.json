@@ -1,8 +1,8 @@
 {
   "dataset": "classic_era_items",
-  "version": "fixture-2",
+  "version": "fixture-3",
   "source": "Fixture: items copied from the bundled dataset (VMaNGOS snapshot)",
   "counts": {
-    "items": 15
+    "items": 17
   }
 }

@@ -1,0 +1,47 @@
+# Streamlit settings for the Classic Gear Calculator. Streamlit reads this file from the
+# directory it starts in; `wowgear ui` starts in the project root.
+
+[client]
+# A local tool: no Deploy button, no developer menu.
+toolbarMode = "minimal"
+showSidebarNavigation = false
+
+[browser]
+# Never send usage statistics to Streamlit.
+gatherUsageStats = false
+
+[theme]
+font = "sans-serif"
+headingFont = "serif"
+baseRadius = "0.55rem"
+showWidgetBorder = true
+
+# Light (primary): a warm neutral page, navy and charcoal text, a gold accent for what is
+# selected or recommended. Green and red are kept for beneficial and harmful differences.
+[theme.light]
+primaryColor = "#8F6516"
+backgroundColor = "#F7F5F0"
+secondaryBackgroundColor = "#ECE8DF"
+textColor = "#1E2633"
+borderColor = "#D6CFC1"
+linkColor = "#23426E"
+greenColor = "#2E7D4F"
+redColor = "#B3261E"
+blueColor = "#23426E"
+orangeColor = "#A35A12"
+yellowColor = "#8F6516"
+grayColor = "#6B7280"
+
+[theme.dark]
+primaryColor = "#D2A54E"
+backgroundColor = "#0F141C"
+secondaryBackgroundColor = "#182131"
+textColor = "#E8E4DA"
+borderColor = "#2A3445"
+linkColor = "#9CB8E4"
+greenColor = "#5DBB86"
+redColor = "#EE6A60"
+blueColor = "#7FA3DB"
+orangeColor = "#E39A4F"
+yellowColor = "#D2A54E"
+grayColor = "#8B93A1"

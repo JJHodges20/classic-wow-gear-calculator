@@ -69,6 +69,8 @@ in the wrong layer: move it, do not widen the rule.
 - Use hand-reviewed golden fixtures for critical comparisons.
 - Do not modify expected values merely to make a failing test pass.
 - Run the full suite before closing a milestone.
+- App tests drive the app under `streamlit.testing` on a throwaway project with the fixture
+  dataset (`tests/ui/conftest.py`); they never open the user's workspace.
 - Warnings are errors (`filterwarnings = error`); add a targeted ignore, with a reason, only
   for warnings raised inside third-party code.
 - No test writes under `data/` or reads the user's data (`data/user`, `data/cache`,
@@ -87,10 +89,10 @@ in the wrong layer: move it, do not widen the rule.
 ## Definition of done (every milestone)
 
 Implementation complete, then: targeted tests pass, full suite passes, `ruff check`, `ruff
-format --check` and `mypy` clean, no provider secrets in the repository, manual UI smoke test
-in a real browser passes (light and dark), assumptions documented, git diff reviewed, a
-development-log entry written, and the milestone committed locally. Never push; no remote
-is configured.
+format --check` and `mypy` (strict, the package and the app) clean, no provider secrets in
+the repository, manual UI smoke test in a real browser passes (light, dark and a phone
+width), assumptions documented, git diff reviewed, a development-log entry written, and the
+milestone committed locally. Never push; no remote is configured.
 
 ## Commands
 
@@ -99,7 +101,7 @@ Run from the project root (Windows, PowerShell or Git Bash):
 ```
 .\.venv\Scripts\python.exe -m pytest -n auto      # full suite
 .\.venv\Scripts\ruff.exe check . ; .\.venv\Scripts\ruff.exe format --check .
-.\.venv\Scripts\mypy.exe                          # strict, src/wow_gear
+.\.venv\Scripts\mypy.exe                          # strict: src/wow_gear and the app
 .\.venv\Scripts\wowgear.exe check                 # validate configuration
 .\.venv\Scripts\wowgear.exe ui --no-browser --port 8601
 ```

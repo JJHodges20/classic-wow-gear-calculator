@@ -176,6 +176,32 @@ item - manual, imported or looked up - through the same validation, and calls th
 engine and the comparison layer. `reporting/text.py` formats a comparison as plain text;
 `wowgear compare` prints it (or `--json`).
 
+## The app
+
+```
+apps/streamlit_app/
+  app.py          the shell: page setup, theme, top navigation, footer
+  pages/          one function per page (calculator.py)
+  components/     what the pages draw: theme, escaped HTML pieces, item cards, the
+                  context bar, item input, the recommendation, the advanced tabs
+  state/          session keys and helpers; the workspace, cached once per project
+```
+
+The calculator page follows the roadmap's layout: a context bar (class, role, build
+profile; ruleset, phase; level, content) with a breadcrumb; items on the left - search with
+a slot filter and an optional online lookup, or manual entry with a tooltip reader and a
+validated preview; the recommendation on the right - the recommended item, the scores, the
+difference with ▲/▼, the component lines, notes and confidence; and advanced tabs for
+assumptions (weights, conversions, sources), caps, current stats (only the totals that can
+change the answer, the equipped item, race and weapon type when a hit cap depends on weapon
+skill) and the raw math with every version and fingerprint.
+
+States are designed, not left to chance: an empty result explains the three steps; a
+missing dataset, an invalid context, a failing or unconfigured provider, an expired cached
+lookup, an item that fails validation and an unusable item each say what happened and what
+still works. The design system is in [decision 0006](decisions/0006-app-design-system.md).
+
 ## Sections to complete
 
-This document grows with the milestones: the app (7 and 8), characters and gear sets (9).
+This document grows with the milestones: the remaining pages (8), characters and gear sets
+(9).

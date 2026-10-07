@@ -64,6 +64,8 @@ ignore = ["E501", "RUF001", "RUF002", "RUF003"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-mypy_path = "src"
-packages = ["wow_gear"]
+# The package and the Streamlit app (whose modules import each other as top-level names).
+mypy_path = ["src", "apps/streamlit_app"]
+files = ["src/wow_gear", "apps/streamlit_app"]
+explicit_package_bases = true
 plugins = ["pydantic.mypy"]

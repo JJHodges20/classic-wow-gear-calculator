@@ -28,18 +28,18 @@ Opener = Callable[..., Workspace]
 class TestBundledDataset:
     def test_it_is_loaded_once_per_version(self, open_workspace: Opener) -> None:
         first = open_workspace()
-        assert first.bundled.version == "fixture-2" and first.bundled.loaded == 15
-        assert first.items.counts() == {"bundled": 15}
+        assert first.bundled.version == "fixture-3" and first.bundled.loaded == 17
+        assert first.items.counts() == {"bundled": 17}
         second = open_workspace()
         assert (
-            second.bundled.loaded == 15
-            and second.database.get_meta("bundled_version") == "fixture-2"
+            second.bundled.loaded == 17
+            and second.database.get_meta("bundled_version") == "fixture-3"
         )
 
     def test_health_reports_it(self, open_workspace: Opener) -> None:
         checks = {check.name: check for check in open_workspace().health.checks()}
         assert checks["bundled dataset"].status == "ok"
-        assert "15 items" in checks["bundled dataset"].detail
+        assert "17 items" in checks["bundled dataset"].detail
         assert checks["provider blizzard"].status == "warning"  # no credentials in the test
 
 
