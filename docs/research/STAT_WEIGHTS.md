@@ -174,3 +174,23 @@ Crit 12.8, hit 15.0 SP ([ronkuby fire mage simulation](https://github.com/ronkub
 ## Warlock: Affliction
 
 No 1.12 numbers; damage-over-time spells cannot crit, so spell power is the main stat.
+
+## How the profiles use these (2026-10-07)
+
+- Where a source gives Strength or Agility a value that already includes its conversions
+  (Oto, NerdEgghead, Taladril, Sixty Upgrades' Agility for Retribution and Enhancement), the
+  profile weights the stat directly and adds no conversion; where it gives the converted
+  stats (Fury, Frost, Marksmanship), the profile uses the ruleset's conversions.
+- An Intellect value from a source is taken as Intellect's whole worth (no crit conversion
+  added) except for Frost and Holy priest, whose sources separate the two.
+- Shadow priest hit: 15, the middle of the source's "about 13-17".
+- Restoration shaman crit: 20, the low end of Wowhead's "20+"; the page address was not
+  recorded, so the weight is labelled an assumption.
+- Destruction warlock: warlockr (simulation regression) rather than the wowsims defaults.
+- Druid sources: Taladril's values are in "Taladril's List of Druid Gear"
+  (https://docs.google.com/spreadsheets/d/1wGBasFY8fFGpBtiD1TAUBB99wxboCSVh5MW_6b_z0oU/pubhtml);
+  Keftenk's spreadsheet v1.5 was published on the Blizzard forums
+  (https://us.forums.blizzard.com/en/wow/t/classic-balance-druid-theorycraft-spreadsheet-v15/464662).
+- No 1.12 numbers: Arms (the Fury values are applied, labelled assumptions) and Protection
+  paladin (a warrior's tank points, labelled assumptions); both profiles are experimental.
+  No Fury/Prot tank profile was made.

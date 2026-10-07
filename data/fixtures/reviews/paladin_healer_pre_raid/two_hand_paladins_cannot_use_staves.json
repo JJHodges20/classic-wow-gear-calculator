@@ -1,0 +1,146 @@
+{
+  "title": "Neither staff is usable by a paladin",
+  "question": "A paladin compares two healing staves.",
+  "profile": {
+    "id": "paladin_healer_pre_raid",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 4,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "healer",
+    "profile_id": "paladin_healer_pre_raid",
+    "content_mode": "dungeon_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "20581",
+        "vmangos": "20581"
+      },
+      "id": "classic_era:20581",
+      "item_level": 71,
+      "name": "Staff of Rampant Growth",
+      "on_use_effects": [],
+      "phase": 4,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "two_hand",
+      "stats": {
+        "healing_power": 84.0,
+        "intellect": 16.0,
+        "mp5": 11.0,
+        "nature_resistance": 20.0,
+        "stamina": 12.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 184.4,
+        "min_damage": 113.4,
+        "speed": 2.6
+      },
+      "weapon_type": "staff"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19909",
+        "vmangos": "19909"
+      },
+      "id": "classic_era:19909",
+      "item_level": 65,
+      "name": "Will of Arlokk",
+      "on_use_effects": [],
+      "phase": 4,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "two_hand",
+      "stats": {
+        "healing_power": 46.0,
+        "intellect": 19.0,
+        "spirit": 35.0,
+        "stamina": 15.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 204.0,
+        "min_damage": 129.0,
+        "speed": 3.0
+      },
+      "weapon_type": "staff"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "none_usable",
+    "winner": null,
+    "first": null,
+    "second": null,
+    "score_delta": 0.0,
+    "scores": {
+      "classic_era:20581": 152.0,
+      "classic_era:19909": 74.5
+    },
+    "component_deltas": {},
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:20581": [
+        "Paladins cannot use staves"
+      ],
+      "classic_era:19909": [
+        "Paladins cannot use staves"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Staff of Rampant Growth: 84 healing + 16 Intellect x 1.5 = 24 + 11 mana per 5 x 4 = 44. Total 152.",
+    "Will of Arlokk: 46 healing + 19 Intellect x 1.5 = 28.5. Total 74.5; Spirit is not valued."
+  ],
+  "review": "Paladins cannot use staves: the calculator scores both and recommends neither.",
+  "reviewed": "2026-10-07"
+}

@@ -78,3 +78,35 @@ or names a role its class does not have in the ruleset.
 Each profile has at least five hand-reviewed comparisons it should rank correctly, as golden
 fixtures under `data/fixtures/reviews/<profile id>/` (from milestone 6). A change that flips
 one of them fails the test suite until the review is re-done.
+
+## The profiles
+
+The roadmap's initial class and role matrix, one profile per entry (two for the Holy
+paladin, whose raid and pre-raid values differ). Numbers and their sources are in
+`docs/research/STAT_WEIGHTS.md`; `draft` means sourced but not yet checked against logs.
+
+| Class | Profile | Role | Status | Weights from |
+| --- | --- | --- | --- | --- |
+| Warrior | `warrior_tank_deep_prot` Deep Protection | Tank | draft | Undertanker's tank points |
+| Warrior | `warrior_dps_fury` Fury (dual wield) | Melee DPS | draft | Sixty Upgrades, Twinstar |
+| Warrior | `warrior_dps_arms` Arms (two-hander) | Melee DPS | experimental | The Fury values, as an assumption (no Arms source) |
+| Paladin | `paladin_healer_holy` Holy (raid) | Healer | draft | Xcellers |
+| Paladin | `paladin_healer_pre_raid` Holy (pre-raid dungeons) | Healer | draft | Xcellers (pre-raid values) |
+| Paladin | `paladin_tank_prot` Protection (survival only) | Tank | experimental | A warrior's tank points, as an assumption (no paladin source) |
+| Paladin | `paladin_dps_ret` Retribution (two-hander) | Melee DPS | draft | Sixty Upgrades |
+| Druid | `druid_tank_bear` Feral tank (Dire Bear) | Tank | draft | Taladril |
+| Druid | `druid_healer_resto` Restoration (raid) | Healer | draft | Taladril |
+| Druid | `druid_dps_cat` Feral DPS (Cat) | Melee DPS | draft | NerdEgghead (Wowhead) |
+| Druid | `druid_dps_balance` Balance (raid) | Caster DPS | draft | Keftenk |
+| Priest | `priest_healer_holy` Holy (raid, 3-minute fights) | Healer | draft | Umber |
+| Priest | `priest_dps_shadow` Shadow (raid) | Caster DPS | draft | Nostalrius forum |
+| Shaman | `shaman_healer_resto` Restoration (raid) | Healer | draft | Jelly's guide |
+| Shaman | `shaman_dps_enhancement` Enhancement (two-hander) | Melee DPS | draft | Sixty Upgrades |
+| Shaman | `shaman_dps_elemental` Elemental (raid) | Caster DPS | draft | wowsims (Classic Era) |
+| Rogue | `rogue_dps_combat` Combat (swords) | Melee DPS | draft | Oto (Nostalrius forum) |
+| Hunter | `hunter_dps_marksmanship` Marksmanship (raid) | Ranged DPS | draft | Icy Veins (Impakt) |
+| Mage | `mage_dps_frost` Frost (raid) | Caster DPS | draft | Zephriel |
+| Warlock | `warlock_dps_destruction` Destruction (Shadow Bolt) | Caster DPS | draft | warlockr simulation |
+
+Not built: a Fury/Prot warrior tank (the roadmap's example of a second tank build) - no 1.12
+source gives numbers for it, and Deep Protection covers the warrior tank role.

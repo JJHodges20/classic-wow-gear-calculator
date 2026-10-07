@@ -1,0 +1,84 @@
+# Combat (swords) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: rogue_dps_combat
+version: 1.0.0
+label: Combat (swords)
+class_name: rogue
+role: melee_dps
+specialization: Combat
+summary: A dual-wielding Combat rogue with swords, valued in attack power, pre-raid.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: attack power equivalents (AP)
+validation_status: draft
+stat_weights:
+- stat: attack_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: agility
+  weight: 1.9
+  basis: sourced
+  sources:
+  - oto_rogue_weights
+  note: Includes the attack power and crit it gives.
+- stat: strength
+  weight: 1.1
+  basis: sourced
+  sources:
+  - oto_rogue_weights
+- stat: crit
+  weight: 23.0
+  basis: sourced
+  sources:
+  - oto_rogue_weights
+- stat: hit
+  weight: 18.0
+  basis: sourced
+  sources:
+  - oto_rogue_weights
+  note: Below the special-attack cap; see the soft cap.
+- stat: melee_weapon_dps
+  weight: 14.0
+  basis: mechanic
+  sources:
+  - icy_veins_fury
+  note: 14 attack power = 1 weapon damage per second.
+soft_caps:
+- stat: hit
+  starts_at:
+    ruleset_cap: melee_hit
+    reduced_by: 5
+  multiplier: 0.5
+  ends_at:
+    ruleset_cap: dual_wield_hit
+    reduced_by: 5
+  note: Precision gives 5%, so special attacks stop missing at 4% from gear; white hits keep gaining
+    until the dual-wield cap. Half value there is an assumption, as for Fury.
+  sources:
+  - precision_rogue
+assumptions:
+- Pre-raid values for swords; the source gives more for best-in-slot gear (crit 29, hit 21, Agility
+  2.2).
+- Precision 5/5 is assumed.
+- Weapon skill is not valued; an off-hand weapon is valued like a main-hand one.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: oto_rogue_weights
+  title: 'Nostalrius forum: rogue stat weights (Oto, 2015)'
+  url: https://forum.nostalrius.org/viewtopic.php?t=5412
+  retrieved: '2026-10-07'
+  note: 'Swords: crit 23, hit 18, Agility 1.9, Strength 1.1 pre-raid.'
+- id: precision_rogue
+  title: 'warcraft.wiki.gg: Precision (rogue talent)'
+  url: https://warcraft.wiki.gg/wiki/Precision_(rogue_talent)
+  retrieved: '2026-10-07'
+- id: icy_veins_fury
+  title: 'Icy Veins: Fury Warrior DPS stat priority (WoW Classic, November 2024)'
+  url: https://www.icy-veins.com/wow-classic/fury-warrior-dps-pve-stat-priority
+  retrieved: '2026-10-07'
+  note: 'States the attack power rule: 14 attack power = 1 weapon damage per second.'

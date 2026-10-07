@@ -1,0 +1,146 @@
+{
+  "title": "Cenarion Vestments, because Earthfury is shaman mail",
+  "question": "A Restoration druid sees the shaman tier 1 chest.",
+  "profile": {
+    "id": "druid_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "druid",
+    "role": "healer",
+    "profile_id": "druid_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16841",
+        "vmangos": "16841"
+      },
+      "id": "classic_era:16841",
+      "item_level": 66,
+      "name": "Earthfury Vestments",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "207",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 422.0,
+        "fire_resistance": 10.0,
+        "healing_power": 22.0,
+        "intellect": 27.0,
+        "spell_crit": 1.0,
+        "spirit": 13.0,
+        "stamina": 17.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "druid"
+      ],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16833",
+        "vmangos": "16833"
+      },
+      "id": "classic_era:16833",
+      "item_level": 66,
+      "name": "Cenarion Vestments",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "205",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 200.0,
+        "fire_resistance": 10.0,
+        "healing_power": 22.0,
+        "intellect": 24.0,
+        "mp5": 3.0,
+        "spirit": 16.0,
+        "stamina": 23.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:16833",
+    "first": "classic_era:16833",
+    "second": "classic_era:16841",
+    "score_delta": -0.5155,
+    "scores": {
+      "classic_era:16833": 45.584,
+      "classic_era:16841": 46.0995
+    },
+    "component_deltas": {
+      "stat:spell_crit": -10.0,
+      "stat:mp5": 9.0,
+      "stat:spirit": 1.3845,
+      "stat:intellect": -0.9
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:16841": [
+        "Restricted to Shaman",
+        "Druids cannot wear mail armor"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Earthfury Vestments: 22 healing; 27 x 0.3 = 8.1; 1% crit x 10; 13 x 0.4615 = 5.9995. Total 46.0995.",
+    "Cenarion Vestments: 45.584 as above."
+  ],
+  "review": "Two reasons rule the mail robe out: it is the shaman's, and druids do not wear mail.",
+  "reviewed": "2026-10-07"
+}

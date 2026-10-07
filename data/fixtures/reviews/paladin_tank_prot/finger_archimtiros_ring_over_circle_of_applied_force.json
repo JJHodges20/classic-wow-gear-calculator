@@ -1,0 +1,127 @@
+{
+  "title": "Archimtiros' Ring of Reckoning over Circle of Applied Force",
+  "question": "A Protection paladin chooses a ring.",
+  "profile": {
+    "id": "paladin_tank_prot",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "tank",
+    "profile_id": "paladin_tank_prot",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19376",
+        "vmangos": "19376"
+      },
+      "id": "classic_era:19376",
+      "item_level": 83,
+      "name": "Archimtiros' Ring of Reckoning",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "agility": 14.0,
+        "stamina": 28.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19432",
+        "vmangos": "19432"
+      },
+      "id": "classic_era:19432",
+      "item_level": 75,
+      "name": "Circle of Applied Force",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "agility": 22.0,
+        "stamina": 9.0,
+        "strength": 12.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19376",
+    "first": "classic_era:19376",
+    "second": "classic_era:19432",
+    "score_delta": 13.8,
+    "scores": {
+      "classic_era:19376": 63.0,
+      "classic_era:19432": 49.2
+    },
+    "component_deltas": {
+      "stat:stamina": 28.5,
+      "stat:agility": -12.0,
+      "stat:strength": -2.7
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Archimtiros' Ring: 14 Agility x 1.5 = 21 + 28 Stamina x 1.5 = 42. Total 63.",
+    "Circle of Applied Force: 12 Strength x 0.225 = 2.7 + 22 Agility x 1.5 = 33 + 9 Stamina x 1.5 = 13.5. Total 49.2."
+  ],
+  "review": "Stamina is what this survival profile weighs most.",
+  "reviewed": "2026-10-07"
+}

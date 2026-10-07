@@ -1,0 +1,132 @@
+{
+  "title": "Mask of the Unforgiven over Expert Goldminer's Helmet",
+  "question": "A cat druid with 4% hit chooses a helm.",
+  "profile": {
+    "id": "druid_dps_cat",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "druid",
+    "role": "melee_dps",
+    "profile_id": "druid_dps_cat",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "13404",
+        "vmangos": "13404"
+      },
+      "id": "classic_era:13404",
+      "item_level": 57,
+      "name": "Mask of the Unforgiven",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 52,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 132.0,
+        "crit": 1.0,
+        "hit": 2.0,
+        "stamina": 12.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "9375",
+        "vmangos": "9375"
+      },
+      "id": "classic_era:9375",
+      "item_level": 38,
+      "name": "Expert Goldminer's Helmet",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 33,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "agility": 5.0,
+        "armor": 95.0,
+        "axe_skill": 7.0,
+        "stamina": 6.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:13404",
+    "first": "classic_era:13404",
+    "second": "classic_era:9375",
+    "score_delta": 80.03,
+    "scores": {
+      "classic_era:13404": 93.83,
+      "classic_era:9375": 13.8
+    },
+    "component_deltas": {
+      "stat:hit": 63.7,
+      "stat:crit": 30.13,
+      "stat:agility": -13.8
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Mask of the Unforgiven: 1% crit x 30.13 + 2% hit x 31.85 = 93.83.",
+    "Expert Goldminer's Helmet: 5 Agility x 2.76 = 13.8; axe skill and Stamina not valued."
+  ],
+  "review": "Hit and crit are a cat's best stats.",
+  "reviewed": "2026-10-07"
+}

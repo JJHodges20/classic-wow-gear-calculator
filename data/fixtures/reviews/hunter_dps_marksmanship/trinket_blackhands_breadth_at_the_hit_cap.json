@@ -1,0 +1,139 @@
+{
+  "title": "Blackhand's Breadth over Drake Fang Talisman at the hit cap",
+  "question": "The same choice with 9% hit.",
+  "profile": {
+    "id": "hunter_dps_marksmanship",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "hunter",
+    "role": "ranged_dps",
+    "profile_id": "hunter_dps_marksmanship",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 9.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19406",
+        "vmangos": "19406"
+      },
+      "id": "classic_era:19406",
+      "item_level": 75,
+      "name": "Drake Fang Talisman",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "attack_power": 56.0,
+        "dodge": 1.0,
+        "hit": 2.0,
+        "ranged_attack_power": 56.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "13965",
+        "vmangos": "13965"
+      },
+      "id": "classic_era:13965",
+      "item_level": 63,
+      "name": "Blackhand's Breadth",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 0,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "crit": 2.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:13965",
+    "first": "classic_era:13965",
+    "second": "classic_era:19406",
+    "score_delta": 8.0,
+    "scores": {
+      "classic_era:13965": 64.0,
+      "classic_era:19406": 56.0
+    },
+    "component_deltas": {
+      "stat:crit": 64.0,
+      "stat:ranged_attack_power": -56.0,
+      "stat:hit": 0.0
+    },
+    "capped_stats": {
+      "classic_era:19406": {
+        "hit": {
+          "cap": 9.0,
+          "before": 9.0,
+          "after": 11.0,
+          "counted_amount": 0.0,
+          "wasted_amount": 2.0
+        }
+      }
+    },
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Drake Fang Talisman: 56 + 0 for hit past the cap = 56.",
+    "Blackhand's Breadth: 64."
+  ],
+  "review": "Capped hit is wasted; crit takes over.",
+  "reviewed": "2026-10-07"
+}

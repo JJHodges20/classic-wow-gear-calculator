@@ -1,0 +1,132 @@
+{
+  "title": "Master Dragonslayer's Medallion over Mark of Fordring",
+  "question": "A bear tank chooses a neck.",
+  "profile": {
+    "id": "druid_tank_bear",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "druid",
+    "role": "tank",
+    "profile_id": "druid_tank_bear",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19383",
+        "vmangos": "19383"
+      },
+      "id": "classic_era:19383",
+      "item_level": 83,
+      "name": "Master Dragonslayer's Medallion",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "neck",
+      "stats": {
+        "agility": 14.0,
+        "defense": 7.0,
+        "stamina": 24.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "15411",
+        "vmangos": "15411"
+      },
+      "id": "classic_era:15411",
+      "item_level": 63,
+      "name": "Mark of Fordring",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 0,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "neck",
+      "stats": {
+        "attack_power": 26.0,
+        "crit": 1.0,
+        "ranged_attack_power": 26.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19383",
+    "first": "classic_era:19383",
+    "second": "classic_era:15411",
+    "score_delta": 35.21,
+    "scores": {
+      "classic_era:19383": 57.18,
+      "classic_era:15411": 21.97
+    },
+    "component_deltas": {
+      "stat:stamina": 24.0,
+      "stat:agility": 19.18,
+      "stat:defense": 14.0,
+      "stat:attack_power": -13.0,
+      "stat:crit": -8.97
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Master Dragonslayer's Medallion: 14 Agility x 1.37 = 19.18; 7 Defense x 2 = 14; 24 Stamina = 24. Total 57.18.",
+    "Mark of Fordring: 26 attack power x 0.5 = 13; 1% crit x 8.97 = 8.97. Total 21.97."
+  ],
+  "review": "The tank neck wins on Stamina, Agility and Defense.",
+  "reviewed": "2026-10-07"
+}

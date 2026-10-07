@@ -1,0 +1,143 @@
+{
+  "title": "Gauntlets of Ten Storms over Earthfury Gauntlets",
+  "question": "A Restoration shaman compares tier 2 and tier 1 gloves.",
+  "profile": {
+    "id": "shaman_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "healer",
+    "profile_id": "shaman_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16948",
+        "vmangos": "16948"
+      },
+      "id": "classic_era:16948",
+      "item_level": 76,
+      "name": "Gauntlets of Ten Storms",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "216",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 301.0,
+        "healing_power": 15.0,
+        "intellect": 17.0,
+        "mp5": 6.0,
+        "shadow_resistance": 10.0,
+        "spell_power": 8.0,
+        "spirit": 13.0,
+        "stamina": 15.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16839",
+        "vmangos": "16839"
+      },
+      "id": "classic_era:16839",
+      "item_level": 66,
+      "name": "Earthfury Gauntlets",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "207",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 264.0,
+        "fire_resistance": 7.0,
+        "intellect": 13.0,
+        "spell_crit": 1.0,
+        "spell_power": 9.0,
+        "spirit": 15.0,
+        "stamina": 14.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16948",
+    "first": "classic_era:16948",
+    "second": "classic_era:16839",
+    "score_delta": 68.8,
+    "scores": {
+      "classic_era:16948": 126.4,
+      "classic_era:16839": 57.6
+    },
+    "component_deltas": {
+      "stat:mp5": 66.0,
+      "stat:healing_power": 15.0,
+      "stat:intellect": 8.8,
+      "stat:spell_crit": -20.0,
+      "stat:spell_power": -1.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Gauntlets of Ten Storms: 15 healing + 17 x 2.2 = 37.4 + 6 x 11 = 66 + 8 = 126.4.",
+    "Earthfury Gauntlets: 13 x 2.2 = 28.6 + 1% crit x 20 + 9 = 57.6."
+  ],
+  "review": "Tier 2 over tier 1.",
+  "reviewed": "2026-10-07"
+}

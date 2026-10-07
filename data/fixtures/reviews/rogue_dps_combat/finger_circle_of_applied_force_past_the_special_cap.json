@@ -1,0 +1,140 @@
+{
+  "title": "Circle of Applied Force over Band of Accuria past the special-attack cap",
+  "question": "The same choice with 4% hit from gear.",
+  "profile": {
+    "id": "rogue_dps_combat",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "rogue",
+    "role": "melee_dps",
+    "profile_id": "rogue_dps_combat",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "17063",
+        "vmangos": "17063"
+      },
+      "id": "classic_era:17063",
+      "item_level": 78,
+      "name": "Band of Accuria",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "agility": 16.0,
+        "hit": 2.0,
+        "stamina": 10.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19432",
+        "vmangos": "19432"
+      },
+      "id": "classic_era:19432",
+      "item_level": 75,
+      "name": "Circle of Applied Force",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "agility": 22.0,
+        "stamina": 9.0,
+        "strength": 12.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19432",
+    "first": "classic_era:19432",
+    "second": "classic_era:17063",
+    "score_delta": 6.6,
+    "scores": {
+      "classic_era:19432": 55.0,
+      "classic_era:17063": 48.4
+    },
+    "component_deltas": {
+      "stat:agility": 11.4,
+      "stat:strength": 13.2,
+      "stat:hit": -18.0
+    },
+    "capped_stats": {
+      "classic_era:17063": {
+        "hit": {
+          "cap": 4.0,
+          "before": 4.0,
+          "after": 6.0,
+          "counted_amount": 1.0,
+          "wasted_amount": 1.0
+        }
+      }
+    },
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Band of Accuria: 30.4 + 2% hit past the special cap, at half value until the dual-wield cap: 2 x 18 x 0.5 = 18. Total 48.4.",
+    "Circle of Applied Force: 55."
+  ],
+  "review": "Past the special-attack cap hit only helps white hits: the pair reverses.",
+  "reviewed": "2026-10-07"
+}

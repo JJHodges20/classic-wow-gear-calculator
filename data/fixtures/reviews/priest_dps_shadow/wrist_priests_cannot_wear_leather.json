@@ -1,0 +1,136 @@
+{
+  "title": "Bracers of Arcane Accuracy, because priests cannot wear leather",
+  "question": "A Shadow priest compares two caster bracers.",
+  "profile": {
+    "id": "priest_dps_shadow",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 5,
+    "level": 60,
+    "class_name": "priest",
+    "role": "caster_dps",
+    "profile_id": "priest_dps_shadow",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 3.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "21594",
+        "vmangos": "21594"
+      },
+      "id": "classic_era:21594",
+      "item_level": 88,
+      "name": "Bracers of the Fallen Son",
+      "on_use_effects": [],
+      "phase": 5,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "wrist",
+      "stats": {
+        "armor": 111.0,
+        "intellect": 15.0,
+        "spell_hit": 1.0,
+        "spell_power": 27.0,
+        "stamina": 10.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19374",
+        "vmangos": "19374"
+      },
+      "id": "classic_era:19374",
+      "item_level": 75,
+      "name": "Bracers of Arcane Accuracy",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "wrist",
+      "stats": {
+        "armor": 50.0,
+        "intellect": 12.0,
+        "spell_hit": 1.0,
+        "spell_power": 21.0,
+        "stamina": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:19374",
+    "first": "classic_era:19374",
+    "second": "classic_era:21594",
+    "score_delta": -6.0,
+    "scores": {
+      "classic_era:19374": 36.0,
+      "classic_era:21594": 42.0
+    },
+    "component_deltas": {
+      "stat:spell_power": -6.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:21594": [
+        "Priests cannot wear leather armor"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Bracers of the Fallen Son: 27 + 1% hit x 15 = 42; Intellect and Stamina not valued.",
+    "Bracers of Arcane Accuracy: 21 + 15 = 36."
+  ],
+  "review": "The leather bracers would be better, but priests wear cloth only.",
+  "reviewed": "2026-10-07"
+}

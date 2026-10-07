@@ -1,0 +1,144 @@
+{
+  "title": "Earthfury Vestments, the only usable chest",
+  "question": "A Restoration shaman compares the paladin and shaman tier 1 chests.",
+  "profile": {
+    "id": "shaman_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "healer",
+    "profile_id": "shaman_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "paladin"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16853",
+        "vmangos": "16853"
+      },
+      "id": "classic_era:16853",
+      "item_level": 66,
+      "name": "Lawbringer Chestguard",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "208",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 749.0,
+        "fire_resistance": 10.0,
+        "healing_power": 22.0,
+        "intellect": 21.0,
+        "spirit": 13.0,
+        "stamina": 26.0,
+        "strength": 8.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16841",
+        "vmangos": "16841"
+      },
+      "id": "classic_era:16841",
+      "item_level": 66,
+      "name": "Earthfury Vestments",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "207",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 422.0,
+        "fire_resistance": 10.0,
+        "healing_power": 22.0,
+        "intellect": 27.0,
+        "spell_crit": 1.0,
+        "spirit": 13.0,
+        "stamina": 17.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:16841",
+    "first": "classic_era:16841",
+    "second": "classic_era:16853",
+    "score_delta": 33.2,
+    "scores": {
+      "classic_era:16841": 101.4,
+      "classic_era:16853": 68.2
+    },
+    "component_deltas": {
+      "stat:intellect": 13.2,
+      "stat:spell_crit": 20.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:16853": [
+        "Restricted to Paladin",
+        "Shamans cannot wear plate armor"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Earthfury Vestments: 22 + 27 x 2.2 = 59.4 + 1% crit x 20 = 101.4.",
+    "Lawbringer Chestguard: 22 + 21 x 2.2 = 46.2 = 68.2."
+  ],
+  "review": "The shaman's own chest wins and the paladin plate is not usable.",
+  "reviewed": "2026-10-07"
+}

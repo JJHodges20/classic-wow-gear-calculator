@@ -1,0 +1,52 @@
+# Restoration (raid) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: shaman_healer_resto
+version: 1.0.0
+label: Restoration (raid)
+class_name: shaman
+role: healer
+specialization: Restoration
+summary: A Chain Heal shaman in raids, valued in +healing.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: healing equivalents (+heal)
+validation_status: draft
+stat_weights:
+- stat: healing_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: spell_power
+  weight: 1.0
+  basis: derived
+  note: Damage-and-healing spell power counts fully as healing.
+- stat: mp5
+  weight: 11.0
+  basis: sourced
+  sources:
+  - jelly_shaman
+  note: '"+11 healing = +5 int = +1 mp5".'
+- stat: intellect
+  weight: 2.2
+  basis: sourced
+  sources:
+  - jelly_shaman
+  note: The source's whole value; no crit conversion is added.
+- stat: spell_crit
+  weight: 20.0
+  basis: assumption
+  note: The low end of a "20+" healing per 1% crit in Wowhead's restoration shaman guide (Woah); the
+    page address was not recorded.
+assumptions:
+- 'Long raid fights: mana per 5 is worth far more than for a priest.'
+- Spirit is not valued.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: jelly_shaman
+  title: agentmerlin/vanilla-shaman-guide (Jelly, Kronos 2017)
+  url: https://github.com/agentmerlin/vanilla-shaman-guide
+  retrieved: '2026-10-07'

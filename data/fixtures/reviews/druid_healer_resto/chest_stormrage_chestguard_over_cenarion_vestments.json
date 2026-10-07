@@ -1,0 +1,143 @@
+{
+  "title": "Stormrage Chestguard over Cenarion Vestments",
+  "question": "A Restoration druid compares tier 2 and tier 1 chests.",
+  "profile": {
+    "id": "druid_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "druid",
+    "role": "healer",
+    "profile_id": "druid_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "druid"
+      ],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16897",
+        "vmangos": "16897"
+      },
+      "id": "classic_era:16897",
+      "item_level": 76,
+      "name": "Stormrage Chestguard",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "214",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 225.0,
+        "fire_resistance": 10.0,
+        "healing_power": 42.0,
+        "intellect": 25.0,
+        "nature_resistance": 10.0,
+        "spell_crit": 1.0,
+        "spirit": 17.0,
+        "stamina": 20.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "druid"
+      ],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16833",
+        "vmangos": "16833"
+      },
+      "id": "classic_era:16833",
+      "item_level": 66,
+      "name": "Cenarion Vestments",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "205",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 200.0,
+        "fire_resistance": 10.0,
+        "healing_power": 22.0,
+        "intellect": 24.0,
+        "mp5": 3.0,
+        "spirit": 16.0,
+        "stamina": 23.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16897",
+    "first": "classic_era:16897",
+    "second": "classic_era:16833",
+    "score_delta": 21.7615,
+    "scores": {
+      "classic_era:16897": 67.3455,
+      "classic_era:16833": 45.584
+    },
+    "component_deltas": {
+      "stat:healing_power": 20.0,
+      "stat:spell_crit": 10.0,
+      "stat:mp5": -9.0,
+      "stat:spirit": 0.4615,
+      "stat:intellect": 0.3
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Stormrage Chestguard: 42 healing; 17 Spirit x 0.4615 = 7.8455; 25 Intellect x 0.3 = 7.5; 1% crit x 10. Total 67.3455.",
+    "Cenarion Vestments: 22; 16 x 0.4615 = 7.384; 24 x 0.3 = 7.2; 3 mana per 5 x 3 = 9. Total 45.584."
+  ],
+  "review": "Tier 2 over tier 1: 20 more healing and 1% crit.",
+  "reviewed": "2026-10-07"
+}

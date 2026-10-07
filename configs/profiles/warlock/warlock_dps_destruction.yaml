@@ -1,0 +1,72 @@
+# Destruction (Shadow Bolt) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: warlock_dps_destruction
+version: 1.0.0
+label: Destruction (Shadow Bolt)
+class_name: warlock
+role: caster_dps
+specialization: Destruction
+summary: A Shadow Bolt warlock in raids, valued in shadow damage.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: spell damage equivalents (SP)
+validation_status: draft
+stat_weights:
+- stat: spell_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: spell_damage
+  weight: 1.0
+  basis: derived
+  note: Damage-only spell power counts fully.
+- stat: shadow_spell_power
+  weight: 1.0
+  basis: derived
+  note: Shadow Bolt is a shadow spell.
+- stat: spell_hit
+  weight: 12.73
+  basis: sourced
+  sources:
+  - warlockr
+- stat: spell_crit
+  weight: 14.08
+  basis: sourced
+  sources:
+  - warlockr
+- stat: intellect
+  weight: 0.36
+  basis: sourced
+  sources:
+  - warlockr
+  note: The source's whole value, crit and mana.
+- stat: mp5
+  weight: 0.27
+  basis: sourced
+  sources:
+  - warlockr
+hard_caps:
+- stat: spell_hit
+  cap:
+    ruleset_cap: spell_hit
+  note: 'Suppression helps only Affliction spells: 16% from gear for Shadow Bolt.'
+  sources:
+  - suppression
+assumptions:
+- Values from a regression of simulated damage.
+- Fire spell damage is not valued (a Shadow Bolt build).
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: warlockr
+  title: 'cphaarmeyer/warlockr: warlock stat weights by simulation regression'
+  url: https://github.com/cphaarmeyer/warlockr
+  retrieved: '2026-10-07'
+  note: Intellect 0.36, crit 14.08, hit 12.73, mana per 5 0.27 spell damage.
+- id: suppression
+  title: 'warcraft.wiki.gg: Suppression (warlock talent)'
+  url: https://warcraft.wiki.gg/wiki/Suppression_(warlock_talent)
+  retrieved: '2026-10-07'

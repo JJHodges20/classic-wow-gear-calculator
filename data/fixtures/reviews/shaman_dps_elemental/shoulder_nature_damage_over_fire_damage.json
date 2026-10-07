@@ -1,0 +1,132 @@
+{
+  "title": "Deep Earth Spaulders over Mantle of Phrenic Power",
+  "question": "An Elemental shaman compares nature and fire damage shoulders.",
+  "profile": {
+    "id": "shaman_dps_elemental",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 5,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "caster_dps",
+    "profile_id": "shaman_dps_elemental",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18829",
+        "vmangos": "18829"
+      },
+      "id": "classic_era:18829",
+      "item_level": 71,
+      "name": "Deep Earth Spaulders",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "armor": 399.0,
+        "intellect": 12.0,
+        "nature_spell_power": 40.0,
+        "spirit": 7.0,
+        "stamina": 11.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "21686",
+        "vmangos": "21686"
+      },
+      "id": "classic_era:21686",
+      "item_level": 76,
+      "name": "Mantle of Phrenic Power",
+      "on_use_effects": [],
+      "phase": 5,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shoulder",
+      "stats": {
+        "armor": 87.0,
+        "fire_spell_power": 33.0,
+        "intellect": 20.0,
+        "stamina": 20.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:18829",
+    "first": "classic_era:18829",
+    "second": "classic_era:21686",
+    "score_delta": 38.88,
+    "scores": {
+      "classic_era:18829": 41.68,
+      "classic_era:21686": 2.8
+    },
+    "component_deltas": {
+      "stat:nature_spell_power": 40.0,
+      "stat:intellect": -1.12
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Deep Earth Spaulders: 40 nature damage + 12 x 0.14 = 1.68. Total 41.68.",
+    "Mantle of Phrenic Power: fire damage not valued; 20 x 0.14 = 2.8."
+  ],
+  "review": "Lightning Bolt is nature: fire damage does not help it.",
+  "reviewed": "2026-10-07"
+}

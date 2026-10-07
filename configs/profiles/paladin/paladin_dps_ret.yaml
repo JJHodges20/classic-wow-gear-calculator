@@ -1,0 +1,74 @@
+# Retribution (two-hander) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: paladin_dps_ret
+version: 1.0.0
+label: Retribution (two-hander)
+class_name: paladin
+role: melee_dps
+specialization: Retribution
+summary: A two-handed Retribution paladin in raids, valued in attack power.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: attack power equivalents (AP)
+validation_status: draft
+stat_weights:
+- stat: attack_power
+  weight: 1.0
+  basis: derived
+  note: The score unit. Strength reaches it through the ruleset's 2 attack power per Strength.
+- stat: agility
+  weight: 1.0
+  basis: sourced
+  sources:
+  - su_ret_ep
+  note: The source's value; through crit alone (20 Agility per 1%) it would be 0.75.
+- stat: crit
+  weight: 15.0
+  basis: sourced
+  sources:
+  - su_ret_ep
+- stat: hit
+  weight: 20.0
+  basis: sourced
+  sources:
+  - su_ret_ep
+- stat: melee_weapon_dps
+  weight: 14.0
+  basis: mechanic
+  sources:
+  - icy_veins_fury
+  note: 14 attack power = 1 weapon damage per second.
+derived_stats:
+- source: strength
+  target: attack_power
+hard_caps:
+- stat: hit
+  cap:
+    ruleset_cap: melee_hit
+  note: 'One weapon has no dual-wield penalty: past this cap hit is worth nothing.'
+weapon_preferences:
+  preferred_types:
+  - two_handed_sword
+  - two_handed_axe
+  - two_handed_mace
+  - polearm
+  note: Slow two-handers suit Seal of Command; speed is not valued in version 1.
+assumptions:
+- Spell damage is not valued (one source puts it near 1.36 attack power with a one-hander).
+- Seal of Command and other procs are not valued.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: su_ret_ep
+  title: 'Sixty Upgrades: Retribution EP preset (Classic Era gear planner)'
+  url: https://sixtyupgrades.com/
+  retrieved: '2026-10-07'
+  note: Strength 2, Agility 1, crit 15, hit 20.
+- id: icy_veins_fury
+  title: 'Icy Veins: Fury Warrior DPS stat priority (WoW Classic, November 2024)'
+  url: https://www.icy-veins.com/wow-classic/fury-warrior-dps-pve-stat-priority
+  retrieved: '2026-10-07'
+  note: 'States the attack power rule: 14 attack power = 1 weapon damage per second.'

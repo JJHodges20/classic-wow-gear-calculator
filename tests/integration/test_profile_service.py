@@ -48,7 +48,7 @@ class TestCustomProfiles:
         workspace.profile_service.save_custom(FURY, "My Fury", fury_weights(workspace, crit=30))
         calculator = workspace.calculator
         offered = calculator.profiles("classic_era", ClassName.WARRIOR, Role.MELEE_DPS)
-        assert [p.id for p in offered] == ["custom_my_fury", FURY]
+        assert [p.id for p in offered] == ["custom_my_fury", "warrior_dps_arms", FURY]
         context = calculator.context("custom_my_fury", current_stats={Stat.HIT: 5})
         result = calculator.compare_ids([LIONHEART, MASK], context)
         # Lionheart Helm: 36 from Strength, 2% crit x 30, 2% hit x 20 = 136; the mask 30 + 40.

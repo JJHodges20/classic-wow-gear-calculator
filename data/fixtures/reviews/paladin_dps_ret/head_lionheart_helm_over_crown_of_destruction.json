@@ -1,0 +1,136 @@
+{
+  "title": "Lionheart Helm over Crown of Destruction below the hit cap",
+  "question": "A Retribution paladin with 4% hit chooses a helm.",
+  "profile": {
+    "id": "paladin_dps_ret",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "melee_dps",
+    "profile_id": "paladin_dps_ret",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12640",
+        "vmangos": "12640"
+      },
+      "id": "classic_era:12640",
+      "item_level": 61,
+      "name": "Lionheart Helm",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 565.0,
+        "crit": 2.0,
+        "hit": 2.0,
+        "strength": 18.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18817",
+        "vmangos": "18817"
+      },
+      "id": "classic_era:18817",
+      "item_level": 76,
+      "name": "Crown of Destruction",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 392.0,
+        "attack_power": 44.0,
+        "crit": 2.0,
+        "fire_resistance": 10.0,
+        "intellect": 9.0,
+        "ranged_attack_power": 44.0,
+        "spirit": 9.0,
+        "stamina": 23.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:12640",
+    "first": "classic_era:12640",
+    "second": "classic_era:18817",
+    "score_delta": 32.0,
+    "scores": {
+      "classic_era:12640": 106.0,
+      "classic_era:18817": 74.0
+    },
+    "component_deltas": {
+      "stat:hit": 40.0,
+      "derived:strength->attack_power": 36.0,
+      "stat:attack_power": -44.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Lionheart Helm: 18 Strength x 2 = 36; 2% crit x 15 = 30; 2% hit x 20 = 40. Total 106.",
+    "Crown of Destruction: 44 + 2% crit x 15 = 30. Total 74."
+  ],
+  "review": "The same crit; hit and Strength outweigh attack power below the cap.",
+  "reviewed": "2026-10-07"
+}

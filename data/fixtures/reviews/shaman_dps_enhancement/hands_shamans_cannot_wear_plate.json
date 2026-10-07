@@ -1,0 +1,136 @@
+{
+  "title": "Devilsaur Gauntlets, because shamans cannot wear plate",
+  "question": "An Enhancement shaman compares leather and plate gloves.",
+  "profile": {
+    "id": "shaman_dps_enhancement",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "melee_dps",
+    "profile_id": "shaman_dps_enhancement",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19143",
+        "vmangos": "19143"
+      },
+      "id": "classic_era:19143",
+      "item_level": 69,
+      "name": "Flameguard Gauntlets",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 488.0,
+        "attack_power": 54.0,
+        "crit": 1.0,
+        "ranged_attack_power": 54.0,
+        "stamina": 13.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "15063",
+        "vmangos": "15063"
+      },
+      "id": "classic_era:15063",
+      "item_level": 58,
+      "name": "Devilsaur Gauntlets",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 53,
+      "ruleset": "classic_era",
+      "set_id": "143",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 103.0,
+        "attack_power": 28.0,
+        "crit": 1.0,
+        "ranged_attack_power": 28.0,
+        "stamina": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:15063",
+    "first": "classic_era:15063",
+    "second": "classic_era:19143",
+    "score_delta": -26.0,
+    "scores": {
+      "classic_era:15063": 51.38,
+      "classic_era:19143": 77.38
+    },
+    "component_deltas": {
+      "stat:attack_power": -26.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:19143": [
+        "Shamans cannot wear plate armor"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Flameguard Gauntlets: 54 + 23.38 = 77.38.",
+    "Devilsaur Gauntlets: 28 + 23.38 = 51.38."
+  ],
+  "review": "Shamans wear mail at most.",
+  "reviewed": "2026-10-07"
+}

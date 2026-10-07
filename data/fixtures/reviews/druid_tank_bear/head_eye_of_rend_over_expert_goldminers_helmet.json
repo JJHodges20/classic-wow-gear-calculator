@@ -1,0 +1,134 @@
+{
+  "title": "Eye of Rend over Expert Goldminer's Helmet",
+  "question": "A bear tank chooses a leather helm.",
+  "profile": {
+    "id": "druid_tank_bear",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "druid",
+    "role": "tank",
+    "profile_id": "druid_tank_bear",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12587",
+        "vmangos": "12587"
+      },
+      "id": "classic_era:12587",
+      "item_level": 63,
+      "name": "Eye of Rend",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 58,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 143.0,
+        "crit": 2.0,
+        "stamina": 7.0,
+        "strength": 13.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "9375",
+        "vmangos": "9375"
+      },
+      "id": "classic_era:9375",
+      "item_level": 38,
+      "name": "Expert Goldminer's Helmet",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 33,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "agility": 5.0,
+        "armor": 95.0,
+        "axe_skill": 7.0,
+        "stamina": 6.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:12587",
+    "first": "classic_era:12587",
+    "second": "classic_era:9375",
+    "score_delta": 36.13,
+    "scores": {
+      "classic_era:12587": 70.83,
+      "classic_era:9375": 34.7
+    },
+    "component_deltas": {
+      "stat:crit": 17.94,
+      "stat:strength": 13.0,
+      "stat:armor": 11.04,
+      "stat:agility": -6.85,
+      "stat:stamina": 1.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Eye of Rend: 143 x 0.23 = 32.89; 2% crit x 8.97 = 17.94; 7 Stamina; 13 Strength. Total 70.83.",
+    "Expert Goldminer's Helmet: 5 Agility x 1.37 = 6.85; 95 x 0.23 = 21.85; 6 Stamina; axe skill not valued. Total 34.7."
+  ],
+  "review": "More armor, crit and Strength.",
+  "reviewed": "2026-10-07"
+}

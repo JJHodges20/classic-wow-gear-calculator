@@ -1,0 +1,60 @@
+# Enhancement (two-hander) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: shaman_dps_enhancement
+version: 1.0.0
+label: Enhancement (two-hander)
+class_name: shaman
+role: melee_dps
+specialization: Enhancement
+summary: A two-handed Enhancement shaman in raids, valued in attack power.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: attack power equivalents (AP)
+validation_status: draft
+stat_weights:
+- stat: attack_power
+  weight: 1.0
+  basis: derived
+  note: The score unit. Strength reaches it through the ruleset's 2 attack power per Strength.
+- stat: agility
+  weight: 1.17
+  basis: sourced
+  sources:
+  - su_enhancement_ep
+- stat: crit
+  weight: 23.38
+  basis: sourced
+  sources:
+  - su_enhancement_ep
+- stat: hit
+  weight: 24.0
+  basis: sourced
+  sources:
+  - su_enhancement_ep
+- stat: melee_weapon_dps
+  weight: 14.0
+  basis: sourced
+  sources:
+  - su_enhancement_ep
+derived_stats:
+- source: strength
+  target: attack_power
+hard_caps:
+- stat: hit
+  cap:
+    ruleset_cap: melee_hit
+  note: One weapon has no dual-wield penalty; no talent hit is assumed.
+assumptions:
+- No talent hit is assumed; Nature's Guidance would lower the cap by 3%.
+- Windfury and other procs are not valued.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: su_enhancement_ep
+  title: 'Sixty Upgrades: Enhancement EP preset (Classic Era gear planner)'
+  url: https://sixtyupgrades.com/
+  retrieved: '2026-10-07'
+  note: Strength 2, Agility 1.17, crit 23.38, hit 24, weapon DPS 14.

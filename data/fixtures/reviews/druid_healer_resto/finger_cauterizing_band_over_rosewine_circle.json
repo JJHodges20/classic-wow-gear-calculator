@@ -1,0 +1,127 @@
+{
+  "title": "Cauterizing Band over Rosewine Circle",
+  "question": "A Restoration druid chooses a ring.",
+  "profile": {
+    "id": "druid_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "druid",
+    "role": "healer",
+    "profile_id": "druid_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19140",
+        "vmangos": "19140"
+      },
+      "id": "classic_era:19140",
+      "item_level": 71,
+      "name": "Cauterizing Band",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "healing_power": 46.0,
+        "intellect": 12.0,
+        "stamina": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "13178",
+        "vmangos": "13178"
+      },
+      "id": "classic_era:13178",
+      "item_level": 60,
+      "name": "Rosewine Circle",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 55,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "healing_power": 29.0,
+        "mp5": 5.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19140",
+    "first": "classic_era:19140",
+    "second": "classic_era:13178",
+    "score_delta": 5.6,
+    "scores": {
+      "classic_era:19140": 49.6,
+      "classic_era:13178": 44.0
+    },
+    "component_deltas": {
+      "stat:healing_power": 17.0,
+      "stat:intellect": 3.6,
+      "stat:mp5": -15.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Cauterizing Band: 46 + 12 Intellect x 0.3 = 49.6.",
+    "Rosewine Circle: 29 + 5 mana per 5 x 3 = 44."
+  ],
+  "review": "Healing wins, narrowly against this druid's mana value.",
+  "reviewed": "2026-10-07"
+}

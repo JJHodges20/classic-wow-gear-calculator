@@ -1,0 +1,56 @@
+# Restoration (raid) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: druid_healer_resto
+version: 1.0.0
+label: Restoration (raid)
+class_name: druid
+role: healer
+specialization: Restoration
+summary: A raid-healing druid, valued in +healing, with values for Blackwing Lair gear.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: healing equivalents (+heal)
+validation_status: draft
+stat_weights:
+- stat: healing_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: spell_power
+  weight: 1.0
+  basis: derived
+  note: Damage-and-healing spell power counts fully as healing.
+- stat: spirit
+  weight: 0.4615
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+- stat: intellect
+  weight: 0.3
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+  note: The source's whole value; no crit conversion is added.
+- stat: mp5
+  weight: 3.0
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+- stat: spell_crit
+  weight: 10.0
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+assumptions:
+- Blackwing Lair values; the source's Naxxramas values are healing 1.2, Spirit 0.225, Intellect 0.3,
+  mana per 5 3 and crit 12.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: taladril_druid_gear
+  title: 'Taladril: List of Druid Gear, stat values (Google spreadsheet)'
+  url: https://docs.google.com/spreadsheets/d/1wGBasFY8fFGpBtiD1TAUBB99wxboCSVh5MW_6b_z0oU/pubhtml
+  retrieved: '2026-10-07'

@@ -14,7 +14,7 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | 5 | Item repository + first lookup provider + cache | Done (2026-10-07) |
 | 6 | Item comparison service + explainable breakdown | Done (2026-10-07) |
 | 7 | Streamlit shell + design system + calculator page | Done (2026-10-07) |
-| 8 | Compare, Profiles, Item Database, and Data Health pages | Pages done; the class and role matrix profiles in progress |
+| 8 | Compare, Profiles, Item Database, and Data Health pages | Done (2026-10-07), with a profile for every class and role in the roadmap's matrix |
 | 9 | Saved character profile + full gear-set context | Not started |
 | 10 | V1 audit: correctness, architecture, UX, tests, docs | Not started |
 
@@ -31,7 +31,7 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | Traceability | Result records ruleset/profile version and item source | Met: every result, shown in the Raw math tab and on item cards (M3, M6, M7) |
 | Reliability | Provider failure does not prevent manual comparison or cached-item use | Met: services and app, with a UI test for a failing provider (M5-M7) |
 | UI | Core pages are visually consistent, responsive, and handle empty/error/loading states | Met: Calculator, Compare, Build profiles, Item database and Data health (M7, M8) |
-| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | 515 tests pass, with 20 reviewed comparisons and the roadmap's UI tests (M7) |
+| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | 785 tests pass, with 100 hand-reviewed comparisons (five per profile) and the roadmap's UI tests (M8) |
 
 ## Later versions (not in the build plan)
 

@@ -1,0 +1,148 @@
+{
+  "title": "Brutality Blade, because rogues cannot use axes",
+  "question": "A Combat rogue sees Crul'shorukh drop.",
+  "profile": {
+    "id": "rogue_dps_combat",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "rogue",
+    "role": "melee_dps",
+    "profile_id": "rogue_dps_combat",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 2.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19363",
+        "vmangos": "19363"
+      },
+      "id": "classic_era:19363",
+      "item_level": 81,
+      "name": "Crul'shorukh, Edge of Chaos",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "one_hand",
+      "stats": {
+        "attack_power": 36.0,
+        "ranged_attack_power": 36.0,
+        "stamina": 13.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 188.0,
+        "min_damage": 101.0,
+        "speed": 2.3
+      },
+      "weapon_type": "axe"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18832",
+        "vmangos": "18832"
+      },
+      "id": "classic_era:18832",
+      "item_level": 70,
+      "name": "Brutality Blade",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "one_hand",
+      "stats": {
+        "agility": 9.0,
+        "crit": 1.0,
+        "strength": 9.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 168.0,
+        "min_damage": 90.0,
+        "speed": 2.5
+      },
+      "weapon_type": "sword"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:18832",
+    "first": "classic_era:18832",
+    "second": "classic_era:19363",
+    "score_delta": -143.165217391,
+    "scores": {
+      "classic_era:18832": 772.4,
+      "classic_era:19363": 915.565217391
+    },
+    "component_deltas": {
+      "weapon:melee_weapon_dps": -157.165217391,
+      "stat:agility": 17.1,
+      "stat:strength": 9.9,
+      "stat:crit": 23.0,
+      "stat:attack_power": -36.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:19363": [
+        "Rogues cannot use axes"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Crul'shorukh: (101 + 188) / 2 / 2.3 = 62.8261 x 14 = 879.5652 + 36 attack power. Total 915.5652.",
+    "Brutality Blade: 772.4."
+  ],
+  "review": "The axe would be better, but rogues use daggers, swords, maces and fist weapons.",
+  "reviewed": "2026-10-07"
+}

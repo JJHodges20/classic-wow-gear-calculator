@@ -1,0 +1,142 @@
+{
+  "title": "Flameguard Gauntlets, the only usable pair",
+  "question": "A Retribution paladin compares two plate gloves.",
+  "profile": {
+    "id": "paladin_dps_ret",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "melee_dps",
+    "profile_id": "paladin_dps_ret",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19143",
+        "vmangos": "19143"
+      },
+      "id": "classic_era:19143",
+      "item_level": 69,
+      "name": "Flameguard Gauntlets",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 488.0,
+        "attack_power": 54.0,
+        "crit": 1.0,
+        "ranged_attack_power": 54.0,
+        "stamina": 13.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "warrior"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16863",
+        "vmangos": "16863"
+      },
+      "id": "classic_era:16863",
+      "item_level": 66,
+      "name": "Gauntlets of Might",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "209",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 468.0,
+        "defense": 5.0,
+        "fire_resistance": 7.0,
+        "hit": 1.0,
+        "stamina": 17.0,
+        "strength": 22.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:19143",
+    "first": "classic_era:19143",
+    "second": "classic_era:16863",
+    "score_delta": 5.0,
+    "scores": {
+      "classic_era:19143": 69.0,
+      "classic_era:16863": 64.0
+    },
+    "component_deltas": {
+      "stat:attack_power": 54.0,
+      "derived:strength->attack_power": -44.0,
+      "stat:crit": 15.0,
+      "stat:hit": -20.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:16863": [
+        "Restricted to Warrior"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Flameguard Gauntlets: 54 + 1% crit x 15 = 69.",
+    "Gauntlets of Might: 22 Strength x 2 = 44 + 1% hit x 20 = 64."
+  ],
+  "review": "Flameguard would win anyway; the warrior tier gloves are not usable.",
+  "reviewed": "2026-10-07"
+}

@@ -1,0 +1,156 @@
+{
+  "title": "Spinal Reaper, because shamans cannot use two-handed swords",
+  "question": "An Enhancement shaman sees Ashkandi drop.",
+  "profile": {
+    "id": "shaman_dps_enhancement",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "melee_dps",
+    "profile_id": "shaman_dps_enhancement",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19364",
+        "vmangos": "19364"
+      },
+      "id": "classic_era:19364",
+      "item_level": 81,
+      "name": "Ashkandi, Greatsword of the Brotherhood",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "two_hand",
+      "stats": {
+        "attack_power": 86.0,
+        "ranged_attack_power": 86.0,
+        "stamina": 33.0
+      },
+      "unique": false,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 344.0,
+        "min_damage": 229.0,
+        "speed": 3.5
+      },
+      "weapon_type": "two_handed_sword"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [
+        {
+          "condition": null,
+          "cooldown_seconds": null,
+          "description": "Equip: Restores 150 mana or 20 rage when you kill a target that gives experience; this effect cannot occur more than once every 10 seconds.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "equip",
+          "value": null
+        }
+      ],
+      "external_ids": {
+        "game": "17104",
+        "vmangos": "17104"
+      },
+      "id": "classic_era:17104",
+      "item_level": 76,
+      "name": "Spinal Reaper",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "two_hand",
+      "stats": {
+        "attack_power": 34.0,
+        "ranged_attack_power": 34.0
+      },
+      "unique": false,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 305.0,
+        "min_damage": 203.0,
+        "speed": 3.4
+      },
+      "weapon_type": "two_handed_axe"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:17104",
+    "first": "classic_era:17104",
+    "second": "classic_era:19364",
+    "score_delta": -152.117647059,
+    "scores": {
+      "classic_era:17104": 1079.882352941,
+      "classic_era:19364": 1232.0
+    },
+    "component_deltas": {
+      "weapon:melee_weapon_dps": -100.117647059,
+      "stat:attack_power": -52.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:19364": [
+        "Shamans cannot use two-handed swords"
+      ]
+    },
+    "confidence": "low"
+  },
+  "hand_calculation": [
+    "Ashkandi: 1146 + 86 = 1232.",
+    "Spinal Reaper: 1079.8824."
+  ],
+  "review": "Shamans use axes, maces, staves, daggers and fist weapons, not swords.",
+  "reviewed": "2026-10-07"
+}

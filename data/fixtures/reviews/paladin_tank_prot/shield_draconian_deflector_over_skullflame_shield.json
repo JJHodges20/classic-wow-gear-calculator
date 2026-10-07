@@ -1,0 +1,154 @@
+{
+  "title": "Draconian Deflector over Skullflame Shield",
+  "question": "A Protection paladin chooses a pre-raid shield.",
+  "profile": {
+    "id": "paladin_tank_prot",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "tank",
+    "profile_id": "paladin_tank_prot",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12602",
+        "vmangos": "12602"
+      },
+      "id": "classic_era:12602",
+      "item_level": 63,
+      "name": "Draconian Deflector",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 58,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shield",
+      "stats": {
+        "armor": 2153.0,
+        "block_value": 40.0,
+        "defense": 10.0,
+        "fire_resistance": 10.0,
+        "stamina": 7.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [
+        {
+          "condition": null,
+          "cooldown_seconds": null,
+          "description": "Equip: When struck in combat has a 3% chance of stealing 35 life from target enemy.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "equip",
+          "value": null
+        },
+        {
+          "condition": null,
+          "cooldown_seconds": null,
+          "description": "Equip: When struck in combat has a 1% chance of dealing 75 to 125 Fire damage to all targets around you.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "equip",
+          "value": null
+        }
+      ],
+      "external_ids": {
+        "game": "1168",
+        "vmangos": "1168"
+      },
+      "id": "classic_era:1168",
+      "item_level": 59,
+      "name": "Skullflame Shield",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 54,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shield",
+      "stats": {
+        "armor": 2256.0,
+        "block_value": 40.0,
+        "fire_resistance": 10.0,
+        "shadow_resistance": 10.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:12602",
+    "first": "classic_era:12602",
+    "second": "classic_era:1168",
+    "score_delta": 48.44,
+    "scores": {
+      "classic_era:12602": 106.76,
+      "classic_era:1168": 58.32
+    },
+    "component_deltas": {
+      "stat:defense": 40.0,
+      "stat:stamina": 10.5,
+      "stat:armor": -2.06
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "low"
+  },
+  "hand_calculation": [
+    "Draconian Deflector: 2153 x 0.02 = 43.06; 40 block value x 0.33 = 13.2; 10 Defense x 4 = 40; 7 Stamina x 1.5 = 10.5. Total 106.76.",
+    "Skullflame Shield: 2256 x 0.02 = 45.12 + 13.2 = 58.32; its procs are not scored."
+  ],
+  "review": "Ten Defense outweighs a little armor; Skullflame's procs are not valued in version 1.",
+  "reviewed": "2026-10-07"
+}

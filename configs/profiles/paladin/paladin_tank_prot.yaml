@@ -1,0 +1,84 @@
+# Protection (survival only) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: paladin_tank_prot
+version: 1.0.0
+label: Protection (survival only)
+class_name: paladin
+role: tank
+specialization: Protection
+summary: 'A shield-tanking paladin, valued in tank points for survival only. No 1.12 source gives
+  paladin weights: this experimental profile borrows a warrior tank''s values.'
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: tank points (TP)
+validation_status: experimental
+stat_weights:
+- stat: stamina
+  weight: 1.5
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: agility
+  weight: 1.5
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: strength
+  weight: 0.225
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: armor
+  weight: 0.02
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: defense
+  weight: 4.0
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: dodge
+  weight: 10.0
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: parry
+  weight: 12.5
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: block
+  weight: 2.0
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+- stat: block_value
+  weight: 0.33
+  basis: assumption
+  sources:
+  - undertanker_tank_points
+  note: Undertanker's warrior value, applied to a paladin.
+assumptions:
+- 'No 1.12 source gives Protection paladin weights: these are a warrior tank''s survival values (Undertanker),
+  an assumption for a paladin.'
+- Threat - spell damage, holy damage, hit - is not valued in this experimental profile.
+- 'Icy Veins'' priority, for comparison: Stamina, then Defense, Strength, Agility, armor, Intellect.'
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: undertanker_tank_points
+  title: 'Twinstar forum: Tank Points by Undertanker (2016)'
+  url: https://forum.twinstar.cz/threads/tank-points-by-undertanker.115007/
+  retrieved: '2026-10-07'

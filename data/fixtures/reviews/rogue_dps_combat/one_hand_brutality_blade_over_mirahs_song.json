@@ -1,0 +1,140 @@
+{
+  "title": "Brutality Blade over Mirah's Song",
+  "question": "A Combat rogue chooses a sword.",
+  "profile": {
+    "id": "rogue_dps_combat",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "rogue",
+    "role": "melee_dps",
+    "profile_id": "rogue_dps_combat",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 2.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18832",
+        "vmangos": "18832"
+      },
+      "id": "classic_era:18832",
+      "item_level": 70,
+      "name": "Brutality Blade",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "one_hand",
+      "stats": {
+        "agility": 9.0,
+        "crit": 1.0,
+        "strength": 9.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 168.0,
+        "min_damage": 90.0,
+        "speed": 2.5
+      },
+      "weapon_type": "sword"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "15806",
+        "vmangos": "15806"
+      },
+      "id": "classic_era:15806",
+      "item_level": 61,
+      "name": "Mirah's Song",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 0,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "one_hand",
+      "stats": {
+        "agility": 9.0,
+        "strength": 9.0
+      },
+      "unique": false,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 87.0,
+        "min_damage": 57.0,
+        "speed": 1.8
+      },
+      "weapon_type": "sword"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:18832",
+    "first": "classic_era:18832",
+    "second": "classic_era:15806",
+    "score_delta": 185.4,
+    "scores": {
+      "classic_era:18832": 772.4,
+      "classic_era:15806": 587.0
+    },
+    "component_deltas": {
+      "weapon:melee_weapon_dps": 162.4,
+      "stat:crit": 23.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Brutality Blade: 51.6 x 14 = 722.4 + 9 Agility x 1.9 = 17.1 + 9 Strength x 1.1 = 9.9 + 1% crit x 23. Total 772.4.",
+    "Mirah's Song: 40 x 14 = 560 + 17.1 + 9.9 = 587."
+  ],
+  "review": "The same Strength and Agility, more damage per second and crit.",
+  "reviewed": "2026-10-07"
+}

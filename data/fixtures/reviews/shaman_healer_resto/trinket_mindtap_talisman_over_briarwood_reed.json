@@ -1,0 +1,123 @@
+{
+  "title": "Mindtap Talisman over Briarwood Reed",
+  "question": "A Restoration shaman chooses a trinket.",
+  "profile": {
+    "id": "shaman_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 2,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "healer",
+    "profile_id": "shaman_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18371",
+        "vmangos": "18371"
+      },
+      "id": "classic_era:18371",
+      "item_level": 61,
+      "name": "Mindtap Talisman",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "mp5": 11.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12930",
+        "vmangos": "12930"
+      },
+      "id": "classic_era:12930",
+      "item_level": 60,
+      "name": "Briarwood Reed",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 55,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "spell_power": 29.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:18371",
+    "first": "classic_era:18371",
+    "second": "classic_era:12930",
+    "score_delta": 92.0,
+    "scores": {
+      "classic_era:18371": 121.0,
+      "classic_era:12930": 29.0
+    },
+    "component_deltas": {
+      "stat:mp5": 121.0,
+      "stat:spell_power": -29.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Mindtap Talisman: 11 mana per 5 x 11 = 121.",
+    "Briarwood Reed: 29."
+  ],
+  "review": "This profile values mana per 5 at 11 healing: for long fights, mana wins.",
+  "reviewed": "2026-10-07"
+}

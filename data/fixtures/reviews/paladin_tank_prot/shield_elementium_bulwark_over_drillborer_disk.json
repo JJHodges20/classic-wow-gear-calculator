@@ -1,0 +1,144 @@
+{
+  "title": "Elementium Reinforced Bulwark over Drillborer Disk",
+  "question": "A Protection paladin chooses a shield.",
+  "profile": {
+    "id": "paladin_tank_prot",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "tank",
+    "profile_id": "paladin_tank_prot",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19349",
+        "vmangos": "19349"
+      },
+      "id": "classic_era:19349",
+      "item_level": 77,
+      "name": "Elementium Reinforced Bulwark",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shield",
+      "stats": {
+        "armor": 2893.0,
+        "block_value": 73.0,
+        "defense": 7.0,
+        "stamina": 23.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [
+        {
+          "condition": null,
+          "cooldown_seconds": null,
+          "description": "Equip: When struck in combat inflicts 3 Arcane damage to the attacker.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "equip",
+          "value": null
+        }
+      ],
+      "external_ids": {
+        "game": "17066",
+        "vmangos": "17066"
+      },
+      "id": "classic_era:17066",
+      "item_level": 67,
+      "name": "Drillborer Disk",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "shield",
+      "stats": {
+        "armor": 2539.0,
+        "block": 2.0,
+        "block_value": 69.0,
+        "stamina": 10.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19349",
+    "first": "classic_era:19349",
+    "second": "classic_era:17066",
+    "score_delta": 51.9,
+    "scores": {
+      "classic_era:19349": 144.45,
+      "classic_era:17066": 92.55
+    },
+    "component_deltas": {
+      "stat:defense": 28.0,
+      "stat:stamina": 19.5,
+      "stat:armor": 7.08,
+      "stat:block": -4.0,
+      "stat:block_value": 1.32
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "low"
+  },
+  "hand_calculation": [
+    "Elementium Reinforced Bulwark: 2893 x 0.02 = 57.86; 73 block value x 0.33 = 24.09; 7 Defense x 4 = 28; 23 Stamina x 1.5 = 34.5. Total 144.45.",
+    "Drillborer Disk: 50.78 + 2% block x 2 = 4 + 22.77 + 15 = 92.55; its damage shield is not scored."
+  ],
+  "review": "More armor, Defense and Stamina: the Blackwing Lair shield, as for a warrior.",
+  "reviewed": "2026-10-07"
+}

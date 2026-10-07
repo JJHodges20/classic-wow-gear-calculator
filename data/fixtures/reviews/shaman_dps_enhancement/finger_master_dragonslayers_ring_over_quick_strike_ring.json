@@ -1,0 +1,134 @@
+{
+  "title": "Master Dragonslayer's Ring over Quick Strike Ring",
+  "question": "An Enhancement shaman with 4% hit chooses a ring.",
+  "profile": {
+    "id": "shaman_dps_enhancement",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "melee_dps",
+    "profile_id": "shaman_dps_enhancement",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19384",
+        "vmangos": "19384"
+      },
+      "id": "classic_era:19384",
+      "item_level": 83,
+      "name": "Master Dragonslayer's Ring",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "attack_power": 48.0,
+        "hit": 1.0,
+        "ranged_attack_power": 48.0,
+        "stamina": 14.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18821",
+        "vmangos": "18821"
+      },
+      "id": "classic_era:18821",
+      "item_level": 67,
+      "name": "Quick Strike Ring",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "finger",
+      "stats": {
+        "attack_power": 30.0,
+        "crit": 1.0,
+        "ranged_attack_power": 30.0,
+        "stamina": 8.0,
+        "strength": 5.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19384",
+    "first": "classic_era:19384",
+    "second": "classic_era:18821",
+    "score_delta": 8.62,
+    "scores": {
+      "classic_era:19384": 72.0,
+      "classic_era:18821": 63.38
+    },
+    "component_deltas": {
+      "stat:hit": 24.0,
+      "stat:crit": -23.38,
+      "stat:attack_power": 18.0,
+      "derived:strength->attack_power": -10.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Master Dragonslayer's Ring: 48 + 1% hit x 24 = 72; Stamina not valued.",
+    "Quick Strike Ring: 30 + 1% crit x 23.38 + 5 Strength x 2 = 10. Total 63.38."
+  ],
+  "review": "Hit and 18 more attack power beat crit and Strength.",
+  "reviewed": "2026-10-07"
+}

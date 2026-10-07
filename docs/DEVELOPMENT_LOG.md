@@ -3,6 +3,45 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 8, part 2 - The class and role matrix profiles (2026-10-07)
+
+**Built**
+
+- Sixteen profiles, so every entry of the roadmap's initial class and role matrix has one:
+  Arms warrior; Holy paladin (raid and pre-raid); Protection and Retribution paladin; bear,
+  Restoration, cat and Balance druid; Shadow priest; Restoration, Enhancement and Elemental
+  shaman; Combat rogue; Marksmanship hunter; Destruction warlock. Every weight names its
+  basis and source (`configs/profiles/README.md` lists them); talent hit (Precision, Shadow
+  Focus) reduces the caps with a cited source.
+- Eighty more hand-reviewed comparisons, five per new profile, of real items: tier
+  progressions, hit-cap reversals for every profile with a cap, class, armor, weapon and
+  phase restrictions, two ties, and one comparison where neither item is usable. Every
+  expected number was worked out by hand first; all eighty matched the engine on the first
+  run. The same items give different answers under different profiles (Mindtap Talisman
+  loses to Briarwood Reed for a raid Holy paladin and wins before raids).
+
+**Decisions**
+
+- Where no 1.12 source gives numbers (Arms, Protection paladin), the profile borrows the
+  nearest sourced values, labels each weight an assumption and is marked experimental.
+- No Fury/Prot tank profile: no source gives its numbers, and the matrix's warrior tank is
+  covered.
+
+**Assumptions**
+
+- Each source's Intellect value is its whole worth unless the source separates crit; a few
+  talent choices are assumed and stated (Precision 5/5, Shadow Focus 5/5, no Nature's
+  Guidance or Surefooted).
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | 100 reviewed comparisons pass, five or more per profile; the full suite passes on the committed snapshot (785 tests) |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict, package and app) clean |
+| Secrets | None added |
+| UI smoke test | In the browser the context bar offers every class and, for druids, all four roles (Balance shown in the breadcrumb); the Build profiles page lists the new profiles |
+
 ## Milestone 8, part 1 - Compare, Build profiles, Item database and Data health pages (2026-10-07)
 
 **Built**

@@ -1,0 +1,141 @@
+{
+  "title": "Nemesis Skullcap over Felheart Horns",
+  "question": "A Destruction warlock compares tier 2 and tier 1 helms.",
+  "profile": {
+    "id": "warlock_dps_destruction",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "warlock",
+    "role": "caster_dps",
+    "profile_id": "warlock_dps_destruction",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "warlock"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16929",
+        "vmangos": "16929"
+      },
+      "id": "classic_era:16929",
+      "item_level": 76,
+      "name": "Nemesis Skullcap",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "212",
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 94.0,
+        "frost_resistance": 10.0,
+        "hp5": 4.0,
+        "intellect": 16.0,
+        "shadow_resistance": 10.0,
+        "spell_power": 32.0,
+        "spirit": 6.0,
+        "stamina": 26.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "warlock"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16808",
+        "vmangos": "16808"
+      },
+      "id": "classic_era:16808",
+      "item_level": 66,
+      "name": "Felheart Horns",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "203",
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 83.0,
+        "fire_resistance": 10.0,
+        "intellect": 20.0,
+        "spell_power": 20.0,
+        "spirit": 10.0,
+        "stamina": 27.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16929",
+    "first": "classic_era:16929",
+    "second": "classic_era:16808",
+    "score_delta": 10.56,
+    "scores": {
+      "classic_era:16929": 37.76,
+      "classic_era:16808": 27.2
+    },
+    "component_deltas": {
+      "stat:spell_power": 12.0,
+      "stat:intellect": -1.44
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Nemesis Skullcap: 32 + 16 x 0.36 = 5.76. Total 37.76; health per 5, Spirit, Stamina not valued.",
+    "Felheart Horns: 20 + 20 x 0.36 = 7.2. Total 27.2."
+  ],
+  "review": "Tier 2 over tier 1 on spell power.",
+  "reviewed": "2026-10-07"
+}

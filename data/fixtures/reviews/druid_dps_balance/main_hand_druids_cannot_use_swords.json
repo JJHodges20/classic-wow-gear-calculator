@@ -1,0 +1,148 @@
+{
+  "title": "Lok'amir il Romathis, because druids cannot use swords",
+  "question": "A Balance druid compares two caster weapons.",
+  "profile": {
+    "id": "druid_dps_balance",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "druid",
+    "role": "caster_dps",
+    "profile_id": "druid_dps_balance",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "17103",
+        "vmangos": "17103"
+      },
+      "id": "classic_era:17103",
+      "item_level": 71,
+      "name": "Azuresong Mageblade",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "main_hand",
+      "stats": {
+        "intellect": 12.0,
+        "spell_crit": 1.0,
+        "spell_power": 40.0,
+        "stamina": 7.0
+      },
+      "unique": false,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 140.0,
+        "min_damage": 64.0,
+        "speed": 2.4
+      },
+      "weapon_type": "sword"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19360",
+        "vmangos": "19360"
+      },
+      "id": "classic_era:19360",
+      "item_level": 81,
+      "name": "Lok'amir il Romathis",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "main_hand",
+      "stats": {
+        "intellect": 18.0,
+        "spell_power": 84.0,
+        "spirit": 8.0,
+        "stamina": 10.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 127.9,
+        "min_damage": 47.9,
+        "speed": 2.1
+      },
+      "weapon_type": "mace"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:19360",
+    "first": "classic_era:19360",
+    "second": "classic_era:17103",
+    "score_delta": 35.36,
+    "scores": {
+      "classic_era:19360": 86.88,
+      "classic_era:17103": 51.52
+    },
+    "component_deltas": {
+      "stat:spell_power": 44.0,
+      "stat:spell_crit": -9.6,
+      "stat:intellect": 0.96
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:17103": [
+        "Druids cannot use swords"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Lok'amir il Romathis: 84 + 18 Intellect x 0.16 = 2.88. Total 86.88.",
+    "Azuresong Mageblade: 40 + 9.60 + 12 x 0.16 = 1.92. Total 51.52."
+  ],
+  "review": "The mace is better and usable; the sword is not usable by druids.",
+  "reviewed": "2026-10-07"
+}

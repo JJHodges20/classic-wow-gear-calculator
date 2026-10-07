@@ -1,0 +1,63 @@
+# Feral DPS (Cat) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: druid_dps_cat
+version: 1.0.0
+label: Feral DPS (Cat)
+class_name: druid
+role: melee_dps
+specialization: Feral
+summary: A cat-form damage dealer in raids, valued in attack power.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+shapeshift_form: cat
+score_unit: attack power equivalents (AP)
+validation_status: draft
+stat_weights:
+- stat: attack_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: feral_attack_power
+  weight: 1.0
+  basis: derived
+  note: Attack power in feral forms, valued like attack power.
+- stat: strength
+  weight: 2.64
+  basis: sourced
+  sources:
+  - wowhead_feral_dps
+- stat: agility
+  weight: 2.76
+  basis: sourced
+  sources:
+  - wowhead_feral_dps
+- stat: hit
+  weight: 31.85
+  basis: sourced
+  sources:
+  - wowhead_feral_dps
+- stat: crit
+  weight: 30.13
+  basis: sourced
+  sources:
+  - wowhead_feral_dps
+hard_caps:
+- stat: hit
+  cap:
+    ruleset_cap: melee_hit
+  note: 'Cat form fights with one ''weapon'': past this cap hit is worth nothing.'
+assumptions:
+- 'Simulated values (NerdEgghead) for the end of phase 1 with Blessing of Kings: Strength and Agility
+  include what they convert into, so no conversions are added.'
+- 'Weapon damage is not valued: cat form attacks do not use the weapon.'
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: wowhead_feral_dps
+  title: 'Wowhead: Feral Druid DPS stat priority (WoW Classic, NerdEgghead)'
+  url: https://www.wowhead.com/classic/guide/classes/druid/feral/dps-stat-priority-attributes-pve
+  retrieved: '2026-10-07'
+  note: Strength 2.64, Agility 2.76, hit 31.85, crit 30.13 attack power.

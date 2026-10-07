@@ -1,0 +1,134 @@
+{
+  "title": "Malfurion's Blessed Bulwark over Cadaverous Armor",
+  "question": "A bear tank chooses a chest.",
+  "profile": {
+    "id": "druid_tank_bear",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "druid",
+    "role": "tank",
+    "profile_id": "druid_tank_bear",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19405",
+        "vmangos": "19405"
+      },
+      "id": "classic_era:19405",
+      "item_level": 75,
+      "name": "Malfurion's Blessed Bulwark",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 392.0,
+        "stamina": 22.0,
+        "strength": 40.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "14637",
+        "vmangos": "14637"
+      },
+      "id": "classic_era:14637",
+      "item_level": 61,
+      "name": "Cadaverous Armor",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": "121",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "agility": 8.0,
+        "armor": 172.0,
+        "attack_power": 60.0,
+        "ranged_attack_power": 60.0,
+        "strength": 8.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19405",
+    "first": "classic_era:19405",
+    "second": "classic_era:14637",
+    "score_delta": 63.64,
+    "scores": {
+      "classic_era:19405": 152.16,
+      "classic_era:14637": 88.52
+    },
+    "component_deltas": {
+      "stat:armor": 50.6,
+      "stat:strength": 32.0,
+      "stat:stamina": 22.0,
+      "stat:attack_power": -30.0,
+      "stat:agility": -10.96
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Malfurion's Blessed Bulwark: 40 Strength x 1 = 40; 22 Stamina = 22; 392 armor x 0.23 = 90.16. Total 152.16.",
+    "Cadaverous Armor: 8 Agility x 1.37 = 10.96; 8 Strength = 8; 60 attack power x 0.5 = 30; 172 armor x 0.23 = 39.56. Total 88.52."
+  ],
+  "review": "Armor and Stamina for survival, Strength for threat: the bear chest.",
+  "reviewed": "2026-10-07"
+}

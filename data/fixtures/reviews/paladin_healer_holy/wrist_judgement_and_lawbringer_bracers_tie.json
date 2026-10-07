@@ -1,0 +1,138 @@
+{
+  "title": "Judgement Bindings and Lawbringer Bracers are effectively equal",
+  "question": "A Holy paladin compares tier 2 and tier 1 bracers.",
+  "profile": {
+    "id": "paladin_healer_holy",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "healer",
+    "profile_id": "paladin_healer_holy",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "paladin"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16951",
+        "vmangos": "16951"
+      },
+      "id": "classic_era:16951",
+      "item_level": 76,
+      "name": "Judgement Bindings",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "217",
+      "set_name": null,
+      "slot": "wrist",
+      "stats": {
+        "armor": 375.0,
+        "intellect": 9.0,
+        "spell_power": 7.0,
+        "spirit": 8.0,
+        "stamina": 21.0,
+        "strength": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "paladin"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16857",
+        "vmangos": "16857"
+      },
+      "id": "classic_era:16857",
+      "item_level": 66,
+      "name": "Lawbringer Bracers",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "208",
+      "set_name": null,
+      "slot": "wrist",
+      "stats": {
+        "armor": 328.0,
+        "intellect": 8.0,
+        "mp5": 4.0,
+        "spirit": 11.0,
+        "stamina": 11.0,
+        "strength": 10.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "tie",
+    "winner": null,
+    "first": "classic_era:16951",
+    "second": "classic_era:16857",
+    "score_delta": 0.0,
+    "scores": {
+      "classic_era:16951": 16.0,
+      "classic_era:16857": 16.0
+    },
+    "component_deltas": {
+      "stat:spell_power": 7.0,
+      "stat:intellect": 1.0,
+      "stat:mp5": -8.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Judgement Bindings: 9 Intellect + 7 damage and healing = 16; Strength, Spirit, Stamina not valued.",
+    "Lawbringer Bracers: 8 Intellect + 4 mana per 5 x 2 = 16."
+  ],
+  "review": "Equal at raid values: the calculator says so instead of naming a winner.",
+  "reviewed": "2026-10-07"
+}

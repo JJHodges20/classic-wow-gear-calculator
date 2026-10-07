@@ -1,0 +1,61 @@
+# Balance (raid) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: druid_dps_balance
+version: 1.0.0
+label: Balance (raid)
+class_name: druid
+role: caster_dps
+specialization: Balance
+summary: A Starfire-casting Balance druid in raids, valued in spell damage.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: spell damage equivalents (SP)
+validation_status: draft
+stat_weights:
+- stat: spell_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: spell_damage
+  weight: 1.0
+  basis: derived
+  note: Damage-only spell power counts fully.
+- stat: arcane_spell_power
+  weight: 1.0
+  basis: assumption
+  note: Starfire, the main spell, is arcane.
+- stat: spell_hit
+  weight: 12.22
+  basis: sourced
+  sources:
+  - keftenk_balance
+- stat: spell_crit
+  weight: 9.6
+  basis: sourced
+  sources:
+  - keftenk_balance
+- stat: intellect
+  weight: 0.16
+  basis: sourced
+  sources:
+  - keftenk_balance
+  note: The source's whole value; no crit conversion is added.
+hard_caps:
+- stat: spell_hit
+  cap:
+    ruleset_cap: spell_hit
+  note: 'Balance has no hit talent in 1.12: 16% from gear.'
+assumptions:
+- Formula-based values with phase 4 gear.
+- 'Nature spell damage (Wrath) is not valued: a Starfire rotation is assumed.'
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: keftenk_balance
+  title: 'Keftenk: Classic Balance Druid theorycraft spreadsheet v1.5 (Blizzard forums, 2020)'
+  url: https://us.forums.blizzard.com/en/wow/t/classic-balance-druid-theorycraft-spreadsheet-v15/464662
+  retrieved: '2026-10-07'
+  note: Intellect 0.16, crit 9.60, hit 12.22 spell damage.

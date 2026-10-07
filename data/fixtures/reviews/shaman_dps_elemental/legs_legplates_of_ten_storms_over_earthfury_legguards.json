@@ -1,0 +1,143 @@
+{
+  "title": "Legplates of Ten Storms over Earthfury Legguards",
+  "question": "An Elemental shaman compares tier 2 and tier 1 legs.",
+  "profile": {
+    "id": "shaman_dps_elemental",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "caster_dps",
+    "profile_id": "shaman_dps_elemental",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16946",
+        "vmangos": "16946"
+      },
+      "id": "classic_era:16946",
+      "item_level": 76,
+      "name": "Legplates of Ten Storms",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "216",
+      "set_name": null,
+      "slot": "legs",
+      "stats": {
+        "arcane_resistance": 10.0,
+        "armor": 422.0,
+        "fire_resistance": 10.0,
+        "intellect": 18.0,
+        "spell_crit": 1.0,
+        "spell_power": 29.0,
+        "spirit": 20.0,
+        "stamina": 16.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16843",
+        "vmangos": "16843"
+      },
+      "id": "classic_era:16843",
+      "item_level": 66,
+      "name": "Earthfury Legguards",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "207",
+      "set_name": null,
+      "slot": "legs",
+      "stats": {
+        "armor": 369.0,
+        "intellect": 19.0,
+        "mp5": 6.0,
+        "shadow_resistance": 10.0,
+        "spell_power": 12.0,
+        "spirit": 21.0,
+        "stamina": 18.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16946",
+    "first": "classic_era:16946",
+    "second": "classic_era:16843",
+    "score_delta": 24.43,
+    "scores": {
+      "classic_era:16946": 39.09,
+      "classic_era:16843": 14.66
+    },
+    "component_deltas": {
+      "stat:spell_power": 17.0,
+      "stat:spell_crit": 7.57,
+      "stat:intellect": -0.14
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Legplates of Ten Storms: 29 + 1% crit x 7.57 + 18 x 0.14 = 2.52. Total 39.09.",
+    "Earthfury Legguards: 12 + 19 x 0.14 = 2.66. Total 14.66; mana per 5 not valued."
+  ],
+  "review": "Tier 2 over tier 1 on spell power and crit.",
+  "reviewed": "2026-10-07"
+}

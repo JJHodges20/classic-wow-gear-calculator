@@ -24,6 +24,7 @@ ROBE_OF_THE_ARCHMAGE = "classic_era:14152"
 
 def fury(at: AppTest) -> None:
     at.selectbox(key="ctx_role").select("melee_dps").run()
+    at.selectbox(key="ctx_profile").select("warrior_dps_fury").run()
     no_exceptions(at)
     assert at.selectbox(key="ctx_profile").value == "warrior_dps_fury"
 
@@ -36,7 +37,9 @@ def test_choosing_class_role_and_profile(app: AppTest) -> None:
     assert app.selectbox(key="ctx_role").value == "caster_dps"
     assert app.selectbox(key="ctx_profile").value == "mage_dps_frost"
     assert "Current context: Mage › Caster DPS › Frost (raid)" in text(app)
-    app.selectbox(key="ctx_class").select("priest").run()
+    app.selectbox(key="ctx_class").select("priest").run()  # the role stays caster DPS
+    assert app.selectbox(key="ctx_profile").value == "priest_dps_shadow"
+    app.selectbox(key="ctx_role").select("healer").run()
     assert app.selectbox(key="ctx_profile").value == "priest_healer_holy"
 
 

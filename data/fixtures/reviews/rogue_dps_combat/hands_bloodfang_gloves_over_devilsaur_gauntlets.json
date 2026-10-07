@@ -1,0 +1,149 @@
+{
+  "title": "Bloodfang Gloves over Devilsaur Gauntlets",
+  "question": "A Combat rogue chooses gloves.",
+  "profile": {
+    "id": "rogue_dps_combat",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "rogue",
+    "role": "melee_dps",
+    "profile_id": "rogue_dps_combat",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 2.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "rogue"
+      ],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [
+        {
+          "condition": null,
+          "cooldown_seconds": null,
+          "description": "Equip: Immune to Disarm.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "equip",
+          "value": null
+        }
+      ],
+      "external_ids": {
+        "game": "16907",
+        "vmangos": "16907"
+      },
+      "id": "classic_era:16907",
+      "item_level": 76,
+      "name": "Bloodfang Gloves",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "213",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "agility": 20.0,
+        "armor": 140.0,
+        "shadow_resistance": 10.0,
+        "stamina": 20.0,
+        "strength": 19.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "15063",
+        "vmangos": "15063"
+      },
+      "id": "classic_era:15063",
+      "item_level": 58,
+      "name": "Devilsaur Gauntlets",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 53,
+      "ruleset": "classic_era",
+      "set_id": "143",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 103.0,
+        "attack_power": 28.0,
+        "crit": 1.0,
+        "ranged_attack_power": 28.0,
+        "stamina": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16907",
+    "first": "classic_era:16907",
+    "second": "classic_era:15063",
+    "score_delta": 7.9,
+    "scores": {
+      "classic_era:16907": 58.9,
+      "classic_era:15063": 51.0
+    },
+    "component_deltas": {
+      "stat:agility": 38.0,
+      "stat:strength": 20.9,
+      "stat:attack_power": -28.0,
+      "stat:crit": -23.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "low"
+  },
+  "hand_calculation": [
+    "Bloodfang Gloves: 20 Agility x 1.9 = 38 + 19 Strength x 1.1 = 20.9. Total 58.9; Immune to Disarm not scored.",
+    "Devilsaur Gauntlets: 28 + 1% crit x 23 = 51."
+  ],
+  "review": "The rogue tier 2 gloves, on Agility and Strength.",
+  "reviewed": "2026-10-07"
+}

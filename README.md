@@ -13,13 +13,13 @@ build plan is tracked in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Status
 
-Milestones 1 to 7 are complete: the Classic Era ruleset and four sourced build profiles
-(Fury and Deep Protection warrior, Frost mage, Holy priest, all draft), the explainable
-scoring engine, manual item entry, the bundled item dataset with optional Blizzard lookups,
-item comparison with a component-by-component explanation, and the app (`wowgear ui`) in
-light and dark: Calculator, Compare, Build profiles (with your own weights), Item database
-and Data health. Milestone 8 is adding a profile for every class and role in the roadmap's
-matrix; saved characters and gear sets arrive in milestone 9.
+Milestones 1 to 8 are complete: the Classic Era ruleset; twenty build profiles covering
+every class and role in the roadmap's matrix, each with sourced weights (two experimental
+where no source exists) and five hand-reviewed comparisons; the explainable scoring
+engine; manual item entry; the bundled item dataset with optional Blizzard lookups; item
+comparison with a component-by-component explanation; and the app (`wowgear ui`) in light
+and dark: Calculator, Compare, Build profiles (with your own weights), Item database and
+Data health. Saved characters and gear sets arrive in milestone 9.
 
 ## Quick start
 

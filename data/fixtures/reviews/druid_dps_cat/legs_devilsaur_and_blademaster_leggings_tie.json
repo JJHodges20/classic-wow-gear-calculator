@@ -1,0 +1,135 @@
+{
+  "title": "Devilsaur Leggings and Blademaster Leggings are effectively equal",
+  "question": "A cat druid compares two pre-raid leggings.",
+  "profile": {
+    "id": "druid_dps_cat",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "druid",
+    "role": "melee_dps",
+    "profile_id": "druid_dps_cat",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "15062",
+        "vmangos": "15062"
+      },
+      "id": "classic_era:15062",
+      "item_level": 60,
+      "name": "Devilsaur Leggings",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 55,
+      "ruleset": "classic_era",
+      "set_id": "143",
+      "set_name": null,
+      "slot": "legs",
+      "stats": {
+        "armor": 148.0,
+        "attack_power": 46.0,
+        "crit": 1.0,
+        "ranged_attack_power": 48.0,
+        "stamina": 12.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12963",
+        "vmangos": "12963"
+      },
+      "id": "classic_era:12963",
+      "item_level": 63,
+      "name": "Blademaster Leggings",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 58,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "legs",
+      "stats": {
+        "agility": 5.0,
+        "armor": 154.0,
+        "crit": 1.0,
+        "dodge": 2.0,
+        "hit": 1.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "tie",
+    "winner": null,
+    "first": "classic_era:15062",
+    "second": "classic_era:12963",
+    "score_delta": 0.35,
+    "scores": {
+      "classic_era:15062": 76.13,
+      "classic_era:12963": 75.78
+    },
+    "component_deltas": {
+      "stat:attack_power": 46.0,
+      "stat:agility": -13.8,
+      "stat:hit": -31.85
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Devilsaur Leggings: 46 attack power + 1% crit x 30.13 = 76.13; ranged attack power and Stamina not valued.",
+    "Blademaster Leggings: 5 Agility x 2.76 = 13.8 + 30.13 + 1% hit x 31.85 = 75.78; dodge not valued.",
+    "0.35 apart: under 0.5% of the score, so a tie."
+  ],
+  "review": "Within the precision of the weights: the calculator calls it even.",
+  "reviewed": "2026-10-07"
+}

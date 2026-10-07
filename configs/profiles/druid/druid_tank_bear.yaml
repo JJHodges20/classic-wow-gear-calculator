@@ -1,0 +1,91 @@
+# Feral tank (Dire Bear) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: druid_tank_bear
+version: 1.0.0
+label: Feral tank (Dire Bear)
+class_name: druid
+role: tank
+specialization: Feral
+summary: A Dire Bear tank, valued in Stamina equivalents for survival and threat together.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+shapeshift_form: dire_bear
+score_unit: Stamina equivalents (Stam)
+validation_status: draft
+stat_weights:
+- stat: stamina
+  weight: 1.0
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+  note: The score unit.
+- stat: armor
+  weight: 0.23
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+- stat: strength
+  weight: 1.0
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+  note: Threat.
+- stat: agility
+  weight: 1.37
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+  note: 0.92 for survival and 0.45 for threat.
+- stat: dodge
+  weight: 16.67
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+- stat: defense
+  weight: 2.0
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+- stat: attack_power
+  weight: 0.5
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+  note: Threat.
+- stat: feral_attack_power
+  weight: 0.5
+  basis: derived
+  sources:
+  - taladril_druid_gear
+  note: Attack power in feral forms, valued like attack power.
+- stat: crit
+  weight: 8.97
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+  note: Threat.
+- stat: hit
+  weight: 6.69
+  basis: sourced
+  sources:
+  - taladril_druid_gear
+  note: Threat.
+hard_caps:
+- stat: hit
+  cap:
+    ruleset_cap: melee_hit
+  note: Hit lifts threat until special attacks stop missing.
+assumptions:
+- 'The source''s talented values: tank value and threat value together, in Stamina.'
+- The source's values already include what Strength and Agility convert into, so no conversions are
+  added.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: taladril_druid_gear
+  title: 'Taladril: List of Druid Gear, stat values (Google spreadsheet)'
+  url: https://docs.google.com/spreadsheets/d/1wGBasFY8fFGpBtiD1TAUBB99wxboCSVh5MW_6b_z0oU/pubhtml
+  retrieved: '2026-10-07'

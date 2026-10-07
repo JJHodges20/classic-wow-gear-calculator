@@ -1,0 +1,131 @@
+{
+  "title": "Shroud of Pure Thought over Hide of the Wild",
+  "question": "A Holy paladin chooses a cloak.",
+  "profile": {
+    "id": "paladin_healer_holy",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "healer",
+    "profile_id": "paladin_healer_holy",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19430",
+        "vmangos": "19430"
+      },
+      "id": "classic_era:19430",
+      "item_level": 75,
+      "name": "Shroud of Pure Thought",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "back",
+      "stats": {
+        "armor": 57.0,
+        "healing_power": 33.0,
+        "intellect": 11.0,
+        "mp5": 6.0,
+        "stamina": 10.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18510",
+        "vmangos": "18510"
+      },
+      "id": "classic_era:18510",
+      "item_level": 62,
+      "name": "Hide of the Wild",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 57,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "back",
+      "stats": {
+        "armor": 48.0,
+        "healing_power": 42.0,
+        "intellect": 10.0,
+        "stamina": 8.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19430",
+    "first": "classic_era:19430",
+    "second": "classic_era:18510",
+    "score_delta": 4.0,
+    "scores": {
+      "classic_era:19430": 56.0,
+      "classic_era:18510": 52.0
+    },
+    "component_deltas": {
+      "stat:mp5": 12.0,
+      "stat:healing_power": -9.0,
+      "stat:intellect": 1.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Shroud of Pure Thought: 33 healing + 11 Intellect + 6 mana per 5 x 2 = 56.",
+    "Hide of the Wild: 42 healing + 10 Intellect = 52."
+  ],
+  "review": "Mana per 5 and Intellect make up for 9 less healing.",
+  "reviewed": "2026-10-07"
+}

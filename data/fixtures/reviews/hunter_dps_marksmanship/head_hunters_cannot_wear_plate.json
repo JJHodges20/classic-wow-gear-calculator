@@ -1,0 +1,139 @@
+{
+  "title": "Crown of Destruction, because hunters cannot wear plate",
+  "question": "A Marksmanship hunter compares a plate and a mail helm.",
+  "profile": {
+    "id": "hunter_dps_marksmanship",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "hunter",
+    "role": "ranged_dps",
+    "profile_id": "hunter_dps_marksmanship",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12640",
+        "vmangos": "12640"
+      },
+      "id": "classic_era:12640",
+      "item_level": 61,
+      "name": "Lionheart Helm",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 565.0,
+        "crit": 2.0,
+        "hit": 2.0,
+        "strength": 18.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18817",
+        "vmangos": "18817"
+      },
+      "id": "classic_era:18817",
+      "item_level": 76,
+      "name": "Crown of Destruction",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 392.0,
+        "attack_power": 44.0,
+        "crit": 2.0,
+        "fire_resistance": 10.0,
+        "intellect": 9.0,
+        "ranged_attack_power": 44.0,
+        "spirit": 9.0,
+        "stamina": 23.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:18817",
+    "first": "classic_era:18817",
+    "second": "classic_era:12640",
+    "score_delta": -20.0,
+    "scores": {
+      "classic_era:18817": 108.0,
+      "classic_era:12640": 128.0
+    },
+    "component_deltas": {
+      "stat:ranged_attack_power": 44.0,
+      "stat:hit": -64.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:12640": [
+        "Hunters cannot wear plate armor"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Lionheart Helm: 2% crit x 32 + 2% hit x 32 = 128; Strength is not valued.",
+    "Crown of Destruction: 44 ranged attack power + 2% crit x 32 = 108."
+  ],
+  "review": "Hunters wear mail at most.",
+  "reviewed": "2026-10-07"
+}

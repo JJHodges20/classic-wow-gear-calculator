@@ -1,0 +1,152 @@
+{
+  "title": "Robe of Volatile Power, because Robe of the Archmage is a mage's",
+  "question": "A Balance druid compares two caster robes.",
+  "profile": {
+    "id": "druid_dps_balance",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "druid",
+    "role": "caster_dps",
+    "profile_id": "druid_dps_balance",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "mage"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "14152",
+        "vmangos": "14152"
+      },
+      "id": "classic_era:14152",
+      "item_level": 62,
+      "name": "Robe of the Archmage",
+      "on_use_effects": [
+        {
+          "condition": null,
+          "cooldown_seconds": 300.0,
+          "description": "Use: Restores 375 to 625 mana.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "use",
+          "value": null
+        }
+      ],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 57,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 96.0,
+        "intellect": 12.0,
+        "spell_crit": 1.0,
+        "spell_power": 40.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19145",
+        "vmangos": "19145"
+      },
+      "id": "classic_era:19145",
+      "item_level": 66,
+      "name": "Robe of Volatile Power",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 102.0,
+        "intellect": 15.0,
+        "spell_crit": 2.0,
+        "spell_power": 23.0,
+        "spirit": 10.0,
+        "stamina": 10.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:19145",
+    "first": "classic_era:19145",
+    "second": "classic_era:14152",
+    "score_delta": -6.92,
+    "scores": {
+      "classic_era:19145": 44.6,
+      "classic_era:14152": 51.52
+    },
+    "component_deltas": {
+      "stat:spell_power": -17.0,
+      "stat:spell_crit": 9.6,
+      "stat:intellect": 0.48
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:14152": [
+        "Restricted to Mage"
+      ]
+    },
+    "confidence": "low"
+  },
+  "hand_calculation": [
+    "Robe of the Archmage: 40 + 9.60 + 12 Intellect x 0.16 = 1.92. Total 51.52; its use effect is not scored.",
+    "Robe of Volatile Power: 23 + 2% crit x 9.60 = 19.2 + 15 x 0.16 = 2.4. Total 44.6."
+  ],
+  "review": "The tailored robe is for mages only.",
+  "reviewed": "2026-10-07"
+}

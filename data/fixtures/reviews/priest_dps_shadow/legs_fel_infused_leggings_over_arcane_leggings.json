@@ -1,0 +1,132 @@
+{
+  "title": "Fel Infused Leggings over Leggings of Arcane Supremacy",
+  "question": "A Shadow priest chooses leggings.",
+  "profile": {
+    "id": "priest_dps_shadow",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 2,
+    "level": 60,
+    "class_name": "priest",
+    "role": "caster_dps",
+    "profile_id": "priest_dps_shadow",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 3.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19133",
+        "vmangos": "19133"
+      },
+      "id": "classic_era:19133",
+      "item_level": 71,
+      "name": "Fel Infused Leggings",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "legs",
+      "stats": {
+        "armor": 95.0,
+        "shadow_spell_power": 64.0,
+        "stamina": 21.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18545",
+        "vmangos": "18545"
+      },
+      "id": "classic_era:18545",
+      "item_level": 69,
+      "name": "Leggings of Arcane Supremacy",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "legs",
+      "stats": {
+        "arcane_resistance": 10.0,
+        "arcane_spell_power": 36.0,
+        "armor": 93.0,
+        "frost_resistance": 10.0,
+        "intellect": 24.0,
+        "spirit": 14.0,
+        "stamina": 14.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19133",
+    "first": "classic_era:19133",
+    "second": "classic_era:18545",
+    "score_delta": 64.0,
+    "scores": {
+      "classic_era:19133": 64.0,
+      "classic_era:18545": 0.0
+    },
+    "component_deltas": {
+      "stat:shadow_spell_power": 64.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Fel Infused Leggings: 64 shadow damage = 64.",
+    "Leggings of Arcane Supremacy: arcane damage, Intellect and Spirit are not valued. Total 0."
+  ],
+  "review": "Shadow damage counts; arcane damage does not.",
+  "reviewed": "2026-10-07"
+}

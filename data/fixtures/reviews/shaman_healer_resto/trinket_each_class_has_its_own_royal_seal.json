@@ -1,0 +1,135 @@
+{
+  "title": "The shaman's Royal Seal of Eldre'Thalas, not the priest's",
+  "question": "A Restoration shaman compares two versions of a class quest reward.",
+  "profile": {
+    "id": "shaman_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 2,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "healer",
+    "profile_id": "shaman_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "priest"
+      ],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18469",
+        "vmangos": "18469"
+      },
+      "id": "classic_era:18469",
+      "item_level": 62,
+      "name": "Royal Seal of Eldre'Thalas",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 0,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "fire_resistance": 10.0,
+        "healing_power": 33.0,
+        "mp5": 4.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18471",
+        "vmangos": "18471"
+      },
+      "id": "classic_era:18471",
+      "item_level": 62,
+      "name": "Royal Seal of Eldre'Thalas",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 0,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "trinket",
+      "stats": {
+        "fire_resistance": 10.0,
+        "spell_power": 23.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:18471",
+    "first": "classic_era:18471",
+    "second": "classic_era:18469",
+    "score_delta": -54.0,
+    "scores": {
+      "classic_era:18471": 23.0,
+      "classic_era:18469": 77.0
+    },
+    "component_deltas": {
+      "stat:spell_power": 23.0,
+      "stat:healing_power": -33.0,
+      "stat:mp5": -44.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:18469": [
+        "Restricted to Priest"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "The shaman's seal: 23 damage and healing = 23; fire resistance not valued.",
+    "The priest's seal: 33 healing + 4 mana per 5 x 11 = 44. Total 77."
+  ],
+  "review": "Each class gets its own version of this Dire Maul reward; only the shaman's can be worn.",
+  "reviewed": "2026-10-07"
+}

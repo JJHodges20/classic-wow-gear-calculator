@@ -1,0 +1,63 @@
+# Marksmanship (raid) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: hunter_dps_marksmanship
+version: 1.0.0
+label: Marksmanship (raid)
+class_name: hunter
+role: ranged_dps
+specialization: Marksmanship
+summary: A Marksmanship hunter in raids, valued in ranged attack power.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: ranged attack power equivalents (RAP)
+validation_status: draft
+stat_weights:
+- stat: ranged_attack_power
+  weight: 1.0
+  basis: derived
+  note: The score unit. Agility gives 2 each and crit at 53 per 1%.
+- stat: hit
+  weight: 32.0
+  basis: sourced
+  sources:
+  - icy_veins_mm
+- stat: crit
+  weight: 32.0
+  basis: sourced
+  sources:
+  - icy_veins_mm
+- stat: ranged_weapon_dps
+  weight: 14.0
+  basis: derived
+  sources:
+  - icy_veins_fury
+  note: 'The attack power rule applied to ranged weapons: 14 ranged attack power = 1 damage per second.'
+derived_stats:
+- source: agility
+  target: ranged_attack_power
+- source: agility
+  target: crit
+hard_caps:
+- stat: hit
+  cap:
+    ruleset_cap: ranged_hit
+  note: Hit to 9% comes first; no Surefooted is assumed.
+assumptions:
+- Melee attack power and melee weapon damage are not valued.
+- No talent hit is assumed; Surefooted would lower the cap by 3%.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: icy_veins_mm
+  title: 'Icy Veins: Marksmanship Hunter DPS stat priority (WoW Classic, Impakt)'
+  url: https://www.icy-veins.com/wow-classic/marksmanship-hunter-dps-pve-stat-priority
+  retrieved: '2026-10-07'
+  note: Hit 32, crit 32, Agility about 2.5 ranged attack power.
+- id: icy_veins_fury
+  title: 'Icy Veins: Fury Warrior DPS stat priority (WoW Classic, November 2024)'
+  url: https://www.icy-veins.com/wow-classic/fury-warrior-dps-pve-stat-priority
+  retrieved: '2026-10-07'
+  note: 'States the attack power rule: 14 attack power = 1 weapon damage per second.'

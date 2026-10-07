@@ -1,0 +1,137 @@
+{
+  "title": "Mask of the Unforgiven, because druids cannot wear plate",
+  "question": "A bear tank compares a plate helm with a leather mask.",
+  "profile": {
+    "id": "druid_tank_bear",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "druid",
+    "role": "tank",
+    "profile_id": "druid_tank_bear",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "12640",
+        "vmangos": "12640"
+      },
+      "id": "classic_era:12640",
+      "item_level": 61,
+      "name": "Lionheart Helm",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 56,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 565.0,
+        "crit": 2.0,
+        "hit": 2.0,
+        "strength": 18.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "13404",
+        "vmangos": "13404"
+      },
+      "id": "classic_era:13404",
+      "item_level": 57,
+      "name": "Mask of the Unforgiven",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 52,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "head",
+      "stats": {
+        "armor": 132.0,
+        "crit": 1.0,
+        "hit": 2.0,
+        "stamina": 12.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:13404",
+    "first": "classic_era:13404",
+    "second": "classic_era:12640",
+    "score_delta": -114.56,
+    "scores": {
+      "classic_era:13404": 64.71,
+      "classic_era:12640": 179.27
+    },
+    "component_deltas": {
+      "stat:armor": -99.59,
+      "stat:strength": -18.0,
+      "stat:stamina": 12.0,
+      "stat:crit": -8.97
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:12640": [
+        "Druids cannot wear plate armor"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Lionheart Helm: 565 x 0.23 = 129.95; 2% crit x 8.97 = 17.94; 2% hit x 6.69 = 13.38; 18 Strength = 18. Total 179.27.",
+    "Mask of the Unforgiven: 132 x 0.23 = 30.36; 8.97; 13.38; 12 Stamina = 12. Total 64.71."
+  ],
+  "review": "Plate armor would be worth a lot to a bear, but druids wear cloth and leather only.",
+  "reviewed": "2026-10-07"
+}

@@ -1,0 +1,163 @@
+{
+  "title": "Robe of the Void, because Robe of the Archmage is a mage's",
+  "question": "A Destruction warlock compares the two tailored robes.",
+  "profile": {
+    "id": "warlock_dps_destruction",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "warlock",
+    "role": "caster_dps",
+    "profile_id": "warlock_dps_destruction",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "spell_hit": 6.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "mage"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "14152",
+        "vmangos": "14152"
+      },
+      "id": "classic_era:14152",
+      "item_level": 62,
+      "name": "Robe of the Archmage",
+      "on_use_effects": [
+        {
+          "condition": null,
+          "cooldown_seconds": 300.0,
+          "description": "Use: Restores 375 to 625 mana.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "use",
+          "value": null
+        }
+      ],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 57,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 96.0,
+        "intellect": 12.0,
+        "spell_crit": 1.0,
+        "spell_power": 40.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "warlock"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "14153",
+        "vmangos": "14153"
+      },
+      "id": "classic_era:14153",
+      "item_level": 62,
+      "name": "Robe of the Void",
+      "on_use_effects": [
+        {
+          "condition": null,
+          "cooldown_seconds": 600.0,
+          "description": "Use: Heal your pet for 450 to 750.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": null,
+          "trigger": "use",
+          "value": null
+        }
+      ],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 57,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 96.0,
+        "spell_power": 46.0,
+        "stamina": 14.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:14153",
+    "first": "classic_era:14153",
+    "second": "classic_era:14152",
+    "score_delta": -12.4,
+    "scores": {
+      "classic_era:14153": 46.0,
+      "classic_era:14152": 58.4
+    },
+    "component_deltas": {
+      "stat:spell_power": 6.0,
+      "stat:spell_crit": -14.08,
+      "stat:intellect": -4.32
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:14152": [
+        "Restricted to Mage"
+      ]
+    },
+    "confidence": "low"
+  },
+  "hand_calculation": [
+    "Robe of the Archmage: 40 + 14.08 + 12 x 0.36 = 4.32. Total 58.4.",
+    "Robe of the Void: 46; Stamina not valued. Both robes' use effects are not scored."
+  ],
+  "review": "Each tailored robe is for one class: the warlock's is recommended.",
+  "reviewed": "2026-10-07"
+}

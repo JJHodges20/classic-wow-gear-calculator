@@ -1,0 +1,61 @@
+# Elemental (raid) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: shaman_dps_elemental
+version: 1.0.0
+label: Elemental (raid)
+class_name: shaman
+role: caster_dps
+specialization: Elemental
+summary: A Lightning Bolt shaman in raids, valued in spell damage.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: spell damage equivalents (SP)
+validation_status: draft
+stat_weights:
+- stat: spell_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: spell_damage
+  weight: 1.0
+  basis: derived
+  note: Damage-only spell power counts fully.
+- stat: nature_spell_power
+  weight: 1.0
+  basis: derived
+  note: Lightning Bolt and Chain Lightning are nature spells.
+- stat: spell_hit
+  weight: 12.37
+  basis: sourced
+  sources:
+  - wowsims_elemental
+- stat: spell_crit
+  weight: 7.57
+  basis: sourced
+  sources:
+  - wowsims_elemental
+- stat: intellect
+  weight: 0.14
+  basis: sourced
+  sources:
+  - wowsims_elemental
+  note: The source's whole value; no crit conversion is added.
+hard_caps:
+- stat: spell_hit
+  cap:
+    ruleset_cap: spell_hit
+  note: 'No talent hit is assumed: 16% from gear.'
+assumptions:
+- No talent hit is assumed; Nature's Guidance would lower the cap by 3%.
+- Fire spell damage is not valued.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: wowsims_elemental
+  title: 'wowsims/classic: elemental shaman default stat weights (Classic Era, 2025)'
+  url: https://github.com/wowsims/classic
+  retrieved: '2026-10-07'
+  note: Hit 12.37, crit 7.57, Intellect 0.14 spell damage.

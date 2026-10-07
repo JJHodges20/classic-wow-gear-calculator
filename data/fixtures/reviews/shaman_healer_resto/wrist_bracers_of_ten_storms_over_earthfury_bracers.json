@@ -1,0 +1,136 @@
+{
+  "title": "Bracers of Ten Storms over Earthfury Bracers",
+  "question": "A Restoration shaman compares tier 2 and tier 1 bracers.",
+  "profile": {
+    "id": "shaman_healer_resto",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "shaman",
+    "role": "healer",
+    "profile_id": "shaman_healer_resto",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16943",
+        "vmangos": "16943"
+      },
+      "id": "classic_era:16943",
+      "item_level": 76,
+      "name": "Bracers of Ten Storms",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "216",
+      "set_name": null,
+      "slot": "wrist",
+      "stats": {
+        "armor": 211.0,
+        "intellect": 16.0,
+        "mp5": 6.0,
+        "spirit": 9.0,
+        "stamina": 13.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "shaman"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16840",
+        "vmangos": "16840"
+      },
+      "id": "classic_era:16840",
+      "item_level": 66,
+      "name": "Earthfury Bracers",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "207",
+      "set_name": null,
+      "slot": "wrist",
+      "stats": {
+        "armor": 185.0,
+        "intellect": 17.0,
+        "spell_power": 6.0,
+        "spirit": 11.0,
+        "stamina": 10.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16943",
+    "first": "classic_era:16943",
+    "second": "classic_era:16840",
+    "score_delta": 57.8,
+    "scores": {
+      "classic_era:16943": 101.2,
+      "classic_era:16840": 43.4
+    },
+    "component_deltas": {
+      "stat:mp5": 66.0,
+      "stat:spell_power": -6.0,
+      "stat:intellect": -2.2
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Bracers of Ten Storms: 16 Intellect x 2.2 = 35.2 + 6 mana per 5 x 11 = 66. Total 101.2.",
+    "Earthfury Bracers: 17 x 2.2 = 37.4 + 6 damage and healing = 43.4."
+  ],
+  "review": "Tier 2 over tier 1, on mana per 5.",
+  "reviewed": "2026-10-07"
+}

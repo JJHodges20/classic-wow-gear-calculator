@@ -1,0 +1,130 @@
+{
+  "title": "Master Dragonslayer's Medallion over Onyxia Tooth Pendant",
+  "question": "A Protection paladin chooses a neck.",
+  "profile": {
+    "id": "paladin_tank_prot",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "tank",
+    "profile_id": "paladin_tank_prot",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "19383",
+        "vmangos": "19383"
+      },
+      "id": "classic_era:19383",
+      "item_level": 83,
+      "name": "Master Dragonslayer's Medallion",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "neck",
+      "stats": {
+        "agility": 14.0,
+        "defense": 7.0,
+        "stamina": 24.0
+      },
+      "unique": true,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18404",
+        "vmangos": "18404"
+      },
+      "id": "classic_era:18404",
+      "item_level": 74,
+      "name": "Onyxia Tooth Pendant",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 0,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "neck",
+      "stats": {
+        "agility": 12.0,
+        "crit": 1.0,
+        "fire_resistance": 10.0,
+        "hit": 1.0,
+        "stamina": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:19383",
+    "first": "classic_era:19383",
+    "second": "classic_era:18404",
+    "score_delta": 53.5,
+    "scores": {
+      "classic_era:19383": 85.0,
+      "classic_era:18404": 31.5
+    },
+    "component_deltas": {
+      "stat:stamina": 22.5,
+      "stat:defense": 28.0,
+      "stat:agility": 3.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Master Dragonslayer's Medallion: 14 Agility x 1.5 = 21; 7 Defense x 4 = 28; 24 Stamina x 1.5 = 36. Total 85.",
+    "Onyxia Tooth Pendant: 12 Agility x 1.5 = 18; 9 Stamina x 1.5 = 13.5; crit, hit and fire resistance not valued. Total 31.5."
+  ],
+  "review": "A tank's neck over a damage dealer's.",
+  "reviewed": "2026-10-07"
+}

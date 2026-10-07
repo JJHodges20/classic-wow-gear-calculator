@@ -1,0 +1,53 @@
+# Holy (raid) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: paladin_healer_holy
+version: 1.0.0
+label: Holy (raid)
+class_name: paladin
+role: healer
+specialization: Holy
+summary: A raid-healing paladin, valued in +healing, with values for raid gear.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: healing equivalents (+heal)
+validation_status: draft
+stat_weights:
+- stat: healing_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: spell_power
+  weight: 1.0
+  basis: derived
+  note: Damage-and-healing spell power counts fully as healing.
+- stat: intellect
+  weight: 1.0
+  basis: sourced
+  sources:
+  - xcellers_holy
+  note: 'The source''s whole value: it includes the crit Intellect gives, so no conversion is added.'
+- stat: spell_crit
+  weight: 12.0
+  basis: sourced
+  sources:
+  - xcellers_holy
+- stat: mp5
+  weight: 2.0
+  basis: sourced
+  sources:
+  - xcellers_holy
+assumptions:
+- Values for raid gear; the source's values before raids are in the pre-raid profile.
+- Spirit is not valued.
+- The values are one healer's judgment, not a simulation.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: xcellers_holy
+  title: 'Xcellers: Holy paladin stat values spreadsheet (2020)'
+  url: https://docs.google.com/spreadsheets/d/1lSZzNVHKsvG13WRnDuqbAZyQ47ktVytB3Z2CbW7XHdA
+  retrieved: '2026-10-07'
+  note: Intellect 1, crit 12, MP5 2 in healing; before raids 1.5, 15, 4. Judgment-based.

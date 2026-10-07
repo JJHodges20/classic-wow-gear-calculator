@@ -1,0 +1,144 @@
+{
+  "title": "Rhok'delar over Striker's Mark",
+  "question": "A Marksmanship hunter with 4% hit chooses a bow.",
+  "profile": {
+    "id": "hunter_dps_marksmanship",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 2,
+    "level": 60,
+    "class_name": "hunter",
+    "role": "ranged_dps",
+    "profile_id": "hunter_dps_marksmanship",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "hunter"
+      ],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "18713",
+        "vmangos": "18713"
+      },
+      "id": "classic_era:18713",
+      "item_level": 75,
+      "name": "Rhok'delar, Longbow of the Ancient Keepers",
+      "on_use_effects": [],
+      "phase": 2,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "ranged",
+      "stats": {
+        "crit": 1.0,
+        "ranged_attack_power": 17.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 166.0,
+        "min_damage": 89.0,
+        "speed": 2.9
+      },
+      "weapon_type": "bow"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [],
+      "external_ids": {
+        "game": "17069",
+        "vmangos": "17069"
+      },
+      "id": "classic_era:17069",
+      "item_level": 69,
+      "name": "Striker's Mark",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "ranged",
+      "stats": {
+        "attack_power": 22.0,
+        "hit": 1.0,
+        "ranged_attack_power": 22.0
+      },
+      "unique": false,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 129.0,
+        "min_damage": 69.0,
+        "speed": 2.5
+      },
+      "weapon_type": "bow"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:18713",
+    "first": "classic_era:18713",
+    "second": "classic_era:17069",
+    "score_delta": 56.117241379,
+    "scores": {
+      "classic_era:18713": 664.517241379,
+      "classic_era:17069": 608.4
+    },
+    "component_deltas": {
+      "weapon:ranged_weapon_dps": 61.117241379,
+      "stat:ranged_attack_power": -5.0,
+      "stat:crit": 32.0,
+      "stat:hit": -32.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Rhok'delar: (89 + 166) / 2 / 2.9 = 43.9655 x 14 = 615.5172 + 17 ranged attack power + 1% crit x 32. Total 664.5172.",
+    "Striker's Mark: (69 + 129) / 2 / 2.5 = 39.6 x 14 = 554.4 + 22 + 1% hit x 32. Total 608.4."
+  ],
+  "review": "The hunter's legendary bow: more damage per second.",
+  "reviewed": "2026-10-07"
+}

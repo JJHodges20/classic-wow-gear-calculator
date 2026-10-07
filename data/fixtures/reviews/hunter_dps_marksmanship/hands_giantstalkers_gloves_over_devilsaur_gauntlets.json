@@ -1,0 +1,138 @@
+{
+  "title": "Giantstalker's Gloves over Devilsaur Gauntlets",
+  "question": "A Marksmanship hunter with 4% hit chooses gloves.",
+  "profile": {
+    "id": "hunter_dps_marksmanship",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 1,
+    "level": 60,
+    "class_name": "hunter",
+    "role": "ranged_dps",
+    "profile_id": "hunter_dps_marksmanship",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "hunter"
+      ],
+      "allowed_races": [],
+      "armor_type": "mail",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16852",
+        "vmangos": "16852"
+      },
+      "id": "classic_era:16852",
+      "item_level": 66,
+      "name": "Giantstalker's Gloves",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "206",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "agility": 18.0,
+        "armor": 264.0,
+        "fire_resistance": 7.0,
+        "hit": 2.0,
+        "stamina": 12.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": "leather",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "15063",
+        "vmangos": "15063"
+      },
+      "id": "classic_era:15063",
+      "item_level": 58,
+      "name": "Devilsaur Gauntlets",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "rare",
+      "relic_type": null,
+      "required_level": 53,
+      "ruleset": "classic_era",
+      "set_id": "143",
+      "set_name": null,
+      "slot": "hands",
+      "stats": {
+        "armor": 103.0,
+        "attack_power": 28.0,
+        "crit": 1.0,
+        "ranged_attack_power": 28.0,
+        "stamina": 9.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:16852",
+    "first": "classic_era:16852",
+    "second": "classic_era:15063",
+    "score_delta": 50.867924528,
+    "scores": {
+      "classic_era:16852": 110.867924528,
+      "classic_era:15063": 60.0
+    },
+    "component_deltas": {
+      "stat:hit": 64.0,
+      "derived:agility->ranged_attack_power": 36.0,
+      "derived:agility->crit": 10.867924528,
+      "stat:ranged_attack_power": -28.0,
+      "stat:crit": -32.0
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Giantstalker's Gloves: 18 Agility x 2 = 36 ranged attack power; 18 / 53 = 0.3396% crit x 32 = 10.8679; 2% hit x 32 = 64. Total 110.8679.",
+    "Devilsaur Gauntlets: 28 + 1% crit x 32 = 60."
+  ],
+  "review": "Hit and Agility beat attack power and crit.",
+  "reviewed": "2026-10-07"
+}

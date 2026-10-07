@@ -1,0 +1,60 @@
+# Shadow (raid) - see configs/profiles/README.md for the format and
+# docs/research/STAT_WEIGHTS.md for where each number comes from.
+id: priest_dps_shadow
+version: 1.0.0
+label: Shadow (raid)
+class_name: priest
+role: caster_dps
+specialization: Shadow
+summary: A Shadow priest in raids, valued in shadow damage.
+ruleset: classic_era
+target_level: 60
+default_content_mode: raid_pve
+score_unit: spell damage equivalents (SP)
+validation_status: draft
+stat_weights:
+- stat: spell_power
+  weight: 1.0
+  basis: derived
+  note: The score unit.
+- stat: spell_damage
+  weight: 1.0
+  basis: derived
+  note: Damage-only spell power counts fully.
+- stat: shadow_spell_power
+  weight: 1.0
+  basis: derived
+  note: Shadow damage counts fully.
+- stat: spell_hit
+  weight: 15.0
+  basis: derived
+  sources:
+  - nost_shadow_hit
+  note: 'The middle of the source''s 13-17 damage per 1% hit (measured on Shadow Word: Pain).'
+hard_caps:
+- stat: spell_hit
+  cap:
+    ruleset_cap: spell_hit
+    reduced_by: 10
+  note: 'Shadow Focus makes shadow spells resisted 10% less often: 6% from gear.'
+  sources:
+  - shadow_focus
+assumptions:
+- 'Crit is not valued: Shadow Word: Pain and Mind Flay cannot crit in 1.12, and the source values
+  crit little.'
+- 'Intellect and Spirit are not valued: mana is assumed sufficient.'
+- Shadow Focus 5/5 is assumed.
+proc_assumptions:
+- Procs and on-use effects are not valued.
+set_bonus_rules:
+- Set bonuses are not valued in version 1.
+sources:
+- id: nost_shadow_hit
+  title: 'Nostalrius forum: Shadow priest stat weights? (2016)'
+  url: https://forum.nostalrius.org/viewtopic.php?t=38147
+  retrieved: '2026-10-07'
+  note: '"1% hit when not capped is worth about 13-17 +dmg on SW:P".'
+- id: shadow_focus
+  title: 'warcraft.wiki.gg: Shadow Focus (priest talent)'
+  url: https://warcraft.wiki.gg/wiki/Shadow_Focus_(priest_talent)
+  retrieved: '2026-10-07'

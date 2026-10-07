@@ -1,0 +1,143 @@
+{
+  "title": "Lawbringer Chestguard, because Robes of Transcendence are a priest's",
+  "question": "A Holy paladin sees the priest tier 2 robe drop.",
+  "profile": {
+    "id": "paladin_healer_holy",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 3,
+    "level": 60,
+    "class_name": "paladin",
+    "role": "healer",
+    "profile_id": "paladin_healer_holy",
+    "content_mode": "raid_pve",
+    "current_stats": null
+  },
+  "items": [
+    {
+      "allowed_classes": [
+        "priest"
+      ],
+      "allowed_races": [],
+      "armor_type": "cloth",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16923",
+        "vmangos": "16923"
+      },
+      "id": "classic_era:16923",
+      "item_level": 76,
+      "name": "Robes of Transcendence",
+      "on_use_effects": [],
+      "phase": 3,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "211",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 116.0,
+        "fire_resistance": 10.0,
+        "healing_power": 57.0,
+        "intellect": 27.0,
+        "nature_resistance": 10.0,
+        "spirit": 16.0,
+        "stamina": 17.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    },
+    {
+      "allowed_classes": [
+        "paladin"
+      ],
+      "allowed_races": [],
+      "armor_type": "plate",
+      "equip_effects": [],
+      "external_ids": {
+        "game": "16853",
+        "vmangos": "16853"
+      },
+      "id": "classic_era:16853",
+      "item_level": 66,
+      "name": "Lawbringer Chestguard",
+      "on_use_effects": [],
+      "phase": 1,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": "208",
+      "set_name": null,
+      "slot": "chest",
+      "stats": {
+        "armor": 749.0,
+        "fire_resistance": 10.0,
+        "healing_power": 22.0,
+        "intellect": 21.0,
+        "spirit": 13.0,
+        "stamina": 26.0,
+        "strength": 8.0
+      },
+      "unique": false,
+      "weapon": null,
+      "weapon_type": null
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "only_usable",
+    "winner": "classic_era:16853",
+    "first": "classic_era:16853",
+    "second": "classic_era:16923",
+    "score_delta": -41.0,
+    "scores": {
+      "classic_era:16853": 43.0,
+      "classic_era:16923": 84.0
+    },
+    "component_deltas": {
+      "stat:healing_power": -35.0,
+      "stat:intellect": -6.0
+    },
+    "capped_stats": {},
+    "not_usable": {
+      "classic_era:16923": [
+        "Restricted to Priest"
+      ]
+    },
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Robes of Transcendence: 57 healing + 27 Intellect = 84; Spirit and Stamina are not valued.",
+    "Lawbringer Chestguard: 22 healing + 21 Intellect = 43; Strength, Spirit and Stamina are not valued."
+  ],
+  "review": "The priest robe would be worth more, but tier sets are class-restricted: the paladin's own chest is recommended.",
+  "reviewed": "2026-10-07"
+}

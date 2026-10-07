@@ -29,7 +29,7 @@ class TestChoosingAContext:
         roles = dict(calculator.roles("classic_era", ClassName.WARRIOR))
         assert roles == {Role.TANK: "Tank", Role.MELEE_DPS: "Melee DPS"}
         fury = calculator.profiles("classic_era", ClassName.WARRIOR, Role.MELEE_DPS)
-        assert [profile.id for profile in fury] == ["warrior_dps_fury"]
+        assert [profile.id for profile in fury] == ["warrior_dps_arms", "warrior_dps_fury"]
 
     def test_unchosen_values_come_from_the_profile(self, open_workspace: Opener) -> None:
         workspace = open_workspace()
