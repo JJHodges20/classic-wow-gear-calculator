@@ -1,0 +1,26 @@
+{
+  "page": 1,
+  "pageSize": 1,
+  "maxPageSize": 100,
+  "pageCount": 1,
+  "results": [
+    {
+      "key": {
+        "href": "..."
+      },
+      "data": {
+        "id": 12640,
+        "name": {
+          "en_US": "Lionheart Helm",
+          "de_DE": "Lionheart Helm"
+        },
+        "level": 61,
+        "required_level": 56,
+        "inventory_type": {
+          "type": "HEAD",
+          "name": "Head"
+        }
+      }
+    }
+  ]
+}

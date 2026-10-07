@@ -34,7 +34,9 @@ The bootstrap script creates `.venv`, installs the app with its development tool
 | Command | Does |
 | --- | --- |
 | `wowgear ui [--port 8501] [--no-browser]` | Start the app |
-| `wowgear check` | Validate the configuration and report each item provider's status |
+| `wowgear check` | Validate the configuration, load the data, report each provider's status |
+| `wowgear items search "<name or id>" [--online]` | Find items |
+| `wowgear items import <file.csv or .json>` | Import your own items |
 | `wowgear --version` | Print the version |
 
 Development:
@@ -47,11 +49,13 @@ Development:
 
 ## Item data and credentials
 
-Item data comes through provider adapters listed in `configs/providers.yaml`: a bundled
-curated dataset that works offline, optional online lookups, and files you import. Online
-providers need your own API credentials, which go in `.env` (never in `configs/` or code);
-`.env.example` lists the variables. Wowhead is used only as a human reference: the app links
-to it and never fetches from it.
+The app ships with every equippable Classic Era item (uncommon quality and better) and
+works offline. Online lookups through Blizzard's Game Data API are optional: create a client
+at [develop.battle.net](https://develop.battle.net/access/clients) and put its id and secret
+in `.env` (never in `configs/` or code; `.env.example` lists the variables). You can also
+import your own items from CSV or JSON. Wowhead is used only as a human reference: the app
+links to it and never fetches from it. Sources and terms are in
+[docs/DATA_SOURCES.md](docs/DATA_SOURCES.md).
 
 ## Project layout
 

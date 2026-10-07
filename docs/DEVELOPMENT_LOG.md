@@ -3,6 +3,57 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 5 - Item repository, first lookup provider, cache (2026-10-07)
+
+**Built**
+
+- The bundled dataset: `scripts/build_bundled_dataset.py` converts a VMaNGOS database
+  snapshot (`data_sources/vmangos.py`, `processing/vmangos.py`) into
+  `data/bundled/classic_era_items.json.gz` - 7,859 items, every equippable one of uncommon
+  quality or better at its patch 1.12 version, with phases by drop source or first patch.
+  Equip spells map to stats by aura; spell-specific bonuses, procs and profession skills are
+  kept as text. The build cross-checks each mapped spell against its tooltip text: 432
+  agree, 3 differ (data quirks inside VMaNGOS, two of them developer items).
+- `repositories/`: SQLite through SQLAlchemy - canonical items by origin (bundled, cache,
+  user) with search, filters, paging, expiry, and a log of provider calls.
+- `data_sources/blizzard.py` and `processing/blizzard.py`: the Blizzard Game Data API
+  (Classic Era namespace, OAuth client credentials, item and item search) and its
+  normalizer, which reads equip lines with the same tooltip parser as manual entry.
+- `data_sources/files.py` and `processing/imports.py`: CSV and JSON import through the
+  manual form.
+- `services/item_search.py` and `services/workspace.py`: local search first, online on
+  request, validation, caching for at most 30 days, notices instead of failures; the
+  workspace that opens it all. `wowgear check` loads the data; `wowgear items search` and
+  `wowgear items import`.
+
+**Decisions** ([0004](decisions/0004-item-providers.md))
+
+- Bundled data from VMaNGOS; Blizzard as the first lookup provider; Warcraft Logs not an
+  item provider (no stats); Wowhead linked, never fetched; file import through the form.
+
+**Assumptions**
+
+- The Blizzard response shape follows its documentation and published examples; the tests
+  use constructed responses, and no live call was made (no credentials).
+- Phases of non-raid items follow the patch they first appear in.
+
+**Found on the way**
+
+- "+X Attack Power" carries two auras, melee and ranged: attack power and ranged attack
+  power are separate stats. Some items grant different amounts of spell damage and healing;
+  the shared amount is spell power and the excess is damage-only or healing-only.
+- Mana per 5 is stored as the base value plus one, like every other equip spell.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | Repository, provider, normalization, import and search tests pass: provider response to search result, cache fallback on five kinds of failure, expiry restoring the bundled item, manual and provider normalization agreeing, search to score; the full suite passes on the committed snapshot |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict) clean |
+| Secrets | Credentials only from the environment; masked in logs; hygiene tests pass |
+| Real data | `wowgear check` loads 7,859 items; `wowgear items search lionheart` finds Lionheart Helm; `--online` without credentials falls back with a notice |
+| UI smoke test | No UI change; the shell renders under `streamlit.testing` |
+
 ## Milestone 4 - Manual item entry and validation (2026-10-07)
 
 **Built**

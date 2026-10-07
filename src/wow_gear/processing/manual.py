@@ -56,7 +56,7 @@ def _effect(row: EffectRow) -> ItemEffect:
     )
 
 
-def form_to_item(form: ManualItemForm, ruleset_id: str) -> Item:
+def form_to_item(form: ManualItemForm, ruleset_id: str, *, provider: str = "manual") -> Item:
     """The canonical item a form describes. Same form, same id: entering it twice is harmless."""
     stats = dict(form.stats)
     equip: list[ItemEffect] = []
@@ -99,7 +99,7 @@ def form_to_item(form: ManualItemForm, ruleset_id: str) -> Item:
         set_id=f"custom:{_slug(form.set_name)}" if form.set_name else None,
         set_name=form.set_name,
         provenance=Provenance(
-            provider="manual",
+            provider=provider,
             source=form.source_note or ("Custom item" if form.custom else "Entered by hand"),
             data_version=MANUAL_DATA_VERSION,
             custom=form.custom,

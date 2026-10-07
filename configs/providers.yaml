@@ -13,31 +13,41 @@ providers:
     kind: bundled_dataset
     priority: 1
     enabled: true
-    status: planned
-    description: Curated Classic Era item dataset shipped with the app; the offline baseline.
+    status: active
+    description: >-
+      Curated Classic Era item dataset shipped with the app (data/bundled, built from the
+      VMaNGOS world database); the offline baseline.
 
   - id: warcraft_logs
     kind: warcraft_logs
     priority: 2
     enabled: false
     status: planned
-    description: Warcraft Logs API v2 (OAuth 2.0) game data.
+    description: >-
+      Warcraft Logs API v2 (OAuth 2.0). Its game-data items have only an id, a name and an
+      icon - no stats - so it cannot supply items; kept for log validation in version 5.
     secrets: [WOWGEAR_WCL_CLIENT_ID, WOWGEAR_WCL_CLIENT_SECRET]
 
   - id: blizzard
     kind: blizzard_game_data
     priority: 3
-    enabled: false
-    status: planned
-    description: Blizzard Battle.net Game Data API (OAuth 2.0 client credentials).
+    enabled: true
+    status: active
+    description: >-
+      Blizzard Battle.net Game Data API, Classic Era namespace (OAuth 2.0 client
+      credentials). Lookups are cached for at most 30 days, as its terms require.
     secrets: [WOWGEAR_BLIZZARD_CLIENT_ID, WOWGEAR_BLIZZARD_CLIENT_SECRET]
+    settings:
+      region: us
+      locale: en_US
+      timeout_seconds: 10
 
   - id: file_import
     kind: file_import
     priority: 4
     enabled: true
-    status: planned
-    description: Items you import from CSV or JSON files.
+    status: active
+    description: Items you import from CSV or JSON files, kept as your own items.
 
   - id: wowhead
     kind: reference_only

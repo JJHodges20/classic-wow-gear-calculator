@@ -11,7 +11,7 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | 2 | Canonical models + ruleset/profile loaders + fixtures | Done (2026-10-07) |
 | 3 | Core scoring engine + caps/threshold hooks + golden tests | Done (2026-10-07) |
 | 4 | Manual item-entry service and validation | Done (2026-10-07) |
-| 5 | Item repository + first lookup provider + cache | Not started |
+| 5 | Item repository + first lookup provider + cache | Done (2026-10-07) |
 | 6 | Item comparison service + explainable breakdown | Not started |
 | 7 | Streamlit shell + design system + calculator page | Not started |
 | 8 | Compare, Profiles, Item Database, and Data Health pages | Not started |

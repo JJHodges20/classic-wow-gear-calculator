@@ -1,0 +1,56 @@
+{
+  "dataset": "classic_era_items",
+  "version": "2026.10.07-db-4641790",
+  "built_at": "2026-10-07T19:37:41+00:00",
+  "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+  "source_url": "https://github.com/vmangos/core/releases/tag/db_latest",
+  "snapshot": "db-4641790",
+  "snapshot_archive_sha256": "bb2f1dd69171043a52657574f54948fd30941530fdc6eec12bce62c655428501",
+  "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+  "curation": "Equippable items of uncommon quality or better at their patch 1.12 version, without developer placeholders.",
+  "phase_heuristic": "Raid and world-boss drops take the phase that content opened in; other items take the phase of the first patch they exist in.",
+  "counts": {
+    "items": 7859,
+    "dropped": {
+      "below uncommon quality": 2494,
+      "placeholder or developer item": 157,
+      "artifact or developer quality": 13
+    },
+    "by_slot": {
+      "back": 415,
+      "chest": 775,
+      "feet": 630,
+      "finger": 358,
+      "hands": 621,
+      "head": 510,
+      "held_in_off_hand": 171,
+      "legs": 638,
+      "main_hand": 255,
+      "neck": 229,
+      "off_hand": 14,
+      "one_hand": 383,
+      "ranged": 281,
+      "relic": 18,
+      "shield": 242,
+      "shoulder": 519,
+      "trinket": 195,
+      "two_hand": 506,
+      "waist": 585,
+      "wrist": 514
+    },
+    "by_phase": {
+      "1": 5029,
+      "2": 665,
+      "3": 298,
+      "4": 750,
+      "5": 726,
+      "6": 391
+    },
+    "items_with_unscored_effects": 477
+  },
+  "cross_check": {
+    "agree": 432,
+    "differ": 3,
+    "text_not_recognized": 7
+  }
+}

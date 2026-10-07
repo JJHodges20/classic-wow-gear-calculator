@@ -106,7 +106,38 @@ against the ruleset:
 A custom item is usable when it has no errors; an item claimed to be from the game must also
 have no warnings.
 
+## Items: providers, repository and cache
+
+```
+data/bundled (VMaNGOS-built)   Blizzard Game Data API   CSV / JSON files   manual form
+        |                              |                       |                |
+ data_sources/bundled.py     data_sources/blizzard.py   data_sources/files.py    |
+        |                              |                       |                |
+ (canonical already)      processing/blizzard.py       processing/imports.py -> processing/manual.py
+        \______________________________|_______________________|________________/
+                                       |
+                         processing/validation.py (against the ruleset)
+                                       |
+                 repositories/items.py (SQLite: bundled, cache, user)
+                                       |
+                services/item_search.py   services/item_entry.py
+```
+
+- `services/workspace.py` opens everything once: rulesets, profiles, the database
+  (`data/user/wowgear.sqlite3`), the bundled dataset (loaded when its version changes),
+  expired lookups dropped and their bundled versions restored, and the Blizzard client when
+  credentials are set.
+- `services/item_search.py` searches locally (every word of the query, exact names first,
+  filters for ruleset, slot, armor and weapon type, phase, level, quality and origin) and
+  online only on request. Online items are validated and cached with an expiry of at most 30
+  days; every call is recorded for data health. Any provider failure becomes a notice beside
+  the local results.
+- One canonical id per game item (`classic_era:<id>`): a fresher online lookup replaces the
+  bundled row until it expires; the player's own items are never overwritten.
+
+See [DATA_SOURCES.md](DATA_SOURCES.md) for the terms of each source.
+
 ## Sections to complete
 
-This document grows with the milestones: the repository, providers and cache (5),
-comparison (6), the app (7 and 8), characters and gear sets (9).
+This document grows with the milestones: comparison (6), the app (7 and 8), characters and
+gear sets (9).

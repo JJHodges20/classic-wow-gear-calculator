@@ -1,0 +1,26 @@
+{
+  "page": 1,
+  "pageSize": 1,
+  "maxPageSize": 100,
+  "pageCount": 1,
+  "results": [
+    {
+      "key": {
+        "href": "..."
+      },
+      "data": {
+        "id": 900001,
+        "name": {
+          "en_US": "Test Girdle of Lookups",
+          "de_DE": "Test Girdle of Lookups"
+        },
+        "level": 60,
+        "required_level": 55,
+        "inventory_type": {
+          "type": "WAIST",
+          "name": "Waist"
+        }
+      }
+    }
+  ]
+}

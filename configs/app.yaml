@@ -9,10 +9,12 @@ paths:
   data_dir: data
   cache_dir: data/cache
   user_dir: data/user
+  bundled_dir: data/bundled
 
 logging:
   level: INFO
 
 cache:
-  # How long a looked-up item is trusted before the search service asks its provider again.
+  # How long a looked-up item is kept before the search service asks its provider again.
+  # Blizzard's API terms allow at most 30 days; a longer value is cut to 30 for Blizzard.
   item_ttl_days: 30

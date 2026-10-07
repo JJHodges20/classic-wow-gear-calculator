@@ -101,7 +101,9 @@ Run from the project root (Windows, PowerShell or Git Bash):
 .\.venv\Scripts\wowgear.exe ui --no-browser --port 8601
 ```
 
-Set up from scratch with `scripts\bootstrap.ps1`.
+Set up from scratch with `scripts\bootstrap.ps1`. The bundled item dataset is rebuilt from a
+VMaNGOS snapshot with `scripts\build_bundled_dataset.py` (see `data/bundled/README.md`); raw
+downloads live in `data/raw/`, which git ignores.
 
 ## Tool notes
 

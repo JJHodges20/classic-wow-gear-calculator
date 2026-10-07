@@ -1,16 +1,13 @@
-"""Data health: what is configured, what is missing, what each provider can do right now.
-
-This service grows with the milestones: rulesets, profiles, the item cache and the bundled
-dataset join the report as they are built.
-"""
+"""Data health: what is configured, what is loaded, what each provider can do right now."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Literal
+from dataclasses import dataclass, field
+from typing import Any, Literal
 
 from wow_gear.core import ConfigError, Settings
 from wow_gear.profiles.loader import ProfileRegistry
+from wow_gear.repositories.items import ItemRepository, ProviderCall
 from wow_gear.rulesets.loader import RulesetRegistry
 
 CheckStatus = Literal["ok", "warning", "error", "info"]
@@ -43,11 +40,41 @@ class ProviderStatus:
         return self.enabled and self.status == "active" and self.credentials != "missing"
 
 
-class HealthService:
-    """Reports on the configuration of one project root."""
+@dataclass(frozen=True)
+class BundledStatus:
+    """The bundled dataset as loaded into the local database."""
 
-    def __init__(self, settings: Settings) -> None:
+    version: str | None
+    loaded: int
+    metadata: dict[str, Any] = field(default_factory=dict)
+    problem: str | None = None
+
+
+class HealthService:
+    """Reports on the configuration and, when given them, the data the workspace holds."""
+
+    def __init__(
+        self,
+        settings: Settings,
+        *,
+        repository: ItemRepository | None = None,
+        bundled: BundledStatus | None = None,
+        online_detail: str | None = None,
+    ) -> None:
         self._settings = settings
+        self._repository = repository
+        self._bundled = bundled
+        self._online_detail = online_detail
+
+    @property
+    def bundled(self) -> BundledStatus | None:
+        return self._bundled
+
+    def item_counts(self) -> dict[str, int]:
+        return self._repository.counts() if self._repository else {}
+
+    def recent_calls(self, limit: int = 10) -> list[ProviderCall]:
+        return self._repository.recent_calls(limit=limit) if self._repository else []
 
     def provider_statuses(self) -> list[ProviderStatus]:
         statuses = []
@@ -75,27 +102,47 @@ class HealthService:
         settings = self._settings
         checks = [HealthCheck("configuration", "ok", f"Read configs/ under {settings.root}")]
         checks.extend(self._ruleset_and_profile_checks())
+        checks.extend(self._data_checks())
         for provider in self.provider_statuses():
+            name = f"provider {provider.id}"
             if provider.status == "reference_only":
-                checks.append(
-                    HealthCheck(f"provider {provider.id}", "info", "Reference only; never fetched")
-                )
+                checks.append(HealthCheck(name, "info", "Reference only; never fetched"))
             elif provider.status == "planned":
-                checks.append(
-                    HealthCheck(f"provider {provider.id}", "info", "Planned; not implemented yet")
-                )
+                checks.append(HealthCheck(name, "info", "Planned; not implemented yet"))
             elif not provider.enabled:
-                checks.append(HealthCheck(f"provider {provider.id}", "info", "Disabled"))
+                checks.append(HealthCheck(name, "info", "Disabled"))
             elif provider.credentials == "missing":
+                checks.append(HealthCheck(name, "warning", "Credentials not set; see .env.example"))
+            else:
+                detail = "Ready"
+                if provider.id == "blizzard" and self._online_detail:
+                    detail = self._online_detail
+                checks.append(HealthCheck(name, "ok", detail))
+        return checks
+
+    def _data_checks(self) -> list[HealthCheck]:
+        checks: list[HealthCheck] = []
+        if self._bundled is not None:
+            if self._bundled.version is None:
                 checks.append(
-                    HealthCheck(
-                        f"provider {provider.id}",
-                        "warning",
-                        "Credentials not set; see .env.example",
-                    )
+                    HealthCheck("bundled dataset", "warning", self._bundled.problem or "Not loaded")
                 )
             else:
-                checks.append(HealthCheck(f"provider {provider.id}", "ok", "Ready"))
+                detail = f"{self._bundled.loaded} items, version {self._bundled.version}"
+                status: CheckStatus = "warning" if self._bundled.problem else "ok"
+                if self._bundled.problem:
+                    detail += f" ({self._bundled.problem})"
+                checks.append(HealthCheck("bundled dataset", status, detail))
+        if self._repository is not None:
+            counts = self._repository.counts()
+            checks.append(
+                HealthCheck(
+                    "local items",
+                    "info",
+                    f"{counts.get('bundled', 0)} bundled, {counts.get('cache', 0)} looked up, "
+                    f"{counts.get('user', 0)} your own",
+                )
+            )
         return checks
 
     def _ruleset_and_profile_checks(self) -> list[HealthCheck]:

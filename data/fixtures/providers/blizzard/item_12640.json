@@ -1,0 +1,153 @@
+{
+  "_links": {
+    "self": {
+      "href": "..."
+    }
+  },
+  "id": 12640,
+  "name": "Lionheart Helm",
+  "quality": {
+    "type": "EPIC",
+    "name": "Epic"
+  },
+  "level": 61,
+  "required_level": 56,
+  "media": {
+    "key": {
+      "href": "..."
+    },
+    "id": 12640
+  },
+  "item_class": {
+    "key": {
+      "href": "..."
+    },
+    "name": "Armor",
+    "id": 4
+  },
+  "item_subclass": {
+    "key": {
+      "href": "..."
+    },
+    "name": "Plate",
+    "id": 4
+  },
+  "inventory_type": {
+    "type": "HEAD",
+    "name": "Head"
+  },
+  "purchase_price": 0,
+  "sell_price": 0,
+  "max_count": 0,
+  "is_equippable": true,
+  "is_stackable": false,
+  "preview_item": {
+    "item": {
+      "key": {
+        "href": "..."
+      },
+      "id": 12640
+    },
+    "quality": {
+      "type": "EPIC",
+      "name": "Epic"
+    },
+    "name": "Lionheart Helm",
+    "media": {
+      "key": {
+        "href": "..."
+      },
+      "id": 12640
+    },
+    "item_class": {
+      "key": {
+        "href": "..."
+      },
+      "name": "Armor",
+      "id": 4
+    },
+    "item_subclass": {
+      "key": {
+        "href": "..."
+      },
+      "name": "Plate",
+      "id": 4
+    },
+    "inventory_type": {
+      "type": "HEAD",
+      "name": "Head"
+    },
+    "binding": {
+      "type": "ON_EQUIP",
+      "name": "Binds when equipped"
+    },
+    "requirements": {
+      "level": {
+        "value": 56,
+        "display_string": "Requires Level 56"
+      }
+    },
+    "level": {
+      "value": 61,
+      "display_string": "Item Level 61"
+    },
+    "armor": {
+      "value": 565,
+      "display": {
+        "display_string": "565 Armor"
+      }
+    },
+    "stats": [
+      {
+        "type": {
+          "type": "STRENGTH",
+          "name": "Strength"
+        },
+        "value": 18,
+        "display": {
+          "display_string": "+18 Strength",
+          "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 1.0
+          }
+        }
+      }
+    ],
+    "spells": [
+      {
+        "spell": {
+          "key": {
+            "href": "https://us.api.blizzard.com/data/wow/spell/7598?namespace=static-classic1x-us"
+          },
+          "name": "Increased Critical 2",
+          "id": 7598
+        },
+        "description": "Equip: Improves your chance to get a critical strike by 2%.",
+        "display_color": {
+          "r": 0,
+          "g": 255,
+          "b": 0,
+          "a": 1.0
+        }
+      },
+      {
+        "spell": {
+          "key": {
+            "href": "https://us.api.blizzard.com/data/wow/spell/15465?namespace=static-classic1x-us"
+          },
+          "name": "Increased Hit Chance 2",
+          "id": 15465
+        },
+        "description": "Equip: Improves your chance to hit by 2%.",
+        "display_color": {
+          "r": 0,
+          "g": 255,
+          "b": 0,
+          "a": 1.0
+        }
+      }
+    ]
+  }
+}

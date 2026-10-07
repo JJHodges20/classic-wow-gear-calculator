@@ -48,6 +48,7 @@ class PathsSection(_Strict):
     data_dir: Path = Path("data")
     cache_dir: Path = Path("data/cache")
     user_dir: Path = Path("data/user")
+    bundled_dir: Path = Path("data/bundled")
 
 
 class LoggingSection(_Strict):
@@ -147,6 +148,15 @@ class Settings:
         if self.environment.get(DATA_DIR_VARIABLE):
             return self.data_dir / "user"
         return self._resolve(self.app.paths.user_dir)
+
+    @property
+    def bundled_dir(self) -> Path:
+        """The bundled dataset ships with the code, so it never moves with the data directory."""
+        return self._resolve(self.app.paths.bundled_dir)
+
+    @property
+    def database_path(self) -> Path:
+        return self.user_dir / "wowgear.sqlite3"
 
     @property
     def log_level(self) -> LogLevel:

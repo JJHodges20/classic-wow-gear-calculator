@@ -1,0 +1,201 @@
+{
+  "_links": {
+    "self": {
+      "href": "..."
+    }
+  },
+  "id": 900001,
+  "name": "Test Girdle of Lookups",
+  "quality": {
+    "type": "RARE",
+    "name": "Rare"
+  },
+  "level": 60,
+  "required_level": 55,
+  "media": {
+    "key": {
+      "href": "..."
+    },
+    "id": 900001
+  },
+  "item_class": {
+    "key": {
+      "href": "..."
+    },
+    "name": "Armor",
+    "id": 4
+  },
+  "item_subclass": {
+    "key": {
+      "href": "..."
+    },
+    "name": "Plate",
+    "id": 4
+  },
+  "inventory_type": {
+    "type": "WAIST",
+    "name": "Waist"
+  },
+  "purchase_price": 0,
+  "sell_price": 0,
+  "max_count": 0,
+  "is_equippable": true,
+  "is_stackable": false,
+  "preview_item": {
+    "item": {
+      "key": {
+        "href": "..."
+      },
+      "id": 900001
+    },
+    "quality": {
+      "type": "RARE",
+      "name": "Rare"
+    },
+    "name": "Test Girdle of Lookups",
+    "media": {
+      "key": {
+        "href": "..."
+      },
+      "id": 900001
+    },
+    "item_class": {
+      "key": {
+        "href": "..."
+      },
+      "name": "Armor",
+      "id": 4
+    },
+    "item_subclass": {
+      "key": {
+        "href": "..."
+      },
+      "name": "Plate",
+      "id": 4
+    },
+    "inventory_type": {
+      "type": "WAIST",
+      "name": "Waist"
+    },
+    "binding": {
+      "type": "ON_EQUIP",
+      "name": "Binds when equipped"
+    },
+    "requirements": {
+      "level": {
+        "value": 55,
+        "display_string": "Requires Level 55"
+      }
+    },
+    "level": {
+      "value": 60,
+      "display_string": "Item Level 60"
+    },
+    "armor": {
+      "value": 400,
+      "display": {
+        "display_string": "400 Armor"
+      }
+    },
+    "stats": [
+      {
+        "type": {
+          "type": "STRENGTH",
+          "name": "Strength"
+        },
+        "value": 15,
+        "display": {
+          "display_string": "+15 Strength",
+          "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 1.0
+          }
+        }
+      },
+      {
+        "type": {
+          "type": "STAMINA",
+          "name": "Stamina"
+        },
+        "value": 10,
+        "display": {
+          "display_string": "+10 Stamina",
+          "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 1.0
+          }
+        }
+      },
+      {
+        "type": {
+          "type": "FIRE_RESISTANCE",
+          "name": "Fire Resistance"
+        },
+        "value": 7,
+        "display": {
+          "display_string": "+7 Fire Resistance",
+          "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 1.0
+          }
+        }
+      }
+    ],
+    "spells": [
+      {
+        "spell": {
+          "key": {
+            "href": "https://us.api.blizzard.com/data/wow/spell/15464?namespace=static-classic1x-us"
+          },
+          "name": "Increased Hit Chance 1",
+          "id": 15464
+        },
+        "description": "Equip: Improves your chance to hit by 1%.",
+        "display_color": {
+          "r": 0,
+          "g": 255,
+          "b": 0,
+          "a": 1.0
+        }
+      },
+      {
+        "spell": {
+          "key": {
+            "href": "https://us.api.blizzard.com/data/wow/spell/17319?namespace=static-classic1x-us"
+          },
+          "name": "Undead Slayer 81",
+          "id": 17319
+        },
+        "description": "Equip: +81 Attack Power when fighting Undead.",
+        "display_color": {
+          "r": 0,
+          "g": 255,
+          "b": 0,
+          "a": 1.0
+        }
+      },
+      {
+        "spell": {
+          "key": {
+            "href": "https://us.api.blizzard.com/data/wow/spell/99999?namespace=static-classic1x-us"
+          },
+          "name": "Something Odd",
+          "id": 99999
+        },
+        "description": "Chance on hit: Does something nobody has modeled.",
+        "display_color": {
+          "r": 0,
+          "g": 255,
+          "b": 0,
+          "a": 1.0
+        }
+      }
+    ]
+  }
+}
