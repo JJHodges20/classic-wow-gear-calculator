@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 import time
 from dataclasses import dataclass, field
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Literal, Protocol
 
@@ -71,6 +71,8 @@ class SearchHit:
     item: Item
     origin: Origin
     stale: bool = False
+    stored_at: datetime | None = None
+    expires_at: datetime | None = None
 
 
 @dataclass(frozen=True)
@@ -300,9 +302,22 @@ class ItemSearchService:
 
     # --- helpers ------------------------------------------------------------------------
 
+    def browse(
+        self, filters: ItemFilters = NO_FILTERS, *, offset: int = 0, limit: int = 50
+    ) -> tuple[list[SearchHit], int]:
+        """A page of local items matching ``filters``, by name, and how many match in all."""
+        stored, total = self._items.browse(filters, offset=offset, limit=limit)
+        return [self._hit(item) for item in stored], total
+
+    def counts(self) -> dict[str, int]:
+        """Local items by origin: bundled, cache (online lookups) and user (your own)."""
+        return self._items.counts()
+
     @staticmethod
     def _hit(stored: StoredItem) -> SearchHit:
-        return SearchHit(stored.item, stored.origin, stored.stale)
+        return SearchHit(
+            stored.item, stored.origin, stored.stale, stored.stored_at, stored.expires_at
+        )
 
     def _unavailable_notice(self) -> str:
         if self._online_state == "disabled":

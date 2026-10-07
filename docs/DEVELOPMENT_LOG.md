@@ -3,6 +3,43 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 8, part 1 - Compare, Build profiles, Item database and Data health pages (2026-10-07)
+
+**Built**
+
+- **Compare**: up to eight items for one context, ranked, the recommendation, the two best
+  explained component by component, every item's components in one table, and the current
+  stats used for caps.
+- **Build profiles**: any profile's weights with basis and sources, its conversions, its caps
+  and breakpoints as numbers for its own context, assumptions, procs and set rules, sources;
+  "Use in the calculator"; and customisation - edit, drop or add weights and save them as
+  your own profile (`services/profiles.py`, [decision 0007](decisions/0007-custom-profiles.md)),
+  versioned with every save and kept in your data folder.
+- **Item database**: filters (name, slot, armor or weapon type, source, phase, required
+  level, quality), paging, the item card and its provenance, and "Compare as item A/B".
+- **Data health**: checks, the dataset's version, build and phases, providers, recent
+  provider calls, and dropping expired lookups (`Workspace.refresh_cache`).
+- Pages are scripts in `pages/` that draw functions from `views/`, so they can be tested;
+  the item picker is shared by the calculator and Compare; shared choices survive changing
+  page.
+
+**Found on the way**
+
+- A widget's session key cannot be changed once the widget is drawn: the profile to select
+  after saving is set for the next run instead.
+- Streamlit forgets a widget's value when its page is left; the shell stores the shared
+  choices back as ordinary session values on every run. `streamlit.testing` replays page
+  switches differently from a browser, so that behaviour is checked in the browser.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | Profile service, browsing, cache refresh and page tests pass; the full suite passes on the committed snapshot |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict, package and app) clean |
+| Secrets | None added |
+| UI smoke test | In Chromium, light and dark: Compare with three helms, Build profiles, Item database with a row selected, Data health; the context kept from the calculator to Compare; no exceptions or page errors |
+
 ## Milestone 7 - Streamlit shell, design system and calculator page (2026-10-07)
 
 **Built**

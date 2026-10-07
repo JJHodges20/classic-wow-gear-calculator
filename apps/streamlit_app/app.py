@@ -2,7 +2,8 @@
 
 The shell sets the page up, applies the design system, and hands over to the page the
 navigation selects. Pages call ``wow_gear.services`` and never a provider, a repository or
-a formula directly.
+a formula directly. Each page is a small script in ``pages/`` that draws its view from
+``views/``.
 """
 
 from __future__ import annotations
@@ -10,7 +11,7 @@ from __future__ import annotations
 import streamlit as st
 
 from components import theme
-from pages import calculator
+from state import session
 from wow_gear import __version__
 
 st.set_page_config(
@@ -20,15 +21,40 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 theme.inject()
+session.keep_across_pages()
 
 page = st.navigation(
     [
         st.Page(
-            calculator.render,
+            "pages/calculator.py",
             title="Calculator",
             icon=":material/calculate:",
             url_path="calculator",
             default=True,
+        ),
+        st.Page(
+            "pages/compare.py",
+            title="Compare",
+            icon=":material/compare_arrows:",
+            url_path="compare",
+        ),
+        st.Page(
+            "pages/profiles.py",
+            title="Build profiles",
+            icon=":material/tune:",
+            url_path="profiles",
+        ),
+        st.Page(
+            "pages/item_database.py",
+            title="Item database",
+            icon=":material/inventory_2:",
+            url_path="items",
+        ),
+        st.Page(
+            "pages/data_health.py",
+            title="Data health",
+            icon=":material/monitor_heart:",
+            url_path="health",
         ),
     ],
     position="top",

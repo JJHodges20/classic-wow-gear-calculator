@@ -48,6 +48,21 @@ def set_item(slot: Slot, value: Item | None) -> None:
     st.session_state[f"item_{slot}"] = value
 
 
+SHARED_KEYS = (CLASS, ROLE, PROFILE, PHASE, LEVEL, CONTENT, RACE, MAIN_HAND, EQUIPPED)
+"""Choices every page shares."""
+
+
+def keep_across_pages() -> None:
+    """Keep the shared choices when the player changes page.
+
+    Streamlit forgets a widget's value when the page that drew it is left; storing each
+    value back under its key makes it an ordinary session value, which survives.
+    """
+    for key in list(st.session_state.keys()):
+        if key in SHARED_KEYS or str(key).startswith("total_"):
+            st.session_state[key] = st.session_state[key]
+
+
 def total_key(stat: Stat) -> str:
     return f"total_{stat.value}"
 

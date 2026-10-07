@@ -73,19 +73,31 @@ def render(slot: Slot, workspace: Workspace, ruleset: Ruleset, other: Item | Non
 
 
 def _search(slot: Slot, workspace: Workspace, other: Item | None) -> None:
+    picked = picker(slot, workspace, follow=other)
+    if picked is not None:
+        session.set_item(slot, picked)
+        st.rerun()
+
+
+def picker(prefix: str, workspace: Workspace, *, follow: Item | None = None) -> Item | None:
+    """Search the item data and return the item the player chooses, if any.
+
+    ``follow`` is an item already chosen elsewhere: the slot filter starts on its slot.
+    Widget keys start with ``prefix``, so several pickers can share a page.
+    """
     search = workspace.search
     columns = st.columns([1.7, 1.0])
     query = columns[0].text_input(
         "Search items",
-        key=f"search_{slot}",
+        key=f"search_{prefix}",
         placeholder="Name or item id, e.g. Lionheart Helm",
     )
     slot_options: list[str] = [ANY_SLOT, *ItemSlot]
-    filter_key, follows = f"slot_filter_{slot}", f"slot_filter_{slot}_follows"
-    if other is not None and st.session_state.get(follows) != other.id:
-        # A new other item: search its slot first; the player can still widen it.
-        st.session_state[filter_key] = other.slot
-        st.session_state[follows] = other.id
+    filter_key, follows = f"slot_filter_{prefix}", f"slot_filter_{prefix}_follows"
+    if follow is not None and st.session_state.get(follows) != follow.id:
+        # A new item to follow: search its slot first; the player can still widen it.
+        st.session_state[filter_key] = follow.slot
+        st.session_state[follows] = follow.id
     session.default(filter_key, ANY_SLOT)
     slot_filter = columns[1].selectbox(
         "Slot",
@@ -95,7 +107,7 @@ def _search(slot: Slot, workspace: Workspace, other: Item | None) -> None:
     )
     online = st.toggle(
         "Also look up online (Blizzard API)",
-        key=f"online_{slot}",
+        key=f"online_{prefix}",
         disabled=not search.online_available,
         help="Local data is searched first; an online lookup is cached for at most 30 days.",
     )
@@ -105,7 +117,7 @@ def _search(slot: Slot, workspace: Workspace, other: Item | None) -> None:
     text = " ".join(query.split())
     if not text:
         st.caption("Type part of a name - words in any order - or an item id.")
-        return
+        return None
     chosen_slot = None if slot_filter == ANY_SLOT else ItemSlot(slot_filter)
     filters = ItemFilters(slots=(chosen_slot,) if chosen_slot is not None else ())
     with st.spinner("Searching…"):
@@ -115,7 +127,7 @@ def _search(slot: Slot, workspace: Workspace, other: Item | None) -> None:
     if not outcome.hits:
         where = f" for {SLOT_LABELS[chosen_slot]}" if chosen_slot is not None else ""
         st.info(f'No items match "{text}"{where}.', icon=":material/search_off:")
-        return
+        return None
     hits = {hit.item.id: hit for hit in outcome.hits}
 
     def label(item_id: str) -> str:
@@ -129,11 +141,9 @@ def _search(slot: Slot, workspace: Workspace, other: Item | None) -> None:
         index=None,
         placeholder="Choose an item…",
         format_func=label,
-        key=f"pick_{slot}:{text.lower()}",
+        key=f"pick_{prefix}:{text.lower()}",
     )
-    if picked is not None:
-        session.set_item(slot, hits[picked].item)
-        st.rerun()
+    return hits[picked].item if picked is not None else None
 
 
 def _offline_reason(state: str) -> str:

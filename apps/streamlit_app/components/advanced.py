@@ -96,7 +96,7 @@ def _caps(result: ComparisonResult | None) -> None:
         st.html(_list(derivations))
 
 
-def _current_stats(
+def current_stats(
     profile: BuildProfile,
     ruleset: Ruleset,
     stats: list[Stat],
@@ -109,12 +109,13 @@ def _current_stats(
     )
     columns = st.columns(3)
     names = [f"Item {slot}" for slot, item in chosen.items() if item is not None]
-    columns[0].radio(
-        "Which of these are you wearing now?",
-        [session.NEITHER, *names],
-        key=session.EQUIPPED,
-        help="Its stats are taken out of your totals before the items are compared.",
-    )
+    if names:
+        columns[0].radio(
+            "Which of these are you wearing now?",
+            [session.NEITHER, *names],
+            key=session.EQUIPPED,
+            help="Its stats are taken out of your totals before the items are compared.",
+        )
     if weapon_skill:
         races = [race for race in ruleset.class_def(profile.class_name).races]
         columns[1].selectbox(
@@ -219,6 +220,6 @@ def render(
     with caps:
         _caps(result)
     with current:
-        _current_stats(profile, ruleset, stats, weapon_skill, chosen)
+        current_stats(profile, ruleset, stats, weapon_skill, chosen)
     with raw:
         _raw_math(result)

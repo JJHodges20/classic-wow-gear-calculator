@@ -118,6 +118,14 @@ class ProfileRegistry:
         except KeyError:
             raise NotFoundError(f"no build profile {profile_id!r}") from None
 
+    def put(self, profile: BuildProfile) -> None:
+        """Add a profile, or replace the one with its id (a player's custom profile)."""
+        self._profiles[profile.id] = profile
+        self._profiles = dict(sorted(self._profiles.items()))
+
+    def remove(self, profile_id: str) -> None:
+        self._profiles.pop(profile_id, None)
+
     def for_ruleset(self, ruleset_id: str) -> list[BuildProfile]:
         return [p for p in self._profiles.values() if p.ruleset == ruleset_id]
 

@@ -39,7 +39,7 @@ def _tile(label: str, value: str, unit: str, *, picked: bool, tone: str = "") ->
     )
 
 
-def _verdict(result: ComparisonResult, names: dict[str, str]) -> str:
+def verdict(result: ComparisonResult, names: dict[str, str]) -> str:
     unit = result.unit_abbreviation
     if result.outcome in ("winner", "only_usable") and result.winner_id:
         winner = result.result(result.winner_id)
@@ -104,7 +104,7 @@ def _tiles(result: ComparisonResult, slots: dict[str, Slot]) -> str:
     return '<div class="wg-tiles">' + "".join(tiles) + "</div>"
 
 
-def _line(line: ExplanationLine) -> str:
+def line_html(line: ExplanationLine) -> str:
     tone = tone_of(line.delta)
     css = {"good": "wg-delta-good", "bad": "wg-delta-bad"}.get(tone, "wg-small")
     note = f'<div class="wg-note">{escape(line.note)}</div>' if line.note else ""
@@ -117,7 +117,7 @@ def _line(line: ExplanationLine) -> str:
 def render(result: ComparisonResult, slots: dict[str, Slot]) -> None:
     names = {r.item_id: r.item_name for r in result.results}
     with st.container(border=True):
-        st.html(eyebrow("Recommendation") + _verdict(result, names) + _tiles(result, slots))
+        st.html(eyebrow("Recommendation") + verdict(result, names) + _tiles(result, slots))
         confidence = result.confidence
         reasons = "; ".join(confidence.reasons)
         st.html(
@@ -135,7 +135,7 @@ def render(result: ComparisonResult, slots: dict[str, Slot]) -> None:
                 + f'<div class="wg-small">Each line is what {escape(first)} gains (▲) or gives '
                 f"up (▼) against {escape(second)}, in {escape(result.unit_abbreviation)}.</div>"
                 + '<ul class="wg-why">'
-                + "".join(_line(line) for line in result.lines)
+                + "".join(line_html(line) for line in result.lines)
                 + "</ul>"
             )
         elif result.first_id and result.second_id:

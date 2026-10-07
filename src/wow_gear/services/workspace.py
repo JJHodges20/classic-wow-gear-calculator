@@ -28,6 +28,7 @@ from wow_gear.services.calculator import CalculatorService
 from wow_gear.services.health import BundledStatus, HealthService
 from wow_gear.services.item_entry import ItemEntryService
 from wow_gear.services.item_search import ItemSearchService, OnlineProvider, OnlineState
+from wow_gear.services.profiles import ProfileService
 
 LOG = get_logger(__name__)
 BUNDLED_VERSION_KEY = "bundled_version"
@@ -53,6 +54,8 @@ class Workspace:
         self.profiles = ProfileRegistry.from_directory(
             settings.config_dir / "profiles", self.rulesets
         )
+        self.profile_service = ProfileService(self.profiles, self.rulesets, settings.user_dir)
+        self.profile_service.load_custom()
         try:
             self.ruleset: Ruleset = self.rulesets.get(settings.app.app.default_ruleset)
         except Exception as error:
@@ -60,7 +63,7 @@ class Workspace:
         self.database = database or Database(settings.database_path)
         self.items = ItemRepository(self.database)
         self.bundled = self._load_bundled()
-        self._restore_expired()
+        self.refresh_cache()
         setup = (
             OnlineSetup(online, "ok", "Injected") if online is not None else self._online_setup()
         )
@@ -119,17 +122,22 @@ class Workspace:
         problem = f"{rejected} bundled items failed validation" if rejected else None
         return BundledStatus(version=version, loaded=loaded, metadata=metadata, problem=problem)
 
-    def _restore_expired(self) -> None:
+    def refresh_cache(self) -> tuple[int, int]:
+        """Drop expired online lookups and put back the bundled version of each.
+
+        Returns how many were dropped and how many bundled items were restored.
+        """
         expired = self.items.purge_expired()
         if not expired or self.bundled.version is None:
-            return
+            return len(expired), 0
         try:
             _, items, _ = self._bundled_items()
         except ProviderError:
-            return
+            return len(expired), 0
         wanted = set(expired)
         restored = self.items.restore((item for item in items if item.id in wanted), "bundled")
         LOG.info("dropped %d expired lookups, restored %d bundled items", len(expired), restored)
+        return len(expired), restored
 
     # --- online provider ----------------------------------------------------------------
 

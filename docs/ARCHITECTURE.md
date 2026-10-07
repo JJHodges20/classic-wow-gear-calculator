@@ -180,12 +180,23 @@ engine and the comparison layer. `reporting/text.py` formats a comparison as pla
 
 ```
 apps/streamlit_app/
-  app.py          the shell: page setup, theme, top navigation, footer
-  pages/          one function per page (calculator.py)
-  components/     what the pages draw: theme, escaped HTML pieces, item cards, the
-                  context bar, item input, the recommendation, the advanced tabs
+  app.py          the shell: page setup, theme, top navigation, footer; keeps the shared
+                  choices when the player changes page
+  pages/          one small script per page, as st.navigation runs them
+  views/          what each page draws, as functions: calculator, compare, profiles,
+                  item_database, data_health, and the setup they share
+  components/     the pieces: theme, escaped HTML, item cards, the context bar, the item
+                  picker and manual entry, the recommendation, the advanced tabs
   state/          session keys and helpers; the workspace, cached once per project
 ```
+
+The pages: **Calculator** (two items, the recommendation and the advanced tabs);
+**Compare** (up to eight items ranked, the two best explained, every component in one
+table); **Build profiles** (a profile's weights, conversions, caps evaluated as numbers,
+assumptions and sources; save your own weights as a custom profile - [decision
+0007](decisions/0007-custom-profiles.md)); **Item database** (filter and page through the
+local items, see where each came from, send one to the calculator); **Data health**
+(checks, the dataset's version and phases, providers, recent provider calls, the cache).
 
 The calculator page follows the roadmap's layout: a context bar (class, role, build
 profile; ruleset, phase; level, content) with a breadcrumb; items on the left - search with
@@ -203,5 +214,4 @@ still works. The design system is in [decision 0006](decisions/0006-app-design-s
 
 ## Sections to complete
 
-This document grows with the milestones: the remaining pages (8), characters and gear sets
-(9).
+This document grows with the milestones: characters and gear sets (9).
