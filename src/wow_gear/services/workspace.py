@@ -8,6 +8,7 @@ credentials are set. The app and the command line each open one.
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass
 from datetime import timedelta
 from pathlib import Path
@@ -15,7 +16,7 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from wow_gear.core import ConfigError, ProviderError, Settings, load_settings
-from wow_gear.core.logging import get_logger
+from wow_gear.core.logging import configure_logging, get_logger
 from wow_gear.data_sources.blizzard import BlizzardClient
 from wow_gear.data_sources.bundled import read_bundled, read_metadata
 from wow_gear.models.item import Item
@@ -66,6 +67,7 @@ class Workspace:
         self.items = ItemRepository(self.database)
         self.bundled = self._load_bundled()
         self.refresh_cache()
+        self._refreshed = time.monotonic()
         setup = (
             OnlineSetup(online, "ok", "Injected") if online is not None else self._online_setup()
         )
@@ -85,8 +87,13 @@ class Workspace:
         self.characters = CharacterService(CharacterRepository(self.database), self.calculator)
 
     @classmethod
-    def open(cls, root: Path | None = None) -> Workspace:
-        return cls(load_settings(root))
+    def open(cls, root: Path | None = None, *, configure_logs: bool = False) -> Workspace:
+        """The workspace of a project; ``configure_logs`` sets up logging for a process
+        (the app), masking every provider secret."""
+        settings = load_settings(root)
+        if configure_logs:
+            configure_logging(settings.log_level, secrets=settings.secret_values())
+        return cls(settings)
 
     def close(self) -> None:
         client = self.online.client
@@ -124,6 +131,15 @@ class Workspace:
         LOG.info("loaded bundled dataset %s: %d items (%d rejected)", version, loaded, rejected)
         problem = f"{rejected} bundled items failed validation" if rejected else None
         return BundledStatus(version=version, loaded=loaded, metadata=metadata, problem=problem)
+
+    def keep_fresh(self, every: timedelta = timedelta(minutes=1)) -> None:
+        """Drop expired lookups while the app runs (a workspace lives as long as the app),
+        at most once every ``every``, so Blizzard data is never kept past its 30 days."""
+        now = time.monotonic()
+        if now - self._refreshed < every.total_seconds():
+            return
+        self._refreshed = now
+        self.refresh_cache()
 
     def refresh_cache(self) -> tuple[int, int]:
         """Drop expired online lookups and put back the bundled version of each.
@@ -167,6 +183,3 @@ class Workspace:
         return OnlineSetup(client, "ok", f"Ready ({client.namespace})")
 
     # --- convenience --------------------------------------------------------------------
-
-    def ruleset_for(self, ruleset_id: str | None = None) -> Ruleset:
-        return self.rulesets.get(ruleset_id) if ruleset_id else self.ruleset

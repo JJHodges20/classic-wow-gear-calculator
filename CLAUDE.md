@@ -128,4 +128,7 @@ downloads live in `data/raw/`, which git ignores.
   dialog: open the root and use the navigation. Long dropdowns are virtualized: type to
   filter before choosing an option.
 - In a Bash heredoc, a backslash escape such as `\n` inside generated Python can arrive as
-  a real line break: write such lines with the Edit tool.
+  a real line break: write such lines with the Edit tool. Apostrophes inside a heredoc can
+  break the command too: put a longer patch script in a file and run it.
+- `pip install -e .` fails while `wowgear ui` runs (the launcher holds its file): stop the
+  app first, and delete any `~`-prefixed folder pip leaves in `.venv/Lib/site-packages`.

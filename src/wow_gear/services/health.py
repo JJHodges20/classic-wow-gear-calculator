@@ -70,9 +70,6 @@ class HealthService:
     def bundled(self) -> BundledStatus | None:
         return self._bundled
 
-    def item_counts(self) -> dict[str, int]:
-        return self._repository.counts() if self._repository else {}
-
     def recent_calls(self, limit: int = 10) -> list[ProviderCall]:
         return self._repository.recent_calls(limit=limit) if self._repository else []
 

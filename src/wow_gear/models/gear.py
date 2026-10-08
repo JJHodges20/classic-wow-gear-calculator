@@ -157,6 +157,9 @@ class GearAnalysis(_Frozen):
     weakest: tuple[WeakSlot, ...]
     sets: tuple[SetPieces, ...]
     notes: tuple[str, ...] = ()
+    assumptions: tuple[str, ...] = ()
+    """What the values rest on: the profile's assumptions, the caps as worked out for this
+    character, and what version 1 does not value."""
     fingerprint: str
     """A hash of everything the analysis depends on: the same inputs give the same hash."""
 
@@ -170,7 +173,9 @@ class ReplacementResult(_Frozen):
     removed: tuple[str, ...]
     """Names of the items it takes off (two for a two-hander replacing a pair)."""
     delta: float
-    """The change in the whole gear's value under the profile."""
+    """The change in the whole gear's value under the profile, against the current caps."""
+    outcome: Literal["better", "worse", "tie"]
+    """Better or worse beyond the comparison's tie margin, or effectively the same."""
     unit_abbreviation: str
     score_before: float
     score_after: float
@@ -178,6 +183,8 @@ class ReplacementResult(_Frozen):
     after: dict[Stat, float]
     caps_before: tuple[CapStatus, ...]
     caps_after: tuple[CapStatus, ...]
+    """Where the caps would stand after the change - the hit cap moves when the weapon type
+    or weapon skill changes, which version 1 shows but does not value."""
     lines: tuple[ExplanationLine, ...] = ()
     """The gear with the candidate against the gear as it is, component by component; the
     deltas add up to ``delta``."""

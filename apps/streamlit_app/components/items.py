@@ -7,6 +7,7 @@ from html import escape
 
 from components.html import chip, chips
 from wow_gear.models.enums import Stat
+from wow_gear.models.formatting import is_percent, stat_label
 from wow_gear.models.item import Item
 from wow_gear.models.labels import (
     ARMOR_LABELS,
@@ -36,16 +37,10 @@ def type_label(item: Item) -> str:
     return ", ".join(parts)
 
 
-def stat_label(stat: Stat, ruleset: Ruleset) -> str:
-    stat_def = ruleset.stat_def(stat)
-    return stat_def.label if stat_def else stat.value.replace("_", " ").capitalize()
-
-
 def stat_text(stat: Stat, value: float, ruleset: Ruleset) -> str:
     """ "+18 Strength", "+2% Crit", "−5 Agility"."""
-    stat_def = ruleset.stat_def(stat)
     sign = "+" if value >= 0 else "−"
-    percent = "%" if stat_def is not None and stat_def.unit == "percent" else ""
+    percent = "%" if is_percent(stat, ruleset) else ""
     return f"{sign}{abs(value):g}{percent} {stat_label(stat, ruleset)}"
 
 

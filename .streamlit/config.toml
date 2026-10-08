@@ -10,6 +10,10 @@ showSidebarNavigation = false
 # Never send usage statistics to Streamlit.
 gatherUsageStats = false
 
+[server]
+# Imports are refused above 5 MB anyway; do not accept more.
+maxUploadSize = 5
+
 [theme]
 font = "sans-serif"
 headingFont = "serif"

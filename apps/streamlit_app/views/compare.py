@@ -8,7 +8,7 @@ from html import escape
 import streamlit as st
 
 from components import advanced, exports, items, recommendation
-from components.html import Tone, chip, eyebrow, signed, tone_of
+from components.html import Tone, chip, eyebrow, md, signed, tone_of
 from components.item_input import picker
 from views.common import setup
 from wow_gear.models.comparison import ComparisonResult
@@ -96,6 +96,7 @@ def render() -> None:
         return
     ws, profile, ruleset = ready.workspace, ready.choice.profile, ready.choice.ruleset
     chosen = _chosen()
+    result: ComparisonResult | None = None
 
     st.write("")
     left, right = st.columns([1, 1.5], gap="large")
@@ -122,7 +123,7 @@ def render() -> None:
                 added = picker(f"cmp{round_number}", ws, follow=chosen[0] if chosen else None)
                 if added is not None:
                     if added.id in {item.id for item in chosen}:
-                        st.info(f"{added.name} is already in the list.")
+                        st.info(md(f"{added.name} is already in the list."))
                     else:
                         st.session_state[KEY] = [*chosen, added]
                         st.session_state[ROUND] = round_number + 1
@@ -143,7 +144,7 @@ def render() -> None:
             try:
                 result = ws.calculator.compare(chosen, ready.context)
             except DataValidationError as error:
-                st.error(f"These items cannot be compared: {error}", icon=":material/error:")
+                st.error(md(f"These items cannot be compared: {error}"), icon=":material/error:")
             else:
                 names = {r.item_id: r.item_name for r in result.results}
                 with st.container(border=True):
@@ -163,9 +164,11 @@ def render() -> None:
                     )
                 st.html(eyebrow("Every component") + _matrix(result))
                 for note in result.notes:
-                    st.info(note, icon=":material/info:")
+                    st.info(md(note), icon=":material/info:")
                 exports.comparison_downloads(result, ready.context, "compare_export")
 
     st.write("")
+    with st.expander("Assumptions", icon=":material/rule:"):
+        advanced.assumptions(profile, ruleset, result)
     with st.expander("Current stats used for caps", icon=":material/tune:"):
         advanced.current_stats(profile, ruleset, ready.stats, ready.weapon_skill, {})

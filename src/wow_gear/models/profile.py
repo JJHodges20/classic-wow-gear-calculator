@@ -23,6 +23,7 @@ from wow_gear.models.enums import (
     ClassName,
     ContentMode,
     Role,
+    ShapeshiftForm,
     Stat,
     ValidationStatus,
     WeaponType,
@@ -165,7 +166,7 @@ class BuildProfile(_Frozen):
     target_phase: int | None = Field(default=None, ge=1)
     target_level: int = Field(ge=1)
     default_content_mode: ContentMode
-    shapeshift_form: str | None = None
+    shapeshift_form: ShapeshiftForm | None = None
     score_unit: str = Field(min_length=1)
     stat_weights: tuple[StatWeight, ...] = Field(min_length=1)
     derived_stats: tuple[DerivedStatRule, ...] = ()

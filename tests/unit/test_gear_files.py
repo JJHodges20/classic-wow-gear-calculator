@@ -7,7 +7,7 @@ import json
 import pytest
 
 from wow_gear.core import DataValidationError
-from wow_gear.data_sources.files import read_gear_text
+from wow_gear.data_sources.files import read_gear_text, read_item_text
 from wow_gear.models.enums import EquipmentSlot
 from wow_gear.models.gear import GearSet, SavedCharacter
 from wow_gear.processing.gear_files import (
@@ -112,3 +112,17 @@ class TestGearLists:
             gear_from_rows([{"slot": "head", "name": "Helm"}], "classic_era", "Raid")
         with pytest.raises(DataValidationError, match="no rows"):
             gear_from_rows([], "classic_era", "Raid")
+
+
+class TestFilesThatCannotBeRead:
+    def test_deeply_nested_json_is_refused_not_a_crash(self) -> None:
+        nested = "[" * 100_000 + "]" * 100_000
+        with pytest.raises(DataValidationError, match="not valid JSON"):
+            read_gear_text(nested, ".json")
+        with pytest.raises(DataValidationError, match="not valid JSON"):
+            read_item_text(nested, ".json")
+
+    def test_a_csv_field_too_large_to_read_is_refused(self) -> None:
+        text = "slot,item_id" + chr(10) + "head," + chr(34) + "x" * 200_000 + chr(34) + chr(10)
+        with pytest.raises(DataValidationError, match="cannot be read"):
+            read_gear_text(text, ".csv")

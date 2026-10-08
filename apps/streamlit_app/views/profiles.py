@@ -7,11 +7,11 @@ from html import escape
 
 import streamlit as st
 
-from components.html import chip, eyebrow
-from components.items import stat_label
+from components.html import chip, eyebrow, md
 from state import session
 from views.common import open_workspace
 from wow_gear.models.enums import WEAPON_DPS_STATS, Stat
+from wow_gear.models.formatting import stat_label
 from wow_gear.models.labels import CONTENT_MODE_LABELS, ROLE_LABELS, weapon_label
 from wow_gear.models.profile import BuildProfile
 from wow_gear.models.ruleset import Ruleset
@@ -96,7 +96,7 @@ def _inspect(service: ProfileService, profile: BuildProfile) -> None:
         + (f", phase {profile.target_phase}" if profile.target_phase else "")
         + f". Scores are in {profile.score_unit}."
     )
-    st.subheader(profile.label)
+    st.subheader(md(profile.label))
     st.html(
         '<div class="wg-chips">'
         + "".join(badges)
@@ -228,7 +228,7 @@ def _customize(service: ProfileService, profile: BuildProfile) -> None:
             try:
                 saved = service.save_custom(profile.id, name, weights)
             except DataValidationError as error:
-                st.error(f"Not saved: {error}", icon=":material/error:")
+                st.error(md(f"Not saved: {error}"), icon=":material/error:")
             else:
                 st.session_state.pop(extra_key, None)
                 st.session_state[NEXT] = saved.id
@@ -247,7 +247,7 @@ def _manage(service: ProfileService, profile: BuildProfile) -> None:
         versions = service.history(profile.id)
         columns[2].caption("Saved versions: " + ", ".join(versions))
         with columns[1].popover("Delete", icon=":material/delete:"):
-            st.write(f"Delete {profile.label}? Its saved versions stay in your data folder.")
+            st.write(md(f"Delete {profile.label}? Its saved versions stay in your data folder."))
             if st.button("Delete it", type="primary", key=f"profile_delete_{profile.id}"):
                 service.delete_custom(profile.id)
                 st.session_state[NEXT] = _base_id(profile)
@@ -261,7 +261,7 @@ def render() -> None:
         return
     service = ws.profile_service
     for problem in service.problems:
-        st.warning(f"A saved profile could not be read: {problem}", icon=":material/warning:")
+        st.warning(md(f"A saved profile could not be read: {problem}"), icon=":material/warning:")
     profiles = {profile.id: profile for profile in service.all()}
     pending = st.session_state.pop(NEXT, None)
     if pending in profiles:

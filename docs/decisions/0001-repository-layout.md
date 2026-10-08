@@ -20,7 +20,9 @@ integration, regression, ui), `docs/` and `scripts/`. The additions:
    "consumed by UI, CLI, or future API"; the CLI is that consumer and is held to the same
    rule as the app: it calls services.
 3. **`data/user/`** for what the user saves (characters, gear sets, custom profiles),
-   kept apart from `data/cache/`, which may be cleared at any time.
+   kept apart from `data/cache/`, which may be cleared at any time. (Later: item lookups
+   are cached in the database under `data/user/`, each with its expiry - decision 0004 -
+   so `data/cache/` is reserved and nothing writes there yet.)
 4. **`requirements-dev.txt`** next to `requirements.txt`, and the same split as optional
    dependencies in `pyproject.toml`.
 5. **`.github/workflows/ci.yml`**, the CI foundation milestone 1 asks for.

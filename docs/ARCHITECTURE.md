@@ -130,10 +130,13 @@ data/bundled (VMaNGOS-built)   Blizzard Game Data API   CSV / JSON files   manua
 - `services/item_search.py` searches locally (every word of the query, exact names first,
   filters for ruleset, slot, armor and weapon type, phase, level, quality and origin) and
   online only on request. Online items are validated and cached with an expiry of at most 30
-  days; every call is recorded for data health. Any provider failure becomes a notice beside
-  the local results.
+  days, and expired ones are dropped while the app runs (`Workspace.keep_fresh`); an online
+  search is reused for five minutes rather than asked again on every click; every call is
+  recorded for data health. Any provider failure becomes a notice beside the local results,
+  and a row that cannot be read is logged and skipped.
 - One canonical id per game item (`classic_era:<id>`): a fresher online lookup replaces the
-  bundled row until it expires; the player's own items are never overwritten.
+  bundled row until it expires; the player's own items - imported, or kept from manual
+  entry - are never replaced by a lookup (`ItemRepository.save` refuses it).
 
 See [DATA_SOURCES.md](DATA_SOURCES.md) for the terms of each source.
 
@@ -231,8 +234,10 @@ still works. The design system is in [decision 0006](decisions/0006-app-design-s
 | `services/characters.py` | The use cases: new, change, equip, save, delete, analyse, try a replacement, import and export |
 
 A piece's worth is the set's value less the set's value without it; a replacement's is the
-set's value with it less the set's value as it is. Both are exact under the scoring model,
-and both reuse the engine for every number. The engine's cap curves (`cap_curves`) and
+set's value with it less the set's value as it is. Both are measured against the caps of the
+gear as worn - version 1 does not value weapon skill, so a change that would move a hit cap
+is shown (the caps after it) but not counted - and both are exact under the scoring model,
+reusing the engine for every number. The engine's cap curves (`cap_curves`) and
 measured totals (`measured_totals`) are public so the cap status reads the same curves the
 scores use. `wowgear gear` lists the saved characters, analyses one (or a character file)
 and tries an item with `--try SLOT=ITEM`.
@@ -243,6 +248,6 @@ and tries an item with `--try SLOT=ITEM`.
 model), a ranking CSV and a components CSV; a character as JSON (what the gear import
 reads); a gear list as CSV (every slot, the import format); and a comparison or a gear
 analysis as one self-contained HTML page - escaped, no scripts, nothing loaded from
-elsewhere, light and dark, printable. Text cells a spreadsheet would run as a formula are
-prefixed with an apostrophe. The calculator and Compare pages have an Export menu; the
+elsewhere, light and dark, printable. Numbers are written as numbers; text cells a
+spreadsheet would run as a formula are prefixed with an apostrophe. The calculator and Compare pages have an Export menu; the
 Gear set page exports the character, the gear list and the report.

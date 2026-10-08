@@ -169,11 +169,6 @@ class TestGear:
         assert analysis.score == pytest.approx(40.0)
         assert analysis.notes[-1].startswith("Not analysed - Head")
 
-    def test_gear_totals_for_the_calculator(self, open_workspace: Opener) -> None:
-        service = open_workspace().characters
-        totals = service.gear_totals(grom_with(service, LIONHEART), [Stat.HIT, Stat.DEFENSE])
-        assert totals == {Stat.HIT: 2.0, Stat.DEFENSE: 0.0}
-
 
 class TestFiles:
     def test_a_character_file_imports_as_a_new_unsaved_character(
@@ -193,6 +188,14 @@ class TestFiles:
         text = service.export_csv(source, analysis)
         target = service.import_text(text, ".csv", into=grom_with(service))
         assert target.gear.items == source.gear.items
+
+    def test_a_character_for_another_ruleset_is_refused(self, open_workspace: Opener) -> None:
+        service = open_workspace().characters
+        exported = service.export_json(grom_with(service, LIONHEART))
+        other = exported.replace('"ruleset": "classic_era"', '"ruleset": "tbc"')
+        assert other != exported
+        with pytest.raises(DataValidationError, match="ruleset"):
+            service.import_text(other, ".json")
 
     def test_a_gear_list_needs_a_character_and_known_items(self, open_workspace: Opener) -> None:
         service = open_workspace().characters
@@ -260,6 +263,16 @@ class TestCommandLine:
         result = self.runner.invoke(app, ["gear", str(source)])
         assert result.exit_code == 0, result.output
         assert "Lionheart Helm" in result.output
+
+    def test_a_character_file_that_is_not_text_is_refused(
+        self, project: Path, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+    ) -> None:
+        monkeypatch.setenv("WOWGEAR_HOME", str(project))
+        source = tmp_path / "broken.json"
+        source.write_bytes(bytes([0xFF, 0xFE, 0x00, 0x81]))
+        result = self.runner.invoke(app, ["gear", str(source)])
+        assert result.exit_code == 2
+        assert "broken.json is not UTF-8 text" in result.output
 
     @pytest.mark.parametrize(
         ("args", "message"),

@@ -202,3 +202,21 @@ Chance on hit: Does something."""
 
     def test_an_empty_paste(self) -> None:
         assert read_tooltip("   ").problems == ["The tooltip is empty."]
+
+
+class TestTooltipsThatMakeNoItem:
+    def test_a_name_too_long_is_a_problem_not_a_crash(self) -> None:
+        text = "A" * 130 + chr(10) + "Head" + chr(9) + "Plate" + chr(10) + "+5 Strength"
+        reading = read_tooltip(text)
+        assert reading.form is None
+        assert reading.problems[0].startswith("The tooltip does not make a valid item: name")
+
+    def test_a_weapon_with_no_speed_is_a_problem_not_a_crash(self) -> None:
+        lines = [
+            "Broken Blade",
+            "One-Hand" + chr(9) + "Sword",
+            "10 - 20 Damage" + chr(9) + "Speed 0.00",
+        ]
+        reading = read_tooltip(chr(10).join(lines))
+        assert reading.form is None
+        assert any("speed" in problem for problem in reading.problems)

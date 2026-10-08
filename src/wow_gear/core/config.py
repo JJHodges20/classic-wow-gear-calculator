@@ -125,8 +125,9 @@ class Settings:
     root: Path
     app: AppConfig
     providers: ProvidersConfig
-    environment: Mapping[str, str] = field(default_factory=dict)
-    """The ``WOWGEAR_`` variables in effect: ``.env`` overlaid by the process environment."""
+    environment: Mapping[str, str] = field(default_factory=dict, repr=False)
+    """The ``WOWGEAR_`` variables in effect: ``.env`` overlaid by the process environment.
+    Left out of the settings' repr: it holds secret values."""
 
     @property
     def config_dir(self) -> Path:
@@ -169,6 +170,11 @@ class Settings:
         """The value of a secret variable, or None when it is unset or blank."""
         value = self.environment.get(name, "").strip()
         return value or None
+
+    def secret_values(self) -> tuple[str, ...]:
+        """The value of every secret variable a provider names, for masking in logs."""
+        names = dict.fromkeys(name for p in self.providers.providers for name in p.secrets)
+        return tuple(value for name in names if (value := self.secret(name)))
 
     def has_credentials(self, provider: ProviderConfig) -> bool:
         """Whether every secret the provider needs is set."""

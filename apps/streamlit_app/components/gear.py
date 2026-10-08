@@ -7,8 +7,9 @@ from __future__ import annotations
 from html import escape
 
 from components.html import Tone, chip, eyebrow, signed, tone_of
-from components.items import stat_label, type_label
+from components.items import type_label
 from wow_gear.models.enums import EquipmentSlot, Stat
+from wow_gear.models.formatting import amount_text, stat_label
 from wow_gear.models.gear import CapStatus, GearAnalysis, ReplacementResult, SlotValue
 from wow_gear.models.item import Item
 from wow_gear.models.labels import EQUIPMENT_SLOT_LABELS
@@ -16,18 +17,6 @@ from wow_gear.models.ruleset import Ruleset
 
 STATE_LABELS = {"short": "Short", "reached": "Reached", "over": "Over"}
 STATE_TONES: dict[str, Tone] = {"short": "gold", "reached": "good", "over": "bad"}
-
-
-def amount_text(stat: Stat | None, value: float, ruleset: Ruleset) -> str:
-    """ "7%" for hit, "2,311" for armor."""
-    rounded = round(value, 2)
-    number = (
-        f"{rounded:,.2f}".rstrip("0").rstrip(".")
-        if rounded != int(rounded)
-        else f"{int(rounded):,}"
-    )
-    stat_def = ruleset.stat_def(stat) if stat is not None else None
-    return number + ("%" if stat_def is not None and stat_def.unit == "percent" else "")
 
 
 def slot_html(
@@ -136,14 +125,15 @@ def tile(label: str, value: str, unit: str = "", tone: str = "") -> str:
 def replacement_html(result: ReplacementResult) -> str:
     """The verdict on a replacement for the whole character, before the why."""
     unit = result.unit_abbreviation
+    better = result.eligible and result.outcome == "better"
     if not result.eligible:
         badge = chip("Not usable", "bad")
-    elif result.delta > 0.05:
+    elif result.outcome == "better":
         badge = chip("Better for the whole character", "gold")
-    elif result.delta < -0.05:
+    elif result.outcome == "worse":
         badge = chip("Worse for the whole character", "bad")
     else:
-        badge = chip("No real change", "muted")
+        badge = chip("Effectively the same", "muted")
     removed = " and ".join(result.removed) if result.removed else "nothing (the slot is empty)"
     tiles = (
         '<div class="wg-tiles">'
@@ -153,7 +143,7 @@ def replacement_html(result: ReplacementResult) -> str:
         + "</div>"
     )
     return (
-        f'<div class="wg-verdict{"" if result.delta > 0.05 and result.eligible else " wg-neutral"}">'
+        f'<div class="wg-verdict{"" if better else " wg-neutral"}">'
         f"{badge}"
         f'<div class="wg-winner">{escape(result.candidate_name)}</div>'
         f'<div class="wg-sub">In the {escape(EQUIPMENT_SLOT_LABELS[result.slot].lower())} slot, '

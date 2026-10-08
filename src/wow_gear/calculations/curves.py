@@ -54,9 +54,13 @@ class ValueCurve:
         def overlap(start: float, end: float) -> float:
             return max(0.0, min(high, end) - max(low, start))
 
+        # Below zero counts in full on a curve without a dead zone, and not at all on one
+        # with a dead zone - as ``area`` has it.
+        below = overlap(-math.inf, 0.0)
         return CurveSegments(
-            dead=sign * overlap(0.0, self.dead_zone),
-            full=sign * (overlap(self.dead_zone, self.full_until) + overlap(-math.inf, 0.0)),
+            dead=sign * (overlap(0.0, self.dead_zone) + (below if self.dead_zone else 0.0)),
+            full=sign
+            * (overlap(self.dead_zone, self.full_until) + (0.0 if self.dead_zone else below)),
             soft=sign * overlap(self.full_until, self.soft_until) if self.soft_multiplier else 0.0,
             beyond=sign
             * (

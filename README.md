@@ -13,15 +13,17 @@ build plan is tracked in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Status
 
-Milestones 1 to 9 are complete: the Classic Era ruleset; twenty build profiles covering
+All ten milestones of the roadmap's build plan are complete, closed by the version 1 audit
+([docs/AUDIT.md](docs/AUDIT.md)): the Classic Era ruleset; twenty build profiles covering
 every class and role in the roadmap's matrix, each with sourced weights (two experimental
-where no source exists) and five hand-reviewed comparisons; the explainable scoring
+where no source exists) and at least five hand-reviewed comparisons; the explainable scoring
 engine; manual item entry; the bundled item dataset with optional Blizzard lookups; item
 comparison with a component-by-component explanation; saved characters with their whole
 gear - what each piece is worth, where the caps stand, what is wasted or missing, and how
 one change moves the whole character; exports as JSON, CSV and a shareable report; and the
 app (`wowgear ui`) in light and dark: Calculator, Compare, Gear set, Build profiles (with
-your own weights), Item database and Data health. Milestone 10 is the version 1 audit.
+your own weights), Item database and Data health. Versions 2.0 to 5.0 of the roadmap
+(advanced theorycraft, the optimizer, encounters, validation against logs) are later work.
 
 ## Quick start
 
@@ -41,9 +43,9 @@ The bootstrap script creates `.venv`, installs the app with its development tool
 | --- | --- |
 | `wowgear ui [--port 8501] [--no-browser]` | Start the app |
 | `wowgear check` | Validate the configuration, load the data, report each provider's status |
-| `wowgear items search "<name or id>" [--online]` | Find items |
+| `wowgear items search "<name or id>" [--online] [--limit 10]` | Find items |
 | `wowgear items import <file.csv or .json>` | Import your own items |
-| `wowgear compare <item> <item>... -p <profile> [--phase 3] [--current hit=5] [--replacing <item>] [--json] [--output result.html] [--components parts.csv]` | Compare items for a build profile and explain the difference; `--output` also writes `.json`, `.csv`, `.html` or `.txt` |
+| `wowgear compare <item>... -p <profile> [--phase 3] [--level 60] [--race orc] [--content raid_pve] [--current hit=5] [--replacing <item>] [--json] [--output result.html] [--components parts.csv]` | Score one item, or compare several, for a build profile and explain the difference; `--output` also writes `.json`, `.csv`, `.html` or `.txt` |
 | `wowgear gear` | List your saved characters (save them on the Gear set page) |
 | `wowgear gear <character or file.json> [--try main_hand=12784] [--output report.html]` | Analyse a character's whole gear, and try an item against the whole character |
 | `wowgear --version` | Print the version |
@@ -70,7 +72,8 @@ links to it and never fetches from it. Sources and terms are in
 
 ```
 configs/            app settings, providers, rulesets, build profiles (YAML)
-data/               raw, processed, cache and user data (git-ignored) and test fixtures
+data/               the bundled item dataset; raw, processed and user data (git-ignored);
+                    test fixtures
 src/wow_gear/       the package, one folder per layer (see docs/ARCHITECTURE.md)
 apps/streamlit_app/ the Streamlit app: presentation only
 tests/              unit, integration, regression and UI tests
@@ -84,6 +87,7 @@ scripts/            setup and maintenance scripts
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - layers, rules, configuration
 - [docs/DATA_MODEL.md](docs/DATA_MODEL.md) - the canonical models
 - [docs/ROADMAP.md](docs/ROADMAP.md) - milestone status and the version 1 acceptance criteria
+- [docs/AUDIT.md](docs/AUDIT.md) - the version 1 audit: what was checked, found and fixed
 - [docs/DEVELOPMENT_LOG.md](docs/DEVELOPMENT_LOG.md) - what each milestone built and its gate evidence
 - [docs/decisions/](docs/decisions/) - decision records
 

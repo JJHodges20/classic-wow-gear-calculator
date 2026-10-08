@@ -3,17 +3,21 @@ effect texts come from data files and imports, never trusted as markup."""
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 from html import escape
 from typing import Literal
 
-import streamlit as st
-
 Tone = Literal["neutral", "good", "bad", "gold", "muted"]
 
+_MARKDOWN = re.compile(r"([\\`*_{}\[\]()#+\-.!|<>~$])")
 
-def show(markup: str) -> None:
-    st.html(markup)
+
+def md(text: object) -> str:
+    """Text from data for a widget that renders Markdown (alerts, captions, ``st.write``):
+    every Markdown and maths character is escaped, so a name in an imported file cannot
+    become a link, an image or a formula."""
+    return _MARKDOWN.sub(r"\\\1", str(text))
 
 
 def chip(text: str, tone: Tone = "neutral", title: str | None = None) -> str:
@@ -45,7 +49,3 @@ def tone_of(value: float, digits: int = 1) -> Tone:
 
 def eyebrow(text: str) -> str:
     return f'<div class="wg-eyebrow">{escape(text)}</div>'
-
-
-def small(text: str) -> str:
-    return f'<div class="wg-small">{escape(text)}</div>'

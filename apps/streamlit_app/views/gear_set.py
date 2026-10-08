@@ -14,7 +14,7 @@ from streamlit.delta_generator import DeltaGenerator
 from components import gear as show
 from components import recommendation
 from components.context_bar import phase_label
-from components.html import chip, eyebrow
+from components.html import chip, eyebrow, md
 from components.item_input import picker
 from state import session
 from views.common import open_workspace
@@ -128,7 +128,7 @@ def _choose(ws: Workspace) -> SavedCharacter | None:
     service = ws.characters
     saved = service.all()
     for problem in service.problems:
-        st.warning(problem, icon=":material/warning:")
+        st.warning(md(problem), icon=":material/warning:")
     options = [character.id for character in saved] + [NEW]
     pending = st.session_state.pop(NEXT, None)
     if pending in options:
@@ -153,7 +153,7 @@ def _choose(ws: Workspace) -> SavedCharacter | None:
         try:
             _load(ws, choice)
         except (NotFoundError, DataValidationError) as error:
-            st.error(f"This character cannot be opened: {error}", icon=":material/error:")
+            st.error(md(f"This character cannot be opened: {error}"), icon=":material/error:")
             return None
     working = st.session_state[WORKING]
     assert isinstance(working, SavedCharacter)
@@ -173,7 +173,7 @@ def _actions(ws: Workspace, working: SavedCharacter, columns: Sequence[DeltaGene
         try:
             saved = service.save(to_save)
         except (DataValidationError, NotFoundError) as error:
-            st.error(f"Not saved: {error}", icon=":material/error:")
+            st.error(md(f"Not saved: {error}"), icon=":material/error:")
         else:
             st.session_state[WORKING] = saved
             st.session_state[LOADED] = saved.id
@@ -189,7 +189,9 @@ def _actions(ws: Workspace, working: SavedCharacter, columns: Sequence[DeltaGene
     with columns[3].popover(
         "Delete", icon=":material/delete:", width="stretch", disabled=not stored
     ):
-        st.write(f"Delete {working.name}? This cannot be undone; export it first to keep a copy.")
+        st.write(
+            md(f"Delete {working.name}? This cannot be undone; export it first to keep a copy.")
+        )
         if st.button("Delete it", type="primary", key="gear_delete_confirm"):
             service.delete(working.id)
             st.session_state[NEXT] = NEW
@@ -217,7 +219,7 @@ def _import(service: CharacterService, working: SavedCharacter) -> None:
         st.error("The file is not UTF-8 text.", icon=":material/error:")
         return
     except (DataValidationError, NotFoundError) as error:
-        st.error(f"Not imported: {error}", icon=":material/error:")
+        st.error(md(f"Not imported: {error}"), icon=":material/error:")
         return
     st.session_state[WORKING] = character
     if suffix == ".json":
@@ -318,7 +320,7 @@ def _details(ws: Workspace, working: SavedCharacter) -> SavedCharacter:
     try:
         updated = service.update(working, **changes)
     except (DataValidationError, NotFoundError) as error:
-        st.error(f"Not applied: {error}", icon=":material/error:")
+        st.error(md(f"Not applied: {error}"), icon=":material/error:")
         return working
     st.session_state[WORKING] = updated
     return updated
@@ -381,7 +383,7 @@ def _slot_editor(ws: Workspace, working: SavedCharacter, slot: EquipmentSlot, wo
             try:
                 st.session_state[WORKING] = ws.characters.equip(working, slot, picked.id)
             except (DataValidationError, NotFoundError) as error:
-                st.error(f"{picked.name} cannot go there: {error}", icon=":material/error:")
+                st.error(md(f"{picked.name} cannot go there: {error}"), icon=":material/error:")
                 return
             st.session_state[EDIT] = None
             st.session_state[ROUND] = round_number + 1
@@ -456,9 +458,9 @@ def _panel(
     st.html(eyebrow("Where the value comes from") + show.value_table(analysis, ruleset))
     for note in analysis.notes:
         if "not usable" in note:
-            st.error(note, icon=":material/block:")
+            st.error(md(note), icon=":material/block:")
         else:
-            st.info(note, icon=":material/info:")
+            st.info(md(note), icon=":material/info:")
     if analysis.not_scored:
         st.html(
             '<div class="wg-small">Not scored in version 1:</div>'
@@ -466,6 +468,8 @@ def _panel(
             + "<br>".join(escape(text) for text in analysis.not_scored)
             + "</div>"
         )
+    with st.expander("Assumptions", icon=":material/rule:"):
+        st.html(_list(analysis.assumptions))
 
 
 # --- trying a replacement -------------------------------------------------------------
@@ -486,7 +490,7 @@ def _try(ws: Workspace, working: SavedCharacter, loaded: LoadedGear) -> Replacem
             if slot is None:
                 return None
             now = loaded.items.get(slot)
-            st.caption(f"Now: {now.name}." if now is not None else "Now: empty.")
+            st.caption(md(f"Now: {now.name}.") if now is not None else "Now: empty.")
             round_number = int(st.session_state.get(TRY_ROUND, 0))
             picked = picker(f"try{round_number}", ws, fits=_fits(slot))
             if picked is not None:
@@ -506,7 +510,7 @@ def _try(ws: Workspace, working: SavedCharacter, loaded: LoadedGear) -> Replacem
             try:
                 tried = ws.characters.try_replacement(working, slot, pending[1])
             except (DataValidationError, NotFoundError) as error:
-                st.error(f"This cannot be tried: {error}", icon=":material/error:")
+                st.error(md(f"This cannot be tried: {error}"), icon=":material/error:")
                 return None
             _tried(ws, working, tried)
     return tried
@@ -524,13 +528,13 @@ def _tried(ws: Workspace, working: SavedCharacter, tried: ReplacementResult) -> 
     if changes:
         st.html(eyebrow("Caps") + _list(changes))
     for note in tried.notes:
-        st.info(note, icon=":material/info:")
+        st.info(md(note), icon=":material/info:")
     buttons = st.container(horizontal=True)
     if buttons.button("Put it on", type="primary", icon=":material/check:", key="gear_try_equip"):
         try:
             st.session_state[WORKING] = ws.characters.equip(working, tried.slot, tried.candidate_id)
         except (DataValidationError, NotFoundError) as error:
-            st.error(f"Not put on: {error}", icon=":material/error:")
+            st.error(md(f"Not put on: {error}"), icon=":material/error:")
             return
         st.session_state.pop(TRY, None)
         st.session_state[FLASH] = f"{tried.candidate_name} is on. Save to keep the change."
@@ -605,22 +609,26 @@ def render() -> None:
         return
     flash = st.session_state.pop(FLASH, None)
     if flash:
-        st.success(flash, icon=":material/check:")
+        st.success(md(flash), icon=":material/check:")
     st.write("")
     try:
         working = _choose(ws)
     except WowGearError as error:
-        st.error(f"Saved characters cannot be read: {error}", icon=":material/error:")
+        st.error(md(f"Saved characters cannot be read: {error}"), icon=":material/error:")
         return
     if working is None:
         return
-    working = _details(ws, working)
+    try:
+        working = _details(ws, working)
+    except WowGearError as error:
+        st.error(md(f"This character cannot be shown: {error}"), icon=":material/error:")
+        return
     saved_copy = None
     if st.session_state.get(LOADED) != NEW:
         try:
             saved_copy = ws.characters.get(working.id)
         except NotFoundError:  # deleted elsewhere, say from the command line
-            st.warning(f"{working.name} is no longer saved.", icon=":material/warning:")
+            st.warning(md(f"{working.name} is no longer saved."), icon=":material/warning:")
     if saved_copy is None or _core(saved_copy) != _core(working):
         st.html(
             '<div class="wg-small">'
@@ -635,7 +643,7 @@ def render() -> None:
         profile = ws.calculator.profile(working.profile_id)
         analysis, loaded = _analyse(ws.characters, working, profile.version)
     except (DataValidationError, NotFoundError) as error:
-        st.error(f"This gear cannot be analysed: {error}", icon=":material/error:")
+        st.error(md(f"This gear cannot be analysed: {error}"), icon=":material/error:")
 
     st.write("")
     gear_column, analysis_column = st.columns([1.25, 1], gap="large")

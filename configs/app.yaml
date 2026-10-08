@@ -7,7 +7,7 @@ app:
 
 paths:
   data_dir: data
-  cache_dir: data/cache
+  cache_dir: data/cache  # reserved: item lookups are cached in the database under user_dir
   user_dir: data/user
   bundled_dir: data/bundled
 

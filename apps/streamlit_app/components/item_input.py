@@ -11,7 +11,7 @@ import streamlit as st
 from pydantic import ValidationError
 
 from components import items
-from components.html import eyebrow
+from components.html import eyebrow, md
 from state import session
 from state.session import Slot
 from wow_gear.models.enums import (
@@ -132,12 +132,12 @@ def picker(
     with st.spinner("Searching…"):
         outcome = search.search(text, filters, limit=25, online=online)
     for notice in outcome.notices:
-        st.warning(notice, icon=":material/cloud_off:")
+        st.warning(md(notice), icon=":material/cloud_off:")
     if not outcome.hits:
         where = f" for {SLOT_LABELS[chosen_slot]}" if chosen_slot is not None else ""
         if chosen_slot is None and fits:
             where = " that fit this slot"
-        st.info(f'No items match "{text}"{where}.', icon=":material/search_off:")
+        st.info(md(f'No items match "{text}"{where}.'), icon=":material/search_off:")
         return None
     hits = {hit.item.id: hit for hit in outcome.hits}
 
@@ -233,7 +233,7 @@ def _manual(slot: Slot, workspace: Workspace, ruleset: Ruleset) -> None:
         )
         unrecognized, problems = st.session_state.get(_key(slot, "reading"), ([], []))
         for problem in problems:
-            st.warning(problem)
+            st.warning(md(problem))
         if unrecognized:
             st.caption("Lines the reader could not place (add them below if they matter):")
             st.code("\n".join(unrecognized), language=None)
@@ -342,7 +342,7 @@ def _manual(slot: Slot, workspace: Workspace, ruleset: Ruleset) -> None:
         )
     preview: EntryPreview | None = st.session_state.get(_key(slot, "preview"))
     if preview is not None:
-        _show_preview(slot, preview, ruleset)
+        _show_preview(slot, preview, ruleset, workspace)
 
 
 def _preview(
@@ -385,24 +385,35 @@ def _preview(
     return workspace.entry.preview(form)
 
 
-def _show_preview(slot: Slot, preview: EntryPreview, ruleset: Ruleset) -> None:
+def _show_preview(
+    slot: Slot, preview: EntryPreview, ruleset: Ruleset, workspace: Workspace
+) -> None:
     for message in preview.form_errors:
-        st.error(message, icon=":material/error:")
+        st.error(md(message), icon=":material/error:")
     for issue in preview.issues:
         if issue.severity == "error":
-            st.error(issue.message, icon=":material/error:")
+            st.error(md(issue.message), icon=":material/error:")
         elif issue.severity == "warning":
-            st.warning(issue.message, icon=":material/warning:")
+            st.warning(md(issue.message), icon=":material/warning:")
         else:
-            st.caption(issue.message)
+            st.caption(md(issue.message))
     if preview.item is None:
         return
     st.html('<div class="wg-small">Preview</div>' + items.card(preview.item, ruleset))
     if preview.usable:
-        if st.button(f"Use as item {slot}", key=_key(slot, "use"), type="primary"):
+        buttons = st.container(horizontal=True)
+        if buttons.button(f"Use as item {slot}", key=_key(slot, "use"), type="primary"):
             session.set_item(slot, preview.item)
             st.session_state.pop(_key(slot, "preview"), None)
             st.rerun()
+        if buttons.button(
+            "Keep in my items",
+            key=_key(slot, "keep"),
+            icon=":material/bookmark_add:",
+            help="Save it with your own items, so search finds it next time.",
+        ):
+            workspace.search.save_user_item(preview.item)
+            st.success(md(f"{preview.item.name} is kept in your items."), icon=":material/check:")
     else:
         st.caption(
             "Fix the problems above to use this item, or mark it theorycrafted if it breaks "

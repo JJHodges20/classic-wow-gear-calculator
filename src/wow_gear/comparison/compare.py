@@ -12,11 +12,13 @@ from __future__ import annotations
 import re
 from collections.abc import Sequence
 
+from wow_gear.calculations.caps import uses_weapon_skill
 from wow_gear.core.errors import DataValidationError
 from wow_gear.core.hashing import content_hash
 from wow_gear.models.character import CharacterContext
 from wow_gear.models.comparison import ComparisonResult, ExplanationLine, Outcome, Upgrade
-from wow_gear.models.enums import EquipmentSlot
+from wow_gear.models.enums import WEAPON_SKILL_STATS, EquipmentSlot
+from wow_gear.models.formatting import signed_text
 from wow_gear.models.gear import BLOCKS_OFF_HAND, EQUIPMENT_SLOTS
 from wow_gear.models.item import Item
 from wow_gear.models.labels import SLOT_LABELS
@@ -35,6 +37,7 @@ WHY_LINES = 4
 _EPSILON = 1e-9
 _CONFIDENCE_ORDER = {"low": 0, "medium": 1, "high": 2}
 _HANDS = frozenset({EquipmentSlot.MAIN_HAND, EquipmentSlot.OFF_HAND})
+_SKILL_STATS = frozenset(WEAPON_SKILL_STATS.values())
 
 
 def unit_abbreviation(unit: str) -> str:
@@ -262,13 +265,23 @@ def compare_items(
         elif outcome == "single":
             label = "Scored"
         else:
-            label = f"{result.score - usable[0].score:+.1f} {abbreviation}"
+            label = f"{signed_text(result.score - usable[0].score)} {abbreviation}"
         labelled.append(result.model_copy(update={"rank": rank, "recommendation_label": label}))
 
     notes: list[str] = []
     footprint = footprint_note(items, replacing)
     if footprint:
         notes.append(footprint)
+    skilled = [
+        item.name
+        for item in (*items, *([replacing] if replacing is not None else []))
+        if _SKILL_STATS.intersection(item.stats)
+    ]
+    if skilled and uses_weapon_skill(profile, ruleset):
+        notes.append(
+            f"Weapon skill on {_join(list(dict.fromkeys(skilled)))} is not valued in version 1, "
+            "and the hit cap stays where your current gear totals put it."
+        )
     for result in ranked:
         if not result.eligible:
             notes.append(f"{result.item_name} is not usable: {'; '.join(result.ineligibility)}.")

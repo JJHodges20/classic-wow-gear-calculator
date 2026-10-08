@@ -11,7 +11,7 @@ from html import escape
 
 import streamlit as st
 
-from components.html import chip, eyebrow, signed, tone_of
+from components.html import chip, eyebrow, md, signed, tone_of
 from state.session import Slot
 from wow_gear.models.comparison import ComparisonResult, ExplanationLine
 
@@ -143,11 +143,13 @@ def render(result: ComparisonResult, slots: dict[str, Slot]) -> None:
 
     for note in result.notes:
         if note.startswith(CAP_NOTE):
-            st.warning(note + " Open *Current stats* below to enter them.", icon=":material/tune:")
+            st.warning(
+                md(note) + " Open *Current stats* below to enter them.", icon=":material/tune:"
+            )
         elif "not usable" in note:
-            st.error(note, icon=":material/block:")
+            st.error(md(note), icon=":material/block:")
         else:
-            st.info(note, icon=":material/info:")
+            st.info(md(note), icon=":material/info:")
     details = []
     if result.not_valued:
         details.append("Not valued by this profile: " + ", ".join(result.not_valued) + ".")

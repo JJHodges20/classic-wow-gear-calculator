@@ -16,7 +16,7 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | 7 | Streamlit shell + design system + calculator page | Done (2026-10-07) |
 | 8 | Compare, Profiles, Item Database, and Data Health pages | Done (2026-10-07), with a profile for every class and role in the roadmap's matrix |
 | 9 | Saved character profile + full gear-set context | Done (2026-10-07): version 1.5 below |
-| 10 | V1 audit: correctness, architecture, UX, tests, docs | Not started |
+| 10 | V1 audit: correctness, architecture, UX, tests, docs | Done (2026-10-07): [docs/AUDIT.md](AUDIT.md) |
 
 ## Version 1 acceptance criteria
 
@@ -29,9 +29,9 @@ milestones of its Claude Code build plan, each closed by the gate in `CLAUDE.md`
 | Caps | At least one cap-sensitive profile demonstrates reduced/zero marginal value correctly | Met: Fury, Deep Protection and Frost reviews reverse at the hit cap (M6) |
 | Profiles | User can inspect the profile weights/thresholds used for the result | Met: the Build profiles page and the calculator's tabs; weights can be customised (M7, M8) |
 | Traceability | Result records ruleset/profile version and item source | Met: every result, shown in the Raw math tab and on item cards (M3, M6, M7) |
-| Reliability | Provider failure does not prevent manual comparison or cached-item use | Met: services and app, with a UI test for a failing provider (M5-M7) |
-| UI | Core pages are visually consistent, responsive, and handle empty/error/loading states | Met: Calculator, Compare, Build profiles, Item database and Data health (M7, M8) |
-| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | 887 tests pass, with 100 hand-reviewed comparisons (five per profile), gear analyses checked by hand and the roadmap's UI tests (M9) |
+| Reliability | Provider failure does not prevent manual comparison or cached-item use | Met: services and app; cached items survive search, item and token failures, and expired copies are used when the provider is down (M5-M7, tests extended in M10) |
+| UI | Core pages are visually consistent, responsive, and handle empty/error/loading states | Met: Calculator, Compare, Gear set, Build profiles, Item database and Data health, clean in light, dark and at phone width, with tests for the error states (M7-M10) |
+| Tests | All unit/integration/UI tests pass, including hand-reviewed golden comparisons | Met: 986 tests pass with 94% line coverage, including 102 hand-reviewed comparisons and every test section 11 asks for (M10) |
 
 ## Version 1.5 (milestone 9)
 

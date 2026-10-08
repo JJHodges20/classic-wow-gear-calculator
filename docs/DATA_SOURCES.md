@@ -10,7 +10,7 @@ sources cited in `configs/rulesets/classic_era.yaml` (see [research/](research/)
 | Bundled dataset (`data/bundled`) | Offline baseline: every equippable Classic Era item of uncommon quality or better | In use | Shipped with the code; reloaded when its version changes |
 | Blizzard Battle.net Game Data API | Online lookup by name or id | In use when you add your own credentials | At most 30 days, then dropped (the bundled copy, if any, returns) |
 | Your files (CSV or JSON) | Items you add: seasonal, missing or custom | In use | Until you delete them |
-| Manual entry | One item at a time, typed or pasted from a tooltip | In use | Saved when you choose to |
+| Manual entry | One item at a time, typed or pasted from a tooltip | In use | Kept with your items when you choose "Keep in my items" |
 | Warcraft Logs API v2 | Reserved for log validation (roadmap version 5) | Not used for items: its items have no stats | - |
 | Wowhead | A human reference: the app links to item pages | Never fetched or scraped: its terms forbid automated access | - |
 
@@ -32,9 +32,11 @@ before redistributing the repository.
   [develop.battle.net](https://develop.battle.net/access/clients) and put its id and secret
   in `.env` (`WOWGEAR_BLIZZARD_CLIENT_ID`, `WOWGEAR_BLIZZARD_CLIENT_SECRET`). They are read
   from the environment only, never written to the configuration or the database, and masked
-  in logs. The region and locale are in `configs/providers.yaml`.
+  in the logs of both the app and the command line, tracebacks included. The region and locale are in `configs/providers.yaml`.
 - **Terms** ([Blizzard Developer API Terms of Use](https://www.blizzard.com/en-us/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use)):
-  data is refreshed at least every 30 days, so looked-up items expire after at most 30 days;
+  data is refreshed at least every 30 days, so looked-up items expire after at most 30 days
+  and are dropped while the app runs, not only when it starts; a lookup never replaces an
+  item you imported or kept yourself;
   Blizzard is shown as the source of every item it supplied; the app has no paid features.
 - **Privacy:** the app runs on your computer and keeps everything in a local SQLite file
   (`data/user/wowgear.sqlite3`); it sends Blizzard only the item names and ids you search.

@@ -1,7 +1,8 @@
 # Data Model
 
-The canonical models live in `src/wow_gear/models`. Every model rejects unknown fields, and
-all of them are immutable once built. The vocabularies (classes, roles, races, slots, item
+The canonical models live in `src/wow_gear/models`. Every model rejects unknown fields - except
+the provider response schemas in `models/providers/`, which ignore what the app does not
+read - and all of them are immutable once built. The vocabularies (classes, roles, races, slots, item
 types, stats) are in `models/enums.py`; they are names only - what a class may wear or what a
 stat is worth is ruleset and profile data.
 
@@ -48,6 +49,7 @@ A small, versioned research artifact for one class, role and build:
 | --- | --- |
 | `id`, `version`, `label`, `class_name`, `role`, `specialization`, `summary` | Identity |
 | `ruleset`, `target_phase`, `target_level`, `default_content_mode` | What the profile was written for |
+| `shapeshift_form` | The druid form the profile fights in (`cat`, `bear`, `dire_bear`), so bonuses "in Cat, Bear and Dire Bear forms only" count |
 | `score_unit` | The unit scores are in (for example "attack power equivalents") |
 | `stat_weights` | Each valued stat with its weight, its `basis` (mechanic, sourced, derived or assumption), a note and its sources |
 | `derived_stats` | Conversions to apply, such as Agility into crit; the ratios are ruleset data |
@@ -130,9 +132,12 @@ list CSV has the columns `slot`, `item_id`, `item_name`, `item_level` and `value
 | `not_scored` | Procs, on-use effects and unmet conditions no score counts |
 | `weakest` | `WeakSlot`s: pieces worth nothing, or ten or more item levels below the set's median |
 | `sets` | `SetPieces`: sets with two or more pieces worn, named from their pieces |
-| `notes`, `fingerprint` | Empty slots, unusable pieces, set bonuses not scored, items missing from the data; a hash of the gear, context, profile, ruleset and engine |
+| `notes`, `assumptions` | Empty slots, unusable pieces (an off-hand weapon a class cannot dual wield), set bonuses not scored, a two-weapon profile worn with one weapon, items missing from the data; the caps as worked out, the profile's assumptions and what version 1 does not value |
+| `fingerprint` | A hash of the gear, context, profile, ruleset and engine |
 
 `ReplacementResult`: the slot and candidate, the items it takes off, `delta` (the whole
-set's value with it less as it is), both values, both sets' totals and cap statuses, the
-explanation lines (they add up to `delta`), whether the candidate is usable, and notes (a
-two-hander replacing two weapons, a cap the new weapon moves).
+set's value with it less as it is, both against the current caps), `outcome` (better,
+worse, or a tie within the comparison's margin), both values, both sets' totals, the caps
+now and where they would stand after the change, the explanation lines (they add up to
+`delta`), whether the candidate is usable, and notes (a two-hander replacing two weapons, a
+change of weapon skill that would move a cap).

@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import re
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Literal, Protocol
@@ -90,6 +90,12 @@ class ImportReport:
     issues: dict[str, tuple[ValidationIssue, ...]] = field(default_factory=dict)
 
 
+OnlineSearch = tuple[list["SearchHit"], tuple[str, ...], OnlineState]
+ONLINE_REUSE_SECONDS = 300
+"""How long an online search is reused before it is asked again."""
+ONLINE_REUSE_LIMIT = 50
+
+
 class ItemSearchService:
     PROVIDER = "blizzard"
 
@@ -107,6 +113,7 @@ class ItemSearchService:
         self._online = online
         self._online_state: OnlineState = online_state if online is None else "ok"
         self._ttl = min(cache_ttl, timedelta(days=30))
+        self._recent: dict[tuple[str, int], tuple[float, OnlineSearch]] = {}
 
     @property
     def online_available(self) -> bool:
@@ -143,7 +150,7 @@ class ItemSearchService:
                 notices=(self._unavailable_notice(),),
                 online=self._online_state,
             )
-        found, notices, state = self._search_online(query, online_limit)
+        found, notices, state = self._search_online_reusing(query, online_limit)
         merged = {hit.item.id: hit for hit in local}
         for hit in found:
             merged[hit.item.id] = hit
@@ -183,9 +190,21 @@ class ItemSearchService:
             )
         return SearchOutcome(query=query, hits=(SearchHit(item, "cache"),), online="ok")
 
-    def _search_online(
-        self, query: str, limit: int
-    ) -> tuple[list[SearchHit], tuple[str, ...], OnlineState]:
+    def _search_online_reusing(self, query: str, limit: int) -> OnlineSearch:
+        """An online search, reused for a few minutes: the app runs its page again on every
+        click, and the same search should not go to Blizzard each time."""
+        key, now = (query.lower(), limit), time.monotonic()
+        recent = self._recent.get(key)
+        if recent is not None and now - recent[0] < ONLINE_REUSE_SECONDS:
+            return recent[1]
+        outcome = self._search_online(query, limit)
+        if outcome[2] == "ok":
+            if len(self._recent) >= ONLINE_REUSE_LIMIT:
+                self._recent.pop(next(iter(self._recent)))
+            self._recent[key] = (now, outcome)
+        return outcome
+
+    def _search_online(self, query: str, limit: int) -> OnlineSearch:
         assert self._online is not None
         started = time.perf_counter()
         try:
@@ -209,9 +228,12 @@ class ItemSearchService:
         notices: list[str] = []
         for result in page.results[:limit]:
             item_id = f"classic_era:{result.data.id}"
-            cached = self._items.get(item_id)
-            if cached is not None and cached.origin == "cache" and not cached.stale:
-                hits.append(self._hit(cached))
+            stored = self._items.get(item_id)
+            # The player's own version of an item, and a fresh lookup, are used as they are.
+            if stored is not None and (
+                stored.origin == "user" or (stored.origin == "cache" and not stored.stale)
+            ):
+                hits.append(self._hit(stored))
                 continue
             try:
                 hits.append(SearchHit(self.fetch_online(result.data.id), "cache"))
@@ -282,7 +304,10 @@ class ItemSearchService:
         imported: list[Item] = []
         rejected: list[ImportedRecord] = []
         issues: dict[str, tuple[ValidationIssue, ...]] = {}
-        for record in results:
+        # A CSV row is numbered as a spreadsheet shows it: the header is row 1.
+        offset = 1 if path.suffix.lower() == ".csv" else 0
+        for numbered in results:
+            record = replace(numbered, row=numbered.row + offset)
             if record.item is None:
                 rejected.append(record)
                 continue

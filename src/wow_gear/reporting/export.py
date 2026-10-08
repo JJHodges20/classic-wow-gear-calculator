@@ -17,6 +17,7 @@ from html import escape
 from wow_gear.models.character import CharacterContext
 from wow_gear.models.comparison import ComparisonResult, ExplanationLine
 from wow_gear.models.enums import EquipmentSlot, Stat
+from wow_gear.models.formatting import amount_text, number_text, signed_text, stat_label
 from wow_gear.models.gear import CapStatus, GearAnalysis, ReplacementResult, SavedCharacter
 from wow_gear.models.labels import CONTENT_MODE_LABELS, EQUIPMENT_SLOT_LABELS
 from wow_gear.models.ruleset import Ruleset
@@ -35,25 +36,22 @@ def _text_cell(value: str | None) -> str:
     return "'" + text if text.startswith(_FORMULA_START) else text
 
 
+def _cell(cell: object) -> object:
+    """A number is written with two decimals - a number, never a formula; text is guarded."""
+    if isinstance(cell, float):
+        return f"{cell:.2f}"
+    if isinstance(cell, str):
+        return _text_cell(cell)
+    return cell
+
+
 def _csv(header: Sequence[str], rows: Iterable[Sequence[object]]) -> str:
     out = io.StringIO()
     writer = csv.writer(out, lineterminator="\n")
     writer.writerow(header)
     for row in rows:
-        writer.writerow(_text_cell(cell) if isinstance(cell, str) else cell for cell in row)
+        writer.writerow(_cell(cell) for cell in row)
     return out.getvalue()
-
-
-def _number(value: float) -> str:
-    return f"{value:.2f}"
-
-
-def _amount(value: float) -> str:
-    """An amount as a player reads it: 2,311, 7, 82.82 - at most two decimals."""
-    rounded = round(value, 2)
-    if rounded == int(rounded):
-        return f"{int(rounded):,}"
-    return f"{rounded:,.2f}".rstrip("0").rstrip(".")
 
 
 # --- comparisons ------------------------------------------------------------------------
@@ -87,11 +85,11 @@ def comparison_csv(result: ComparisonResult) -> str:
                 item.rank or "",
                 item.item_id,
                 item.item_name,
-                _number(item.score),
+                float(item.score),
                 result.unit_abbreviation,
                 item.recommendation_label or "",
                 "yes" if item.eligible else "no",
-                _number(upgrades[item.item_id]) if item.item_id in upgrades else "",
+                float(upgrades[item.item_id]) if item.item_id in upgrades else "",
                 result.profile_id,
                 result.profile_version,
                 result.ruleset_id,
@@ -125,10 +123,10 @@ def components_csv(result: ComparisonResult) -> str:
                 component.label,
                 component.kind.value,
                 component.stat.value if component.stat else "",
-                _number(component.amount),
-                _number(component.effective_amount),
-                _number(component.weight),
-                _number(component.contribution),
+                float(component.amount),
+                float(component.effective_amount),
+                float(component.weight),
+                float(component.contribution),
                 component.note or "",
             ]
             for item in result.results
@@ -161,7 +159,7 @@ def gear_csv(character: SavedCharacter, analysis: GearAnalysis | None = None) ->
                 character.gear.items.get(slot, ""),
                 value.item_name if value else "",
                 value.item_level if value and value.item_level is not None else "",
-                _number(value.score) if value else "",
+                float(value.score) if value else "",
             ]
         )
     unit = analysis.unit_abbreviation if analysis else "score"
@@ -237,7 +235,7 @@ def _table(header: Sequence[str], rows: Iterable[Sequence[str]], numeric: set[in
 
 def _signed(value: float) -> str:
     css = "up" if value > 0.05 else "down" if value < -0.05 else ""
-    text = "0.0" if abs(value) < 0.05 else f"{value:+.1f}"
+    text = signed_text(value)
     return f'<span class="{css}">{text}</span>' if css else text
 
 
@@ -330,6 +328,8 @@ def comparison_html(result: ComparisonResult, context: CharacterContext | None =
     parts.append(_list("Not valued by this profile", result.not_valued))
     parts.append(_list("Not scored in version 1", result.not_scored))
     parts.append(_list("Notes", result.notes))
+    if result.results:
+        parts.append(_list("Assumptions", result.results[0].assumptions))
     reasons = "; ".join(result.confidence.reasons)
     parts.append(
         f'<p class="small">Confidence: {escape(result.confidence.level)}'
@@ -342,7 +342,7 @@ def comparison_html(result: ComparisonResult, context: CharacterContext | None =
 
 def _caps_table(caps: Sequence[CapStatus]) -> str:
     def amount(status: CapStatus, value: float) -> str:
-        return f"{_amount(value)}{'%' if status.percent else ''}"
+        return f"{number_text(value)}{'%' if status.percent else ''}"
 
     states = {"short": "Short", "reached": "Reached", "over": "Over"}
     return _table(
@@ -361,10 +361,7 @@ def _caps_table(caps: Sequence[CapStatus]) -> str:
 
 
 def _stat_text(stat: Stat, value: float, ruleset: Ruleset) -> tuple[str, str]:
-    stat_def = ruleset.stat_def(stat)
-    label = stat_def.label if stat_def else stat.value.replace("_", " ").capitalize()
-    percent = "%" if stat_def is not None and stat_def.unit == "percent" else ""
-    return label, f"{_amount(value)}{percent}"
+    return stat_label(stat, ruleset), amount_text(stat, value, ruleset)
 
 
 def gear_html(
@@ -411,7 +408,7 @@ def gear_html(
             (
                 [
                     escape(component.label),
-                    _amount(component.amount),
+                    number_text(component.amount),
                     f"{component.contribution:.1f}",
                 ]
                 for component in analysis.components
@@ -446,6 +443,7 @@ def gear_html(
     )
     parts.append(_list("Not scored in version 1", analysis.not_scored))
     parts.append(_list("Notes", analysis.notes))
+    parts.append(_list("Assumptions", analysis.assumptions))
     if replacement is not None:
         removed = " and ".join(replacement.removed) or "nothing"
         parts += [

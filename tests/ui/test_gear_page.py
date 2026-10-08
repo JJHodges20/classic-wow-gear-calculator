@@ -6,6 +6,7 @@ Unforgiven 40 to a character without a weapon skill bonus.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable
 from pathlib import Path
 
@@ -21,7 +22,8 @@ LIONHEART, MASK = "classic_era:12640", "classic_era:13404"
 
 
 def flashed(app: AppTest) -> list[str]:
-    return [element.value for element in app.success]
+    """The success messages as shown (their Markdown escapes removed)."""
+    return [re.sub(r"\\(.)", r"\1", element.value) for element in app.success]
 
 
 def open_gear(open_app: Callable[[], AppTest]) -> AppTest:

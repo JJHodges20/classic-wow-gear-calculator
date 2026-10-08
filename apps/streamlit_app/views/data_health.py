@@ -7,7 +7,7 @@ from html import escape
 
 import streamlit as st
 
-from components.html import Tone, chip, eyebrow
+from components.html import Tone, chip, eyebrow, md
 from views.common import open_workspace
 
 STATUS_TONES: dict[str, Tone] = {"ok": "good", "info": "muted", "warning": "gold", "error": "bad"}
@@ -55,7 +55,9 @@ def render() -> None:
         )
         st.html(eyebrow("Checks") + f'<table class="wg-table"><tbody>{rows}</tbody></table>')
         for problem in ws.profile_service.problems:
-            st.warning(f"A saved profile could not be read: {problem}", icon=":material/warning:")
+            st.warning(
+                md(f"A saved profile could not be read: {problem}"), icon=":material/warning:"
+            )
 
     with right:
         facts = [

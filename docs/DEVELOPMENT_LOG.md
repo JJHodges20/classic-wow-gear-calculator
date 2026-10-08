@@ -3,6 +3,61 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## Milestone 10 - Version 1 audit (2026-10-07)
+
+**Built**
+
+- The audit itself, in [docs/AUDIT.md](AUDIT.md): three independent read-only reviews
+  (correctness; architecture and security; documentation and tests), a new user's walkthrough
+  in a real browser on a fresh project, and every page in light, dark and at phone width.
+- Fixes for what it found, each with tests. The largest:
+  - gear sets valued against the caps of the gear as worn, so weapon skill (not valued in
+    version 1) no longer shows as a loss of hit ([decision 0008](decisions/0008-gear-sets.md),
+    revised);
+  - the player's own items never replaced by an online lookup;
+  - CSV exports writing numbers as numbers;
+  - off-hand weapons checked for dual wield;
+  - expired Blizzard lookups dropped while the app runs;
+  - assumptions shown with every verdict;
+  - crashes on unusual input turned into explained refusals.
+- Smaller fixes and additions:
+  - phone-width tables;
+  - Markdown escaping;
+  - secrets masked in the app's logs and tracebacks;
+  - "Keep in my items" for manual entries;
+  - one set of formatting helpers;
+  - an online search reused for five minutes;
+  - spreadsheet row numbers in import errors.
+- Tests the audit asked for:
+  - two feral reviews (the first to score feral attack power);
+  - every class conversion rate;
+  - breakpoints already reached or lost;
+  - fixed caps and a soft cap with no end;
+  - provider failures endpoint by endpoint;
+  - the app's error states;
+  - the item commands.
+
+**Found on the way**
+
+- In Bash heredocs here, apostrophes and backslash escapes break or change the text; the
+  patch scripts were written to files instead.
+- `pip install -e .` fails while `wowgear ui` runs: the running launcher holds its file.
+
+**Assumptions**
+
+- Two consequences of the cap formulas, now stated in `configs/rulesets/README.md`:
+  - talent hit covers the suppressed part of the hit bonus first;
+  - skill above the target's defense keeps the 5% base miss.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Targeted and full suite | 986 pass; 94% line coverage |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict, package and app) clean |
+| Secrets | Hygiene tests pass; masking tested for log lines and tracebacks |
+| UI smoke test | Chromium: the new user's walkthrough; 24 page views (6 pages x light/dark x 1440/420 px) with no exception, error or sideways overflow; the Gear set flow and its downloads in both themes |
+
 ## Milestone 9 - Saved characters and whole gear sets (2026-10-07)
 
 **Built**

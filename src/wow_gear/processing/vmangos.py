@@ -30,6 +30,7 @@ from wow_gear.models.enums import (
     ItemSlot,
     Race,
     RelicType,
+    ShapeshiftForm,
     Stat,
     WeaponType,
 )
@@ -345,7 +346,8 @@ def _map_aura(
         return [(Stat.SPELL_CRIT, value, None)] if misc in ALL_MAGIC else None
     if aura == 99:  # melee attack power; alone, with a forms description, feral
         if 124 not in kinds and "cat" in description and "bear" in description:
-            forms = EffectCondition(shapeshift_forms=("cat", "bear", "dire_bear"))
+            feral = (ShapeshiftForm.CAT, ShapeshiftForm.BEAR, ShapeshiftForm.DIRE_BEAR)
+            forms = EffectCondition(shapeshift_forms=feral)
             return [(Stat.FERAL_ATTACK_POWER, value, forms)]
         return [(Stat.ATTACK_POWER, value, None)]
     if aura == 124:  # ranged attack power ("+X Attack Power" carries both 99 and 124)

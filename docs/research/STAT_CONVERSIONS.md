@@ -60,7 +60,7 @@ Mage 19.444 (WH table, matching VM). W5 gives 20 for Mage, Paladin and Shaman.
 | Health per Stamina | 10 (the first 20 give 1 each); Tauren +5% maximum health | W3, WH; VM |
 | Intellect per 1% spell crit | Warlock 60.6, Druid 60, Shaman 59.5, Mage 59.5, Priest 59.2, Paladin 54 | W3 (quoting Blizzard), WH |
 | Block value per Strength | 1 per 20 | WH; VM subtracts 1 from the total |
-| Attack power to damage | 14 attack power = 1 damage per second | W4, WH, VM |
+| Attack power to damage | 14 attack power = 1 damage per second | WH, VM |
 
 Conflict: the paladin's Intellect per spell crit is 54 (Wowhead), 53.77 (VMaNGOS), 29.5
 (Warcraft Tavern) or about 59.9 (wowsims). The ruleset uses 54 and records the conflict.

@@ -30,6 +30,7 @@ from wow_gear.core.errors import DataValidationError
 from wow_gear.core.hashing import content_hash
 from wow_gear.models.character import CharacterContext
 from wow_gear.models.enums import Stat, ValidationStatus
+from wow_gear.models.formatting import stat_label
 from wow_gear.models.item import Item
 from wow_gear.models.profile import BuildProfile
 from wow_gear.models.ruleset import Ruleset
@@ -43,7 +44,7 @@ from wow_gear.models.score import (
     ThresholdEvent,
 )
 from wow_gear.rulesets.eligibility import eligibility
-from wow_gear.scoring.amounts import AmountPart, ItemAmounts, item_amounts, stat_label
+from wow_gear.scoring.amounts import AmountPart, ItemAmounts, item_amounts
 
 ENGINE_VERSION = "1.0.0"
 """Bump whenever the scoring math changes: stored results name the version they used."""

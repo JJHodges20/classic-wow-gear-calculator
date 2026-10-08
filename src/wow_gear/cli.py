@@ -62,7 +62,7 @@ def _settings() -> Settings:
         raise typer.Exit(code=2) from error
     configure_logging(
         settings.log_level,
-        secrets=[value for name, value in settings.environment.items() if "SECRET" in name],
+        secrets=settings.secret_values(),
     )
     return settings
 
@@ -253,7 +253,11 @@ def _character(workspace: Workspace, reference: str) -> SavedCharacter:
     """A saved character by id, or a character file exported from the app."""
     path = Path(reference)
     if path.suffix.lower() == ".json" and path.is_file():
-        return workspace.characters.import_text(path.read_text(encoding="utf-8-sig"), ".json")
+        try:
+            text = path.read_text(encoding="utf-8-sig")
+        except UnicodeDecodeError as error:
+            raise DataValidationError(f"{path.name} is not UTF-8 text") from error
+        return workspace.characters.import_text(text, ".json")
     return workspace.characters.get(reference)
 
 

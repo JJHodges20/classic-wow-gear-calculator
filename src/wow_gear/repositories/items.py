@@ -10,12 +10,15 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from typing import Literal
 
+from pydantic import ValidationError
 from sqlalchemy import case, delete, func, or_, select
 
+from wow_gear.core.logging import get_logger
 from wow_gear.models.enums import ArmorType, ItemSlot, WeaponType
 from wow_gear.models.item import Item
 from wow_gear.repositories.database import Database, ItemRow, ProviderCallRow, utc_now
 
+LOG = get_logger(__name__)
 Origin = Literal["bundled", "cache", "user"]
 
 
@@ -102,12 +105,20 @@ class ItemRepository:
             payload=item.model_dump_json(),
         )
 
-    def save(self, item: Item, origin: Origin, *, ttl: timedelta | None = None) -> None:
-        """Store or replace one item. A cached lookup expires after ``ttl``."""
+    def save(self, item: Item, origin: Origin, *, ttl: timedelta | None = None) -> bool:
+        """Store or replace one item. A cached lookup expires after ``ttl``.
+
+        The player's own item is never replaced by another origin's - a lookup of the same
+        id is not stored over it. Returns whether ``item`` was stored.
+        """
         expires_at = utc_now() + ttl if ttl is not None else None
         with self._db.session() as session:
+            existing = session.get(ItemRow, item.id)
+            if existing is not None and existing.origin == "user" and origin != "user":
+                return False
             session.merge(self._row(item, origin, expires_at))
             session.commit()
+        return True
 
     def replace_origin(self, items: Iterable[Item], origin: Origin) -> int:
         """Replace every item of one origin with ``items`` (for loading the bundled dataset).
@@ -133,12 +144,6 @@ class ItemRepository:
             session.commit()
         return len(rows)
 
-    def delete(self, item_id: str) -> bool:
-        with self._db.session() as session:
-            result = session.execute(delete(ItemRow).where(ItemRow.id == item_id))
-            session.commit()
-            return bool(result.rowcount)  # type: ignore[attr-defined]
-
     def purge_expired(self) -> list[str]:
         """Drop cached lookups past their lifetime (Blizzard's terms allow 30 days).
 
@@ -161,6 +166,18 @@ class ItemRepository:
     # --- reading -----------------------------------------------------------------------
 
     @staticmethod
+    def _read(rows: Iterable[ItemRow]) -> list[StoredItem]:
+        """The rows that can be read; one that cannot (a damaged or outdated row) is
+        logged and left out rather than breaking every search that finds it."""
+        stored = []
+        for row in rows:
+            try:
+                stored.append(ItemRepository._stored(row))
+            except ValidationError as error:
+                LOG.warning("item %s cannot be read and is skipped: %s", row.id, error)
+        return stored
+
+    @staticmethod
     def _stored(row: ItemRow) -> StoredItem:
         return StoredItem(
             item=Item.model_validate_json(row.payload),
@@ -172,15 +189,8 @@ class ItemRepository:
     def get(self, item_id: str) -> StoredItem | None:
         with self._db.session() as session:
             row = session.get(ItemRow, item_id)
-            return self._stored(row) if row else None
-
-    def get_many(self, item_ids: Iterable[str]) -> dict[str, StoredItem]:
-        ids = list(dict.fromkeys(item_ids))
-        if not ids:
-            return {}
-        with self._db.session() as session:
-            rows = session.scalars(select(ItemRow).where(ItemRow.id.in_(ids))).all()
-            return {row.id: self._stored(row) for row in rows}
+            found = self._read([row]) if row else []
+        return found[0] if found else None
 
     def search(
         self, text: str, filters: ItemFilters = NO_FILTERS, limit: int = 25
@@ -204,7 +214,7 @@ class ItemRepository:
             rank, ItemRow.item_level.desc().nulls_last(), ItemRow.name
         ).limit(limit)
         with self._db.session() as session:
-            return [self._stored(row) for row in session.scalars(statement).all()]
+            return self._read(session.scalars(statement).all())
 
     @staticmethod
     def _filtered(statement, filters: ItemFilters):  # type: ignore[no-untyped-def]
@@ -247,7 +257,7 @@ class ItemRepository:
             rows = session.scalars(
                 statement.order_by(ItemRow.name).offset(offset).limit(limit)
             ).all()
-            return [self._stored(row) for row in rows], total
+            return self._read(rows), total
 
     def counts(self) -> dict[str, int]:
         with self._db.session() as session:

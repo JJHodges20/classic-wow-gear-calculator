@@ -26,7 +26,8 @@ app may import only models, services and reporting.
    recommendation carries a "Recommended under this profile" label as well as its gold edge,
    and quality colour appears only as a small dot beside the item name.
 4. **Structure**: `app.py` is the shell (page setup, theme, navigation at the top, footer);
-   pages are functions in `pages/`; `components/` draw; `state/` holds the session keys and
+   each page is a small script in `pages/` that draws a function from `views/` (so pages can
+   be tested); `components/` draw; `state/` holds the session keys and
    the workspace, cached once per project (`WOWGEAR_HOME`) and shared by sessions.
 5. **Errors stay services' errors**: `wow_gear.services.errors` re-exports the core errors so
    the app can catch them without importing `core`.
@@ -36,7 +37,8 @@ app may import only models, services and reporting.
 
 ## Consequences
 
-- A page added in milestone 8 is a function registered in `app.py` and built from the same
-  components; the navigation appears once there is more than one page.
+- A page is a script in `pages/` registered in `app.py`, drawing a view built from the same
+  components (milestone 8 moved pages from functions to scripts, which `streamlit.testing`
+  can switch between).
 - App tests run under `streamlit.testing` on a throwaway project with the fixture dataset;
   a browser check in light, dark and phone widths closes each UI milestone.

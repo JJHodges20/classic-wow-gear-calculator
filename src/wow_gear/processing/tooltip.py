@@ -12,7 +12,7 @@ import re
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 
-from wow_gear.models.enums import CreatureType, Stat
+from wow_gear.models.enums import CreatureType, ShapeshiftForm, Stat
 from wow_gear.models.item import EffectCondition, EffectTrigger
 
 _NUMBER = r"(\d+(?:\.\d+)?)"
@@ -63,7 +63,7 @@ _CREATURES = {
     "mechanicals": CreatureType.MECHANICAL,
     "undead": CreatureType.UNDEAD,
 }
-_FERAL_FORMS = ("cat", "bear", "dire_bear")
+_FERAL_FORMS = (ShapeshiftForm.CAT, ShapeshiftForm.BEAR, ShapeshiftForm.DIRE_BEAR)
 
 
 @dataclass(frozen=True)

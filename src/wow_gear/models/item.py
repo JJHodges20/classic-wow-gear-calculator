@@ -28,6 +28,7 @@ from wow_gear.models.enums import (
     ItemSlot,
     Race,
     RelicType,
+    ShapeshiftForm,
     Stat,
     WeaponType,
 )
@@ -106,7 +107,7 @@ class EffectCondition(_Frozen):
     """When a stat effect applies. An empty condition means always."""
 
     target_creature_types: tuple[CreatureType, ...] = ()
-    shapeshift_forms: tuple[str, ...] = ()
+    shapeshift_forms: tuple[ShapeshiftForm, ...] = ()
     note: str | None = None
 
     @property

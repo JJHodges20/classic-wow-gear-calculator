@@ -1,0 +1,182 @@
+{
+  "title": "Blessed Qiraji War Hammer over Hammer of Bestial Fury",
+  "question": "A cat druid chooses between two maces with feral attack power.",
+  "profile": {
+    "id": "druid_dps_cat",
+    "version": "1.0.0"
+  },
+  "ruleset": {
+    "id": "classic_era",
+    "version": "1.0.0"
+  },
+  "context": {
+    "ruleset": "classic_era",
+    "phase": 5,
+    "level": 60,
+    "class_name": "druid",
+    "role": "melee_dps",
+    "profile_id": "druid_dps_cat",
+    "content_mode": "raid_pve",
+    "current_stats": {
+      "hit": 4.0
+    }
+  },
+  "items": [
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [
+        {
+          "condition": {
+            "note": null,
+            "shapeshift_forms": [
+              "cat",
+              "bear",
+              "dire_bear"
+            ],
+            "target_creature_types": []
+          },
+          "cooldown_seconds": null,
+          "description": "Equip: +280 Attack Power in Cat, Bear, and Dire Bear forms only.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": "feral_attack_power",
+          "trigger": "equip",
+          "value": 280.0
+        }
+      ],
+      "external_ids": {
+        "game": "21268",
+        "vmangos": "21268"
+      },
+      "id": "classic_era:21268",
+      "item_level": 79,
+      "name": "Blessed Qiraji War Hammer",
+      "on_use_effects": [],
+      "phase": 5,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "one_hand",
+      "stats": {
+        "armor": 70.0,
+        "defense": 8.0,
+        "stamina": 12.0,
+        "strength": 10.0
+      },
+      "unique": false,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 166.0,
+        "min_damage": 89.0,
+        "speed": 2.1
+      },
+      "weapon_type": "mace"
+    },
+    {
+      "allowed_classes": [],
+      "allowed_races": [],
+      "armor_type": null,
+      "equip_effects": [
+        {
+          "condition": {
+            "note": null,
+            "shapeshift_forms": [
+              "cat",
+              "bear",
+              "dire_bear"
+            ],
+            "target_creature_types": []
+          },
+          "cooldown_seconds": null,
+          "description": "Equip: +154 Attack Power in Cat, Bear, and Dire Bear forms only.",
+          "duration_seconds": null,
+          "proc_chance_percent": null,
+          "procs_per_minute": null,
+          "stat": "feral_attack_power",
+          "trigger": "equip",
+          "value": 154.0
+        }
+      ],
+      "external_ids": {
+        "game": "20580",
+        "vmangos": "20580"
+      },
+      "id": "classic_era:20580",
+      "item_level": 71,
+      "name": "Hammer of Bestial Fury",
+      "on_use_effects": [],
+      "phase": 4,
+      "provenance": {
+        "custom": false,
+        "data_version": "classic_era-vmangos-db-4641790",
+        "fetched_at": "2026-10-07T20:32:32Z",
+        "license": "VMaNGOS is GPL-2.0; the game data is Blizzard Entertainment's",
+        "provider": "bundled",
+        "source": "VMaNGOS world database, development snapshot db-4641790 (patch 1.12 rows)",
+        "source_url": "https://github.com/vmangos/core/releases/tag/db_latest"
+      },
+      "quality": "epic",
+      "relic_type": null,
+      "required_level": 60,
+      "ruleset": "classic_era",
+      "set_id": null,
+      "set_name": null,
+      "slot": "main_hand",
+      "stats": {
+        "armor": 90.0,
+        "stamina": 12.0,
+        "strength": 13.0
+      },
+      "unique": true,
+      "weapon": {
+        "bonus_damage": [],
+        "damage_school": "physical",
+        "max_damage": 130.0,
+        "min_damage": 69.0,
+        "speed": 1.9
+      },
+      "weapon_type": "mace"
+    }
+  ],
+  "replacing": null,
+  "expected": {
+    "outcome": "winner",
+    "winner": "classic_era:21268",
+    "first": "classic_era:21268",
+    "second": "classic_era:20580",
+    "score_delta": 118.08,
+    "scores": {
+      "classic_era:21268": 306.4,
+      "classic_era:20580": 188.32
+    },
+    "component_deltas": {
+      "context:feral_attack_power": 126.0,
+      "stat:strength": -7.92
+    },
+    "capped_stats": {},
+    "not_usable": {},
+    "confidence": "medium"
+  },
+  "hand_calculation": [
+    "Blessed Qiraji War Hammer: 280 attack power in cat form x 1 = 280; 10 Strength x 2.64 = 26.4; defense, Stamina and armor are not valued; weapon damage is not valued in cat form. Total 306.4.",
+    "Hammer of Bestial Fury: 154 x 1 = 154; 13 Strength x 2.64 = 34.32. Total 188.32."
+  ],
+  "review": "In cat form the weapon's own damage does not count: its feral attack power does.",
+  "reviewed": "2026-10-07"
+}

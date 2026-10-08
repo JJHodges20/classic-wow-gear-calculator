@@ -9,6 +9,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+from pydantic import ValidationError
+
 from wow_gear.core.hashing import content_hash
 from wow_gear.models.enums import (
     ArmorType,
@@ -261,20 +263,31 @@ def read_tooltip(text: str, *, custom: bool = False) -> TooltipReading:
         reading.problems.append('No slot line (such as "Head  Plate") was found; choose the slot.')
         return reading
     slot, armor, weapon_type, relic = slot_info
-    reading.form = ManualItemForm(
-        name=name,
-        slot=slot,
-        armor_type=armor,
-        weapon_type=weapon_type,
-        relic_type=relic,
-        required_level=required_level,
-        stats=stats,
-        min_damage=weapon.get("min"),
-        max_damage=weapon.get("max"),
-        speed=weapon.get("speed"),
-        damage_school=school,
-        effects=tuple(effects),
-        custom=custom,
-        source_note="Pasted tooltip",
-    )
+    try:
+        reading.form = _form_from_tooltip(
+            name=name,
+            slot=slot,
+            armor_type=armor,
+            weapon_type=weapon_type,
+            relic_type=relic,
+            required_level=required_level,
+            stats=stats,
+            min_damage=weapon.get("min"),
+            max_damage=weapon.get("max"),
+            speed=weapon.get("speed"),
+            damage_school=school,
+            effects=tuple(effects),
+            custom=custom,
+        )
+    except ValidationError as error:
+        reading.problems.extend(
+            "The tooltip does not make a valid item: "
+            + ".".join(str(part) for part in issue["loc"])
+            + f" - {issue['msg']}"
+            for issue in error.errors()
+        )
     return reading
+
+
+def _form_from_tooltip(**fields: object) -> ManualItemForm:
+    return ManualItemForm.model_validate({**fields, "source_note": "Pasted tooltip"})

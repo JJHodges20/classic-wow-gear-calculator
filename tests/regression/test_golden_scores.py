@@ -87,7 +87,8 @@ def test_golden_scores_are_reproducible(path: Path) -> None:
     profile = load_profile(next(PROFILES.glob(f"*/{case['profile']}.yaml")), RULESETS)
     context = CharacterContext.model_validate(case["context"])
     item = Item.model_validate(case["item"])
-    first = score_item(item, context, profile, ruleset)
-    second = score_item(item, context, profile, ruleset)
+    replacing = Item.model_validate(case["replacing"]) if case["replacing"] else None
+    first = score_item(item, context, profile, ruleset, replacing=replacing)
+    second = score_item(item, context, profile, ruleset, replacing=replacing)
     assert first == second
     assert first.context_fingerprint == second.context_fingerprint

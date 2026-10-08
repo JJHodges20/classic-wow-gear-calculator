@@ -17,12 +17,29 @@ ROOT = Path(__file__).resolve().parents[2]
 BLIZZARD = ROOT / "data" / "fixtures" / "providers" / "blizzard"
 
 
-def blizzard_handler(fail: str | None = None) -> Callable[[httpx.Request], httpx.Response]:
-    """A fake Battle.net: the token endpoint, items by id, and search by name."""
+def blizzard_handler(
+    fail: str | None = None, fail_on: str = "api"
+) -> Callable[[httpx.Request], httpx.Response]:
+    """A fake Battle.net: the token endpoint, items by id, and search by name.
+
+    ``fail`` makes it misbehave; ``fail_on`` says where: "api" (search and items), "search",
+    "item" or "token".
+    """
+
+    def failing(endpoint: str) -> bool:
+        return fail is not None and (
+            fail_on == endpoint or (fail_on == "api" and endpoint != "token")
+        )
 
     def handler(request: httpx.Request) -> httpx.Response:
+        path = request.url.path
         if request.url.host == "oauth.battle.net":
+            if failing("token"):
+                return httpx.Response(500)
             return httpx.Response(200, json=json.loads((BLIZZARD / "token.json").read_text()))
+        endpoint = "item" if path.startswith("/data/wow/item/") else "search"
+        if not failing(endpoint):
+            return answer(request)
         if fail == "connect":
             raise httpx.ConnectError("network is unreachable", request=request)
         if fail == "timeout":
@@ -31,6 +48,9 @@ def blizzard_handler(fail: str | None = None) -> Callable[[httpx.Request], httpx
             return httpx.Response(int(fail))
         if fail == "garbage":
             return httpx.Response(200, text="<html>maintenance</html>")
+        return answer(request)
+
+    def answer(request: httpx.Request) -> httpx.Response:
         path = request.url.path
         if path.startswith("/data/wow/item/"):
             source = BLIZZARD / f"item_{path.rsplit('/', 1)[-1]}.json"
@@ -57,12 +77,14 @@ def open_workspace(project: Path) -> Iterator[Callable[..., Workspace]]:
     """Open workspaces on the project; ``fail`` makes the fake Blizzard API misbehave."""
     opened: list[Workspace] = []
 
-    def make(*, online: bool = False, fail: str | None = None) -> Workspace:
+    def make(*, online: bool = False, fail: str | None = None, fail_on: str = "api") -> Workspace:
         settings = load_settings(project, environment={})
         client = None
         if online:
             client = BlizzardClient(
-                "test-id", "test-secret", transport=httpx.MockTransport(blizzard_handler(fail))
+                "test-id",
+                "test-secret",
+                transport=httpx.MockTransport(blizzard_handler(fail, fail_on)),
             )
         workspace = Workspace(settings, online=client)
         opened.append(workspace)

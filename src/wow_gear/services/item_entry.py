@@ -23,7 +23,6 @@ from wow_gear.models.enums import (
 )
 from wow_gear.models.forms import ManualItemForm
 from wow_gear.models.item import ARMOR_SLOTS, WEAPON_SLOTS, Item
-from wow_gear.models.labels import SLOT_LABELS
 from wow_gear.models.ruleset import Ruleset
 from wow_gear.processing.manual import TooltipReading, form_to_item, read_tooltip
 from wow_gear.processing.validation import ValidationIssue, validate_item
@@ -99,9 +98,6 @@ class EntryPreview:
 class ItemEntryService:
     def __init__(self, ruleset: Ruleset) -> None:
         self._ruleset = ruleset
-
-    def slot_choices(self) -> list[tuple[ItemSlot, str]]:
-        return [(slot, SLOT_LABELS[slot]) for slot in ItemSlot]
 
     def type_choices(self, slot: ItemSlot) -> TypeChoices:
         if slot == ItemSlot.BACK:

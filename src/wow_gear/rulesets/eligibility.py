@@ -58,10 +58,20 @@ def eligibility(item: Item, context: CharacterContext, ruleset: Ruleset) -> Elig
     if item.slot == ItemSlot.RELIC and item.relic_type != class_def.relic:
         reasons.append(f"A {item.relic_type} is not a {class_def.label} relic")
     if item.slot == ItemSlot.OFF_HAND:
-        dual_wield = class_def.dual_wield_from_level
-        if dual_wield is None:
-            reasons.append(f"{who} cannot dual wield")
-        elif dual_wield > context.level:
-            reasons.append(f"{who} dual wield from level {dual_wield}")
+        problem = dual_wield_problem(context, ruleset)
+        if problem:
+            reasons.append(problem)
 
     return Eligibility(eligible=not reasons, reasons=tuple(reasons))
+
+
+def dual_wield_problem(context: CharacterContext, ruleset: Ruleset) -> str | None:
+    """Why the character cannot hold a weapon in the off hand, or None when it can."""
+    class_def = ruleset.class_def(context.class_name)
+    who = _plural(class_def.label)
+    from_level = class_def.dual_wield_from_level
+    if from_level is None:
+        return f"{who} cannot dual wield"
+    if from_level > context.level:
+        return f"{who} dual wield from level {from_level}"
+    return None

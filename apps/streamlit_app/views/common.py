@@ -8,6 +8,7 @@ from dataclasses import dataclass
 import streamlit as st
 
 from components import advanced, context_bar
+from components.html import md
 from state import session
 from state.workspace import workspace
 from wow_gear.models.character import CharacterContext
@@ -31,9 +32,10 @@ def open_workspace() -> Workspace | None:
     try:
         ws = workspace()
     except WowGearError as error:
-        st.error(f"The calculator could not start: {error}", icon=":material/error:")
+        st.error(md(f"The calculator could not start: {error}"), icon=":material/error:")
         st.caption("Check the files in configs/ and run `wowgear check` for details.")
         return None
+    ws.keep_fresh()
     if ws.bundled.problem:
         st.warning(
             f"Item data: {ws.bundled.problem}. Search may find nothing; items entered by hand "
@@ -72,5 +74,5 @@ def setup() -> Setup | None:
             current_stats=session.gear_totals(stats),
         )
     except DataValidationError as error:
-        st.error(f"This context cannot be scored: {error}", icon=":material/error:")
+        st.error(md(f"This context cannot be scored: {error}"), icon=":material/error:")
     return Setup(ws, choice, stats, weapon_skill, context)

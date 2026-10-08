@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from wow_gear.core import ConfigError, find_project_root, load_settings
+from wow_gear.core.logging import configure_logging
 
 
 def test_the_shipped_configuration_loads(project_root: Path) -> None:
@@ -109,3 +110,29 @@ class TestInvalidConfiguration:
         (tmp_project / "configs" / "app.yaml").write_text("app: [unclosed", encoding="utf-8")
         with pytest.raises(ConfigError, match="not valid YAML"):
             load_settings(tmp_project, environment={})
+
+
+class TestSecretsStayOutOfLogs:
+    HIDDEN = "hidden-value-for-tests"
+
+    def test_settings_never_print_a_secret_value(self, tmp_project: Path) -> None:
+        settings = load_settings(
+            tmp_project, environment={"WOWGEAR_BLIZZARD_CLIENT_SECRET": self.HIDDEN}
+        )
+        assert self.HIDDEN not in repr(settings)
+        assert settings.secret_values() == (self.HIDDEN,)
+
+    def test_log_lines_and_tracebacks_are_masked(self, capsys: pytest.CaptureFixture[str]) -> None:
+        logger = configure_logging("INFO", secrets=[self.HIDDEN])
+        try:
+            logger.warning("token request with %s failed", self.HIDDEN)
+            try:
+                raise RuntimeError(f"rejected {self.HIDDEN}")
+            except RuntimeError:
+                logger.exception("lookup failed")
+        finally:
+            configure_logging("INFO")
+        written = capsys.readouterr().err
+        assert self.HIDDEN not in written
+        assert written.count("****") == 2
+        assert "RuntimeError: rejected ****" in written

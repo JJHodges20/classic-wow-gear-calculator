@@ -18,7 +18,7 @@ HOME_VARIABLE = "WOWGEAR_HOME"
 
 @st.cache_resource(show_spinner="Opening the item data…")
 def _open(home: str) -> Workspace:
-    return Workspace.open(Path(home) if home else None)
+    return Workspace.open(Path(home) if home else None, configure_logs=True)
 
 
 def workspace() -> Workspace:

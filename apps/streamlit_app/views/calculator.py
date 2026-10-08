@@ -6,7 +6,7 @@ from __future__ import annotations
 import streamlit as st
 
 from components import advanced, exports, item_input, recommendation
-from components.html import eyebrow
+from components.html import eyebrow, md
 from state import session
 from state.session import Slot
 from views.common import setup
@@ -49,7 +49,7 @@ def render() -> None:
             try:
                 result = ws.calculator.compare(picked, ready.context, replacing=replacing)
             except (DataValidationError, NotFoundError) as error:
-                st.error(f"These items cannot be compared: {error}", icon=":material/error:")
+                st.error(md(f"These items cannot be compared: {error}"), icon=":material/error:")
             else:
                 slots = {item.id: slot for slot, item in chosen.items() if item is not None}
                 recommendation.render(result, slots)

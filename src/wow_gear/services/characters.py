@@ -18,7 +18,7 @@ from wow_gear.comparison.gear import analyse_gear, check_gear, displaced, replac
 from wow_gear.core.errors import DataValidationError, NotFoundError
 from wow_gear.data_sources.files import read_gear_text
 from wow_gear.models.character import CharacterContext
-from wow_gear.models.enums import ContentMode, EquipmentSlot, Race, Stat
+from wow_gear.models.enums import ContentMode, EquipmentSlot, Race
 from wow_gear.models.gear import GearAnalysis, GearSet, ReplacementResult, SavedCharacter
 from wow_gear.models.item import Item
 from wow_gear.models.labels import EQUIPMENT_SLOT_LABELS
@@ -130,6 +130,11 @@ class CharacterService:
     def context(self, character: SavedCharacter) -> CharacterContext:
         """The context the character's gear is analysed in (its weapon types come from the gear)."""
         profile = self._calculator.profile(character.profile_id)
+        if profile.ruleset != character.ruleset:
+            raise DataValidationError(
+                f"{character.name} is for the {character.ruleset!r} ruleset; the "
+                f"{profile.label} profile is for {profile.ruleset!r}"
+            )
         if profile.class_name != character.class_name:
             raise DataValidationError(
                 f"{character.name} is a {character.class_name}; the {profile.label} profile is "
@@ -224,11 +229,6 @@ class CharacterService:
         ruleset = self._calculator.ruleset(profile.ruleset)
         self._calculator.check_items([candidate], ruleset)
         return replacement(gear.items, slot, candidate, context, profile, ruleset)
-
-    def gear_totals(self, character: SavedCharacter, stats: list[Stat]) -> dict[Stat, float]:
-        """The gear's totals for ``stats``: what the calculator's current gear totals ask for."""
-        analysis, _ = self.analyse(character)
-        return {stat: analysis.totals.get(stat, 0.0) for stat in stats}
 
     # --- files --------------------------------------------------------------------------
 

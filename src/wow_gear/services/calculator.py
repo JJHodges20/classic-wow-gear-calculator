@@ -22,11 +22,9 @@ from wow_gear.models.item import Item
 from wow_gear.models.labels import ROLE_LABELS
 from wow_gear.models.profile import BuildProfile
 from wow_gear.models.ruleset import Ruleset
-from wow_gear.models.score import ScoreResult
 from wow_gear.processing.validation import validate_item
 from wow_gear.profiles.loader import ProfileRegistry
 from wow_gear.rulesets.loader import RulesetRegistry
-from wow_gear.scoring.engine import score_item
 
 
 class ItemSource(Protocol):
@@ -160,16 +158,6 @@ class CalculatorService:
                 raise DataValidationError(f"{item.name} cannot be scored: {problems}")
 
     # --- scoring and comparing ----------------------------------------------------------
-
-    def score(
-        self, item: Item, context: CharacterContext, *, replacing: Item | None = None
-    ) -> ScoreResult:
-        self.check(context)
-        ruleset = self.ruleset(context.ruleset)
-        self.check_items([item, *([replacing] if replacing else [])], ruleset)
-        return score_item(
-            item, context, self.profile(context.profile_id), ruleset, replacing=replacing
-        )
 
     def compare(
         self,

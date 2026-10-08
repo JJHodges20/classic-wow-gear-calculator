@@ -9,7 +9,9 @@ from datetime import timedelta
 from pathlib import Path
 
 import pytest
+from typer.testing import CliRunner
 
+from wow_gear.cli import app
 from wow_gear.models.character import CharacterContext
 from wow_gear.models.enums import ArmorType, ItemSlot, Stat
 from wow_gear.models.providers.blizzard import BlizzardItem
@@ -127,6 +129,123 @@ class TestOnlineLookup:
         assert stored is not None and stored.origin == "bundled"
 
 
+class TestCachedItemsWhenTheProviderFails:
+    """Reliability: a failing provider never takes away an item already found (section 15)."""
+
+    def test_an_item_found_online_is_still_found_when_the_provider_is_down(
+        self, open_workspace: Opener
+    ) -> None:
+        open_workspace(online=True).search.search("girdle", online=True)
+        outcome = open_workspace(online=True, fail="connect").search.search("girdle", online=True)
+        assert outcome.online == "failed"
+        assert [hit.item.name for hit in outcome.hits] == ["Test Girdle of Lookups"]
+        assert outcome.notices[0].startswith("Online lookup failed")
+
+    def test_an_id_lookup_falls_back_to_the_expired_copy(self, open_workspace: Opener) -> None:
+        open_workspace(online=True).search.fetch_online(900001)
+        failing = open_workspace(online=True, fail="500")
+        # The lookup expires while the app runs, before the next purge drops it.
+        with failing.database.session() as session:
+            row = session.get(ItemRow, "classic_era:900001")
+            assert row is not None
+            row.expires_at = utc_now() - timedelta(minutes=1)
+            session.commit()
+        outcome = failing.search.search("900001", online=True)
+        assert outcome.online == "failed"
+        assert outcome.hits[0].item.name == "Test Girdle of Lookups" and outcome.hits[0].stale
+        assert outcome.notices[0].startswith("Online lookup failed")
+
+    @pytest.mark.parametrize("fail", ["500", "garbage", "timeout"])
+    def test_an_item_lookup_failing_after_a_good_search_is_reported(
+        self, open_workspace: Opener, fail: str
+    ) -> None:
+        workspace = open_workspace(online=True, fail=fail, fail_on="item")
+        outcome = workspace.search.search("lionheart", online=True)
+        assert outcome.hits[0].item.name == "Lionheart Helm"  # the local copy
+        assert any(notice.startswith("Online lookup failed") for notice in outcome.notices)
+        statuses = {call.operation: call.status for call in workspace.items.recent_calls()}
+        assert statuses == {"search": "ok", "item": "failed"}
+
+    def test_a_token_that_cannot_be_had_leaves_local_search_working(
+        self, open_workspace: Opener
+    ) -> None:
+        outcome = open_workspace(online=True, fail="500", fail_on="token").search.search(
+            "lionheart", online=True
+        )
+        assert outcome.online == "failed"
+        assert outcome.hits[0].item.name == "Lionheart Helm"
+        assert outcome.notices[0].startswith("Online lookup failed")
+
+
+class TestWhileTheAppRuns:
+    def test_expired_lookups_are_dropped_without_reopening(self, open_workspace: Opener) -> None:
+        workspace = open_workspace(online=True)
+        workspace.search.fetch_online(12640)
+        with workspace.database.session() as session:
+            row = session.get(ItemRow, "classic_era:12640")
+            assert row is not None
+            row.expires_at = utc_now() - timedelta(minutes=1)
+            session.commit()
+        workspace.keep_fresh()  # just opened: not yet due
+        assert workspace.items.get("classic_era:12640").origin == "cache"  # type: ignore[union-attr]
+        workspace.keep_fresh(every=timedelta(0))
+        assert workspace.items.get("classic_era:12640").origin == "bundled"  # type: ignore[union-attr]
+
+    def test_an_online_search_is_reused_for_a_few_minutes(self, open_workspace: Opener) -> None:
+        workspace = open_workspace(online=True)
+        first = workspace.search.search("girdle", online=True)
+        again = workspace.search.search("girdle", online=True)
+        assert first.hits == again.hits
+        operations = [call.operation for call in workspace.items.recent_calls()]
+        assert operations.count("search") == 1
+
+    def test_a_row_that_cannot_be_read_is_skipped(self, open_workspace: Opener) -> None:
+        workspace = open_workspace()
+        with workspace.database.session() as session:
+            good = session.get(ItemRow, "classic_era:12640")
+            assert good is not None
+            session.add(
+                ItemRow(
+                    id="classic_era:999999",
+                    ruleset=good.ruleset,
+                    name="Lionheart Broken",
+                    name_key="lionheart broken",
+                    slot=good.slot,
+                    required_level=0,
+                    origin="user",
+                    provider="manual",
+                    data_version="x",
+                    version="x",
+                    stored_at=utc_now(),
+                    payload='{"id": "classic_era:999999"}',
+                )
+            )
+            session.commit()
+        hits = workspace.search.search("lionheart").hits
+        assert [hit.item.id for hit in hits] == ["classic_era:12640"]
+        assert workspace.items.get("classic_era:999999") is None
+
+
+class TestYourOwnItems:
+    def test_a_lookup_never_replaces_your_version_of_an_item(
+        self, open_workspace: Opener, tmp_path: Path
+    ) -> None:
+        workspace = open_workspace(online=True)
+        helm = workspace.items.get("classic_era:12640")
+        assert helm is not None
+        mine = helm.item.model_copy(update={"name": "My Own Lionheart"})
+        source = tmp_path / "items.json"
+        source.write_text(json.dumps({"items": [mine.model_dump(mode="json")]}), encoding="utf-8")
+        assert workspace.search.import_file(source).imported
+        outcome = workspace.search.search("lionheart", online=True)
+        hit = next(hit for hit in outcome.hits if hit.item.id == "classic_era:12640")
+        assert (hit.item.name, hit.origin) == ("My Own Lionheart", "user")
+        workspace.search.fetch_online(12640)  # a direct lookup is not stored over it either
+        stored = workspace.items.get("classic_era:12640")
+        assert stored is not None
+        assert (stored.item.name, stored.origin) == ("My Own Lionheart", "user")
+
+
 class TestNormalizationEquivalence:
     """Manual and provider normalization produce equivalent canonical items (section 11)."""
 
@@ -189,7 +308,8 @@ class TestImports:
         workspace = open_workspace()
         report = workspace.search.import_file(source)
         assert [item.name for item in report.imported] == ["My Helm", "My Ring"]
-        assert report.rejected[0].row == 2 and "slot" in report.rejected[0].errors[0]
+        # Rows as a spreadsheet numbers them: the header is row 1, the broken row is row 3.
+        assert report.rejected[0].row == 3 and "slot" in report.rejected[0].errors[0]
         helm = report.imported[0]
         assert helm.stats[Stat.HIT] == 1 and helm.provenance.provider == "file_import"
         assert workspace.items.counts()["user"] == 2
@@ -229,3 +349,33 @@ def test_a_searched_item_scores_like_any_other(open_workspace: Opener) -> None:
     )
     result = score_item(helm, context, profile, workspace.ruleset)
     assert result.score == 116.0 and result.item_provider == "bundled"
+
+
+class TestItemCommands:
+    runner = CliRunner()
+
+    def test_searching_items(self, project: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("WOWGEAR_HOME", str(project))
+        result = self.runner.invoke(app, ["items", "search", "lionheart"])
+        assert result.exit_code == 0, result.output
+        assert "classic_era:12640" in result.output and "Lionheart Helm" in result.output
+        assert "No items found." in self.runner.invoke(app, ["items", "search", "zzzz"]).output
+
+    def test_importing_items(
+        self, project: Path, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+    ) -> None:
+        monkeypatch.setenv("WOWGEAR_HOME", str(project))
+        good = tmp_path / "items.csv"
+        good.write_text(
+            "name,slot,strength" + chr(10) + "Imported Ring,finger,7" + chr(10), encoding="utf-8"
+        )
+        result = self.runner.invoke(app, ["items", "import", str(good)])
+        assert result.exit_code == 0, result.output
+        assert "Imported 1 item(s); rejected 0." in result.output
+        bad = tmp_path / "bad.csv"
+        bad.write_text(
+            "name,slot,haste" + chr(10) + "Fast Boots,feet,5" + chr(10), encoding="utf-8"
+        )
+        rejected = self.runner.invoke(app, ["items", "import", str(bad)])
+        assert rejected.exit_code == 1
+        assert "row 2" in rejected.output and "haste" in rejected.output

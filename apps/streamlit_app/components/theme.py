@@ -178,6 +178,13 @@ def _css(t: Tokens) -> str:
 .wg-cap:last-child {{ border-bottom: none; }}
 .wg-cap-head {{ display: flex; justify-content: space-between; align-items: baseline;
   gap: 0.5rem; flex-wrap: wrap; }}
+@media (max-width: 640px) {{
+  /* A wide table scrolls inside itself; columns keep a readable width. */
+  .wg-table {{ display: block; overflow-x: auto; }}
+  .wg-table th, .wg-table td {{ min-width: 6.5rem; overflow-wrap: break-word; }}
+  .wg-table .wg-num {{ min-width: 3.5rem; }}
+  .wg-table td:last-child:not(.wg-num) {{ min-width: 15rem; }}
+}}
 .wg-list {{ margin: 0.2rem 0 0.4rem 1.1rem; padding: 0; }}
 .wg-list li {{ margin: 0.15rem 0; }}
 {quality}

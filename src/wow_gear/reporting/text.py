@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from wow_gear.models.comparison import ComparisonResult
 from wow_gear.models.enums import EquipmentSlot
+from wow_gear.models.formatting import signed_text
 from wow_gear.models.gear import GearAnalysis, ReplacementResult, SavedCharacter
 from wow_gear.models.labels import CONTENT_MODE_LABELS, EQUIPMENT_SLOT_LABELS
 
@@ -54,7 +55,7 @@ def comparison_text(result: ComparisonResult) -> str:
                     line.label,
                     f"{line.first_value:.1f}",
                     f"{line.second_value:.1f}",
-                    f"{line.delta:+.1f}",
+                    signed_text(line.delta),
                 ]
             )
         out.append("")
@@ -67,7 +68,7 @@ def comparison_text(result: ComparisonResult) -> str:
         out.append("")
         out.append(f"Against the equipped {result.replaced.item_name}:")
         for upgrade in result.upgrades:
-            out.append(f"  {upgrade.item_name}: {upgrade.delta:+.1f} {unit}")
+            out.append(f"  {upgrade.item_name}: {signed_text(upgrade.delta)} {unit}")
 
     out.append("")
     if result.not_valued:
@@ -76,6 +77,9 @@ def comparison_text(result: ComparisonResult) -> str:
         out.append(f"Not scored in version 1: {effect}")
     for note in result.notes:
         out.append(f"Note: {note}")
+    if result.results:
+        out.append("Assumptions:")
+        out.extend(f"  {line}" for line in result.results[0].assumptions)
     reasons = "; ".join(result.confidence.reasons)
     out.append(f"Confidence: {result.confidence.level}" + (f" ({reasons})." if reasons else "."))
     out.append(
@@ -131,6 +135,7 @@ def gear_text(
         ),
         ("Not scored in version 1", analysis.not_scored),
         ("Notes", analysis.notes),
+        ("Assumptions", analysis.assumptions),
     )
     for title, entries in sections:
         if entries:
@@ -143,7 +148,7 @@ def gear_text(
         out.append(
             f"Trying {replacement.candidate_name} in the "
             f"{EQUIPMENT_SLOT_LABELS[replacement.slot].lower()} slot (replacing {removed}): "
-            f"{replacement.delta:+.1f} {unit} ({replacement.score_before:.1f} to "
+            f"{signed_text(replacement.delta)} {unit} ({replacement.score_before:.1f} to "
             f"{replacement.score_after:.1f})."
         )
         out.extend(f"  {line.text}" for line in replacement.lines)

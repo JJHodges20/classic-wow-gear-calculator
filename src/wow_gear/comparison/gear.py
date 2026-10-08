@@ -4,8 +4,9 @@ putting one item on changes the whole character.
 The engine scores the whole set (``scoring.gear.evaluate_gear``). A piece is worth what the
 character loses without it, and a replacement is worth the change in the whole set's value:
 both are differences between two whole sets, so both account for the caps the rest of the
-gear already fills - and for a weapon whose type changes the character's weapon skill, and
-with it the hit cap.
+gear already fills. Both are measured against the caps of the gear as worn: version 1 does
+not value weapon skill, so a change that moves the hit cap (another weapon type, a piece
+with weapon skill) is shown - the caps after it - but not counted as a gain or loss of hit.
 """
 
 from __future__ import annotations
@@ -20,12 +21,14 @@ from wow_gear.comparison.compare import (
     TIE_ABSOLUTE,
     explain_components,
     in_sentence,
+    is_tie,
     unit_abbreviation,
 )
 from wow_gear.core.errors import DataValidationError
 from wow_gear.core.hashing import content_hash
 from wow_gear.models.character import CharacterContext
-from wow_gear.models.enums import WEAPON_SKILL_STATS, EquipmentSlot, Stat
+from wow_gear.models.enums import WEAPON_SKILL_STATS, EquipmentSlot, ItemSlot, Stat
+from wow_gear.models.formatting import amount_text, is_percent, number_text, stat_label
 from wow_gear.models.gear import (
     BLOCKS_OFF_HAND,
     EQUIPMENT_SLOTS,
@@ -41,12 +44,14 @@ from wow_gear.models.labels import EQUIPMENT_SLOT_LABELS, SLOT_LABELS
 from wow_gear.models.profile import BuildProfile, Threshold
 from wow_gear.models.ruleset import Ruleset
 from wow_gear.models.score import ComponentKind
-from wow_gear.scoring.amounts import amount_text, is_percent, number_text, stat_label
+from wow_gear.rulesets.eligibility import dual_wield_problem
 from wow_gear.scoring.engine import ENGINE_VERSION, CapInfo, cap_curves, measured_totals, score_item
 from wow_gear.scoring.gear import (
     GearEvaluation,
     combine,
     evaluate_gear,
+    gear_context,
+    gear_totals,
     item_totals,
     with_totals,
 )
@@ -60,7 +65,11 @@ WEAK_BY_ITEM_LEVEL = 3
 _EPSILON = 1e-9
 _MIN_ITEM_LEVELS = 4  # with fewer pieces a median says nothing
 _SKILL_STATS = frozenset(WEAPON_SKILL_STATS.values())
-_SETS_WEAPON_TYPE = frozenset({EquipmentSlot.MAIN_HAND, EquipmentSlot.RANGED})
+_V1_WEAPON_SKILL = (
+    "Weapon skill is not valued in version 1: the caps are those of the gear as worn, and a "
+    "change that moves your weapon skill - another weapon type, a piece with weapon skill - "
+    "is measured against them."
+)
 
 
 def check_gear(gear: Mapping[EquipmentSlot, Item]) -> None:
@@ -229,11 +238,14 @@ def _breakpoint(
 
 
 def cap_status(
-    evaluation: GearEvaluation, profile: BuildProfile, ruleset: Ruleset
+    totals: Mapping[Stat, float],
+    context: CharacterContext,
+    profile: BuildProfile,
+    ruleset: Ruleset,
 ) -> tuple[CapStatus, ...]:
-    """Where each of the profile's caps and breakpoints stands for the evaluated gear."""
-    context = evaluation.context
-    measured = measured_totals(evaluation.totals, context, profile, ruleset)
+    """Where each of the profile's caps and breakpoints stands for gear adding up to
+    ``totals``, worn by the character of ``context`` (whose weapon skill sets the caps)."""
+    measured = measured_totals(totals, context, profile, ruleset)
     curves = cap_curves(profile, ruleset, context)
     unit = unit_abbreviation(profile.score_unit)
     statuses = [
@@ -263,41 +275,85 @@ def _not_valued(
     )
 
 
-def _without(gear: Mapping[EquipmentSlot, Item], slot: EquipmentSlot) -> dict[EquipmentSlot, Item]:
-    return {other: item for other, item in gear.items() if other != slot}
-
-
 def _slot_worth(
-    slot: EquipmentSlot,
-    item: Item,
-    gear: Mapping[EquipmentSlot, Item],
+    item: Item, evaluation: GearEvaluation, profile: BuildProfile, ruleset: Ruleset
+) -> float:
+    """What the character loses without ``item``, the caps staying where the gear puts them:
+    exactly the item scored on top of the rest of the gear."""
+    own = item_totals(item, evaluation.context, profile, ruleset)
+    rest = combine(evaluation.totals, own, sign=-1.0)
+    unskilled = {stat: value for stat, value in rest.items() if stat not in _SKILL_STATS}
+    context = with_totals(evaluation.context, {**unskilled, **evaluation.skills})
+    return score_item(item, context, profile, ruleset).score
+
+
+def _off_hand_problem(
+    slot: EquipmentSlot, item: Item, context: CharacterContext, ruleset: Ruleset
+) -> str | None:
+    """A one-handed weapon in the off hand needs dual wield (an off-hand-only item is
+    checked by its own eligibility)."""
+    if slot != EquipmentSlot.OFF_HAND or item.weapon is None or item.slot != ItemSlot.ONE_HAND:
+        return None
+    return dual_wield_problem(context, ruleset)
+
+
+def _dual_wield_note(
+    gear: Mapping[EquipmentSlot, Item], profile: BuildProfile, ruleset: Ruleset
+) -> str | None:
+    """A profile that values hit for two weapons, worn with one, counts hit it should not."""
+    kinds = {
+        ruleset.caps[reference.ruleset_cap].kind
+        for reference in (
+            *(cap.ends_at for cap in profile.soft_caps if cap.ends_at is not None),
+            *(cap.cap for cap in profile.hard_caps),
+        )
+        if reference.ruleset_cap is not None
+    }
+    off_hand = gear.get(EquipmentSlot.OFF_HAND)
+    if "dual_wield_miss" not in kinds or (off_hand is not None and off_hand.weapon is not None):
+        return None
+    return (
+        f"The {profile.label} profile values hit for two weapons: with one weapon, hit past "
+        "the melee hit cap removes no misses, but the profile still counts it in part."
+    )
+
+
+def _assumptions(
+    profile: BuildProfile, ruleset: Ruleset, context: CharacterContext
+) -> tuple[str, ...]:
+    curves = cap_curves(profile, ruleset, context)
+    lines = [
+        f"{stat_label(stat, ruleset)} cap: {info.derivation}." for stat, info in curves.items()
+    ]
+    if uses_weapon_skill(profile, ruleset):
+        lines.append(_V1_WEAPON_SKILL)
+    return tuple(
+        dict.fromkeys(
+            [*lines, *profile.assumptions, *profile.proc_assumptions, *profile.set_bonus_rules]
+        )
+    )
+
+
+def _weakest(
+    slots: Sequence[SlotValue],
     evaluation: GearEvaluation,
-    context: CharacterContext,
     profile: BuildProfile,
     ruleset: Ruleset,
-) -> float:
-    """What the character loses without ``item``: the gear's value less the gear's without it."""
-    own = item_totals(item, evaluation.context, profile, ruleset)
-    if slot in _SETS_WEAPON_TYPE or _SKILL_STATS.intersection(own):
-        # Without it the weapon skill changes, and the hit caps with it: score both sets.
-        rest = evaluate_gear(_without(gear, slot), context, profile, ruleset)
-        return evaluation.score - rest.score
-    # The caps stay where they are, so the difference is the item on top of the rest.
-    rest_totals = combine(evaluation.totals, own, sign=-1.0)
-    return score_item(item, with_totals(evaluation.context, rest_totals), profile, ruleset).score
-
-
-def _weakest(slots: Sequence[SlotValue], evaluation: GearEvaluation) -> tuple[WeakSlot, ...]:
+) -> tuple[WeakSlot, ...]:
     found: list[WeakSlot] = []
+    skill_valued = any(profile.weight_of(stat) for stat in _SKILL_STATS)
     for value in slots:
         if not value.eligible or value.score > TIE_ABSOLUTE:
             continue
-        components = evaluation.results[value.slot].components
-        if any(component.kind == ComponentKind.PROC for component in components):
+        result = evaluation.results[value.slot]
+        own = {c.stat for c in result.components if c.amount and c.stat is not None}
+        if any(component.kind == ComponentKind.PROC for component in result.components):
             reason = (
                 "adds nothing the calculator scores: its proc or on-use effect is not valued "
                 "in version 1"
             )
+        elif own & _SKILL_STATS and not skill_valued and uses_weapon_skill(profile, ruleset):
+            reason = "adds nothing the calculator scores: weapon skill is not valued in version 1"
         else:
             reason = "adds nothing under this profile"
         found.append(WeakSlot(slot=value.slot, item_name=value.item_name, reason=reason))
@@ -351,21 +407,28 @@ def analyse_gear(
     check_gear(gear)
     evaluation = evaluate_gear(gear, context, profile, ruleset)
     unit = unit_abbreviation(profile.score_unit)
-    slots = tuple(
-        SlotValue(
-            slot=slot,
-            item_id=item.id,
-            item_name=item.name,
-            item_level=item.item_level,
-            score=_slot_worth(slot, item, gear, evaluation, context, profile, ruleset),
-            eligible=evaluation.results[slot].eligible,
-            reasons=evaluation.results[slot].ineligibility,
+    values = []
+    for slot in EquipmentSlot:
+        item = gear.get(slot)
+        if item is None:
+            continue
+        result = evaluation.results[slot]
+        problem = _off_hand_problem(slot, item, evaluation.context, ruleset)
+        reasons = (*result.ineligibility, *([problem] if problem else []))
+        values.append(
+            SlotValue(
+                slot=slot,
+                item_id=item.id,
+                item_name=item.name,
+                item_level=item.item_level,
+                score=_slot_worth(item, evaluation, profile, ruleset),
+                eligible=result.eligible and problem is None,
+                reasons=reasons,
+            )
         )
-        for slot in EquipmentSlot
-        if (item := gear.get(slot)) is not None
-    )
+    slots = tuple(values)
     empty = _empty(gear)
-    caps = cap_status(evaluation, profile, ruleset)
+    caps = cap_status(evaluation.totals, evaluation.context, profile, ruleset)
     sets = set_pieces([gear[slot] for slot in EquipmentSlot if slot in gear])
     notes = []
     if empty:
@@ -376,6 +439,9 @@ def analyse_gear(
     if sets:
         worn = ", ".join(f"{pieces.label} ({len(pieces.items)} pieces)" for pieces in sets)
         notes.append(f"Set bonuses are not scored in version 1: {worn}.")
+    dual_wield = _dual_wield_note(gear, profile, ruleset) if gear else None
+    if dual_wield:
+        notes.append(dual_wield)
     not_scored = tuple(
         dict.fromkeys(
             f"{result.item_name}: {component.label}"
@@ -400,9 +466,10 @@ def analyse_gear(
         under_served=tuple(status.message for status in caps if status.state == "short"),
         not_valued=_not_valued(evaluation.totals, profile, ruleset),
         not_scored=not_scored,
-        weakest=_weakest(slots, evaluation),
+        weakest=_weakest(slots, evaluation, profile, ruleset),
         sets=sets,
         notes=tuple(notes),
+        assumptions=_assumptions(profile, ruleset, evaluation.context),
         fingerprint=content_hash(
             {
                 "gear": {slot.value: item.version for slot, item in sorted(gear.items())},
@@ -459,11 +526,11 @@ def _replacement_notes(
         old = before.get((status.stat, status.label))
         if old is not None and abs(old.target - status.target) > _EPSILON:
             notes.append(
-                f"With {candidate.name} the {in_sentence(status.label)} is "
+                f"With {candidate.name} your weapon skill changes, so the "
+                f"{in_sentence(status.label)} would be "
                 f"{amount_text(status.stat, status.target, ruleset)} instead of "
-                f"{amount_text(status.stat, old.target, ruleset)}: weapon skill moves it. "
-                "Version 1 does not value weapon skill itself, only this change in what hit "
-                "is worth."
+                f"{amount_text(status.stat, old.target, ruleset)}. Version 1 does not value "
+                "weapon skill: the change is measured against your current caps."
             )
     return notes
 
@@ -483,22 +550,35 @@ def replacement(
     changed[slot] = candidate
     check_gear(changed)
     before = evaluate_gear(gear, context, profile, ruleset)
-    after = evaluate_gear(changed, context, profile, ruleset)
-    caps_before = cap_status(before, profile, ruleset)
-    caps_after = cap_status(after, profile, ruleset)
+    after = evaluate_gear(changed, context, profile, ruleset, caps_from=gear)
+    caps_before = cap_status(before.totals, before.context, profile, ruleset)
+    # Where the caps would really stand, for the player to see; not what the change is valued at.
+    own = gear_context(context, changed)
+    own_totals = gear_totals(changed.values(), own, profile, ruleset)
+    caps_after = cap_status(own_totals, with_totals(own, own_totals), profile, ruleset)
     lines, _, _ = explain_components(
         f"With {candidate.name}", after.components, "Current gear", before.components
     )
     notes = _replacement_notes(gear, slot, candidate, removed, caps_before, caps_after, ruleset)
     result = after.results[slot]
-    if not result.eligible:
-        notes.append(f"{candidate.name} is not usable: {'; '.join(result.ineligibility)}.")
+    problem = _off_hand_problem(slot, candidate, before.context, ruleset)
+    reasons = (*result.ineligibility, *([problem] if problem else []))
+    if reasons:
+        notes.append(f"{candidate.name} is not usable: {'; '.join(reasons)}.")
+    dual_wield = _dual_wield_note(changed, profile, ruleset)
+    if dual_wield and not _dual_wield_note(gear, profile, ruleset):
+        notes.append(dual_wield)
+    if is_tie(after.score, before.score):
+        outcome = "tie"
+    else:
+        outcome = "better" if after.score > before.score else "worse"
     return ReplacementResult(
         slot=slot,
         candidate_id=candidate.id,
         candidate_name=candidate.name,
         removed=tuple(gear[other].name for other in removed),
         delta=after.score - before.score,
+        outcome=outcome,
         unit_abbreviation=unit_abbreviation(profile.score_unit),
         score_before=before.score,
         score_after=after.score,
@@ -507,7 +587,7 @@ def replacement(
         caps_before=caps_before,
         caps_after=caps_after,
         lines=lines,
-        eligible=result.eligible,
-        reasons=result.ineligibility,
+        eligible=not reasons,
+        reasons=reasons,
         notes=tuple(notes),
     )

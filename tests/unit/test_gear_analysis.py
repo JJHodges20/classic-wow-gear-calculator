@@ -95,8 +95,14 @@ def analyse(gear: dict[EquipmentSlot, Item], profile: Any = FURY, **changes: Any
     return analyse_gear(gear, context(profile, **changes), profile, RULESET)
 
 
-def value_of(gear: dict[EquipmentSlot, Item], profile: Any = FURY, **changes: Any) -> float:
-    return evaluate_gear(gear, context(profile, **changes), profile, RULESET).score
+def value_of(
+    gear: dict[EquipmentSlot, Item],
+    profile: Any = FURY,
+    caps_from: dict[EquipmentSlot, Item] | None = None,
+    **changes: Any,
+) -> float:
+    ctx = context(profile, **changes)
+    return evaluate_gear(gear, ctx, profile, RULESET, caps_from=caps_from).score
 
 
 HELM = piece("Helm", ItemSlot.HEAD, stats={"strength": 10, "hit": 3})
@@ -123,6 +129,7 @@ class TestTheWholeGear:
         assert (hit.amount, hit.effective_amount) == (pytest.approx(7.0), pytest.approx(6.0))
 
     def test_a_piece_is_worth_what_the_gear_loses_without_it(self) -> None:
+        # Measured against the caps of the gear as worn, weapons and weapon skill included.
         gear = {
             S.HEAD: HELM,
             S.FINGER_1: RING,
@@ -134,8 +141,25 @@ class TestTheWholeGear:
         whole = value_of(gear, race=Race.ORC)
         for slot_value in analysis.slots:
             rest = {slot: item for slot, item in gear.items() if slot != slot_value.slot}
-            expected = whole - value_of(rest, race=Race.ORC)
+            expected = whole - value_of(rest, caps_from=gear, race=Race.ORC)
             assert slot_value.score == pytest.approx(expected), slot_value.item_name
+
+    def test_weapon_skill_is_worth_nothing_not_a_loss_of_hit(self) -> None:
+        # The gloves lower the cap from 9% to 6%; version 1 does not value that, so they are
+        # worth nothing - not the hit they would make surplus.
+        gloves = piece("Skill Gloves", ItemSlot.HANDS, stats={"sword_skill": 5})
+        gear = {
+            S.MAIN_HAND: weapon("Blade"),
+            S.HANDS: gloves,
+            S.HEAD: piece("Hit Helm", ItemSlot.HEAD, stats={"hit": 8}),
+        }
+        analysis = analyse(gear, race=Race.ORC)
+        worth = {value.item_name: value.score for value in analysis.slots}
+        assert worth["Skill Gloves"] == pytest.approx(0.0)
+        assert analysis.caps[0].target == pytest.approx(6.0)  # the caps are the worn gear's
+        reasons = {weak.item_name: weak.reason for weak in analysis.weakest}
+        assert "weapon skill is not valued in version 1" in reasons["Skill Gloves"]
+        assert any("Weapon skill is not valued in version 1" in a for a in analysis.assumptions)
 
     def test_hit_past_the_cap_makes_a_hit_ring_worth_less(self) -> None:
         # With the helm's 3% the ring's 4% is fully valued: 40. With 9% from elsewhere it
@@ -221,7 +245,8 @@ class TestCaps:
 
     def test_cap_status_reads_the_evaluated_gear(self) -> None:
         evaluation = evaluate_gear({S.FINGER_1: RING}, context(), FURY, RULESET)
-        assert [status.total for status in cap_status(evaluation, FURY, RULESET)] == [4.0]
+        statuses = cap_status(evaluation.totals, evaluation.context, FURY, RULESET)
+        assert [status.total for status in statuses] == [4.0]
 
 
 class TestWhatTheGearLacksAndWastes:
@@ -275,6 +300,59 @@ class TestWhatTheGearLacksAndWastes:
         analysis = analyse({S.CHEST: robe})
         assert not analysis.slots[0].eligible
         assert any(note.startswith("Robe is not usable") for note in analysis.notes)
+
+
+class TestDualWield:
+    def test_a_class_that_cannot_dual_wield_cannot_use_an_off_hand_weapon(self) -> None:
+        ret = load_profile(ROOT / "configs/profiles/paladin/paladin_dps_ret.yaml", RULESETS)
+        gear = {S.MAIN_HAND: weapon("Blade"), S.OFF_HAND: weapon("Second Blade")}
+        ctx = context(ret, class_name=ClassName.PALADIN)
+        analysis = analyse_gear(gear, ctx, ret, RULESET)
+        off_hand = next(value for value in analysis.slots if value.slot == S.OFF_HAND)
+        assert not off_hand.eligible
+        assert off_hand.reasons == ("Paladins cannot dual wield",)
+        tried = replacement(gear, S.OFF_HAND, weapon("Third Blade"), ctx, ret, RULESET)
+        assert not tried.eligible and "Paladins cannot dual wield" in tried.reasons
+
+    def test_a_warrior_dual_wields_from_level_20(self) -> None:
+        gear = {S.MAIN_HAND: weapon("Blade"), S.OFF_HAND: weapon("Second Blade")}
+        young = analyse(gear, level=15)
+        assert next(v for v in young.slots if v.slot == S.OFF_HAND).reasons == (
+            "Warriors dual wield from level 20",
+        )
+        assert all(value.eligible for value in analyse(gear).slots)
+
+    def test_a_two_weapon_profile_with_one_weapon_says_so(self) -> None:
+        greatsword = weapon("Greatsword", ItemSlot.TWO_HAND, WeaponType.TWO_HANDED_SWORD)
+        alone = analyse({S.MAIN_HAND: greatsword})
+        assert any("values hit for two weapons" in note for note in alone.notes)
+        pair = analyse({S.MAIN_HAND: weapon("Blade"), S.OFF_HAND: weapon("Second Blade")})
+        assert not any("values hit for two weapons" in note for note in pair.notes)
+        tried = replacement(
+            {S.MAIN_HAND: weapon("Blade"), S.OFF_HAND: weapon("Second Blade")},
+            S.MAIN_HAND,
+            greatsword,
+            context(),
+            FURY,
+            RULESET,
+        )
+        assert any("values hit for two weapons" in note for note in tried.notes)
+
+
+class TestOutcomeAndAssumptions:
+    def test_the_outcome_uses_the_comparison_tie_margin(self) -> None:
+        gear = {S.HEAD: piece("Big Helm", ItemSlot.HEAD, stats={"strength": 500})}
+        nudge = piece("Big Helm Plus", ItemSlot.HEAD, stats={"strength": 502})
+        result = replacement(gear, S.HEAD, nudge, context(), FURY, RULESET)
+        assert result.delta == pytest.approx(4.0)  # 0.4% of 1000: within the 0.5% tie margin
+        assert result.outcome == "tie"
+        worse = replacement(gear, S.HEAD, HELM, context(), FURY, RULESET)
+        assert worse.outcome == "worse"
+
+    def test_the_analysis_carries_its_assumptions(self) -> None:
+        assumptions = analyse({S.HEAD: HELM}).assumptions
+        assert any(line.startswith("Hit cap: target level 63") for line in assumptions)
+        assert "Fixture profile for engine tests." in assumptions
 
 
 class TestSets:
@@ -363,15 +441,29 @@ class TestReplacement:
         assert result.removed == ("Greatsword",)
         assert "the main hand is left empty" in result.notes[0]
 
-    def test_a_weapon_of_another_type_moves_the_cap_and_says_so(self) -> None:
+    def test_a_weapon_of_another_type_is_valued_at_the_current_cap(self) -> None:
+        # A Human loses 5 sword skill with an axe: the cap would move from 6% to 9%. That is
+        # shown, not valued: the identical axe is worth exactly what the sword is.
         gear = {S.MAIN_HAND: weapon("Blade"), S.FINGER_1: piece("Ring", stats={"hit": 6})}
         axe = weapon("Axe", ItemSlot.MAIN_HAND, WeaponType.AXE)
         result = replacement(gear, S.MAIN_HAND, axe, context(race=Race.HUMAN), FURY, RULESET)
         assert (result.caps_before[0].target, result.caps_after[0].target) == (6.0, 9.0)
-        assert any("is 9% instead of 6%" in note for note in result.notes)
-        # 6% hit was all valued at the 6% cap; at the axe's 9% cap the first 1% is suppressed.
-        hit = next(line for line in result.lines if line.stat == Stat.HIT)
-        assert hit.delta == pytest.approx(-10.0)
+        assert any("would be 9% instead of 6%" in note for note in result.notes)
+        assert result.delta == pytest.approx(0.0)
+        assert result.outcome == "tie"
+
+    def test_dropping_weapon_skill_for_a_stat_counts_only_the_stat(self) -> None:
+        gloves = piece("Skill Gloves", ItemSlot.HANDS, stats={"sword_skill": 5})
+        plain = piece("Plain Gloves", ItemSlot.HANDS, stats={"strength": 5})
+        gear = {
+            S.MAIN_HAND: weapon("Blade"),
+            S.HANDS: gloves,
+            S.HEAD: piece("Hit Helm", ItemSlot.HEAD, stats={"hit": 8}),
+        }
+        result = replacement(gear, S.HANDS, plain, context(race=Race.ORC), FURY, RULESET)
+        assert result.delta == pytest.approx(10.0)  # 5 Strength; the lost skill is not valued
+        assert result.outcome == "better"
+        assert result.caps_after[0].target == pytest.approx(9.0)
 
     def test_an_empty_slot_takes_nothing_off(self) -> None:
         result = replacement({}, S.FINGER_1, RING, context(), FURY, RULESET)

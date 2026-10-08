@@ -28,10 +28,7 @@ def read_item_file(path: Path) -> list[dict[str, Any]]:
 
 def read_item_text(text: str, suffix: str) -> list[dict[str, Any]]:
     if suffix == ".json":
-        try:
-            data = json.loads(text)
-        except ValueError as error:
-            raise DataValidationError(f"the file is not valid JSON: {error}") from error
+        data = _json(text)
         if isinstance(data, dict):
             data = data.get("items")
         if not isinstance(data, list) or not all(isinstance(entry, dict) for entry in data):
@@ -43,14 +40,24 @@ def read_item_text(text: str, suffix: str) -> list[dict[str, Any]]:
 
 
 def _csv_rows(text: str) -> list[dict[str, Any]]:
-    reader = csv.DictReader(io.StringIO(text))
-    if not reader.fieldnames:
-        raise DataValidationError("the CSV file has no header row")
-    return [
-        {key.strip().lower(): (value or "").strip() for key, value in row.items() if key}
-        for row in reader
-        if any((value or "").strip() for value in row.values())
-    ]
+    try:
+        reader = csv.DictReader(io.StringIO(text))
+        if not reader.fieldnames:
+            raise DataValidationError("the CSV file has no header row")
+        return [
+            {key.strip().lower(): (value or "").strip() for key, value in row.items() if key}
+            for row in reader
+            if any((value or "").strip() for value in row.values())
+        ]
+    except csv.Error as error:
+        raise DataValidationError(f"the CSV file cannot be read: {error}") from error
+
+
+def _json(text: str) -> Any:
+    try:
+        return json.loads(text)
+    except (ValueError, RecursionError) as error:
+        raise DataValidationError(f"the file is not valid JSON: {error}") from error
 
 
 def read_gear_text(text: str, suffix: str) -> dict[str, Any] | list[dict[str, Any]]:
@@ -59,10 +66,7 @@ def read_gear_text(text: str, suffix: str) -> dict[str, Any] | list[dict[str, An
         raise DataValidationError(f"the file is larger than {MAX_IMPORT_BYTES // 1_000_000} MB")
     text = text.removeprefix("\ufeff")
     if suffix == ".json":
-        try:
-            data = json.loads(text)
-        except ValueError as error:
-            raise DataValidationError(f"the file is not valid JSON: {error}") from error
+        data = _json(text)
         if not isinstance(data, dict):
             raise DataValidationError("a JSON gear import is one saved character (an object)")
         return data

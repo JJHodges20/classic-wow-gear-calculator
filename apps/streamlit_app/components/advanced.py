@@ -10,10 +10,11 @@ from html import escape
 
 import streamlit as st
 
-from components.items import stat_label
+from components.html import md
 from state import session
 from wow_gear.models.comparison import ComparisonResult
 from wow_gear.models.enums import WEAPON_SKILL_STATS, Stat, WeaponType
+from wow_gear.models.formatting import stat_label
 from wow_gear.models.item import Item
 from wow_gear.models.labels import weapon_label
 from wow_gear.models.profile import BuildProfile
@@ -27,11 +28,11 @@ def _list(lines: list[str]) -> str:
     return "<ul>" + "".join(f"<li>{escape(line)}</li>" for line in lines) + "</ul>"
 
 
-def _assumptions(profile: BuildProfile, ruleset: Ruleset, result: ComparisonResult | None) -> None:
+def assumptions(profile: BuildProfile, ruleset: Ruleset, result: ComparisonResult | None) -> None:
     st.markdown(
         f"**{profile.label}** · {profile.id} {profile.version} · {profile.validation_status}"
     )
-    st.caption(profile.summary)
+    st.caption(md(profile.summary))
     rows = "".join(
         f"<tr><td>{escape(stat_label(weight.stat, ruleset))}</td>"
         f'<td class="wg-num">{weight.weight:g}</td><td>{escape(weight.basis.value)}</td>'
@@ -171,7 +172,7 @@ def _raw_math(result: ComparisonResult | None) -> None:
         st.caption("The full breakdown shows here once an item is scored.")
         return
     for score in result.results:
-        st.markdown(f"**{score.item_name}** - {score.score:.2f} {result.unit_abbreviation}")
+        st.markdown(f"**{md(score.item_name)}** - {score.score:.2f} {result.unit_abbreviation}")
         rows = [
             {
                 "Component": component.label,
@@ -214,9 +215,9 @@ def render(
     weapon_skill: bool,
     chosen: dict[str, Item | None],
 ) -> None:
-    assumptions, caps, current, raw = st.tabs(TABS)
-    with assumptions:
-        _assumptions(profile, ruleset, result)
+    assumptions_tab, caps, current, raw = st.tabs(TABS)
+    with assumptions_tab:
+        assumptions(profile, ruleset, result)
     with caps:
         _caps(result)
     with current:

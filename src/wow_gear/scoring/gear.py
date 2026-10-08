@@ -6,9 +6,12 @@ a weapon of that type - without weapon damage, which belongs to each weapon, not
 
 A whole set is scored by the engine one item at a time, each on top of the items before it.
 A stat's counted amount is the area under its value curve between two totals, so the parts
-add up to the same value in any order: the gear's value depends only on what it adds up to.
-That holds while every item is measured against the same caps, so the gear's weapon types
-and its weapon skill - which move the hit caps - are those of the whole set throughout.
+add up to the same value in any order: the gear's value depends only on what it adds up to
+(an exclusive group, which no shipped profile uses, is the exception: it applies per item).
+That holds while every item is measured against the same caps. The caps are those of the
+gear as worn - its weapon types and its weapon skill - and stay put when another set is
+valued against it: version 1 does not value weapon skill, so a change that moves the hit cap
+is measured against the current cap rather than counted as a loss or gain of hit.
 """
 
 from __future__ import annotations
@@ -78,13 +81,21 @@ def gear_context(context: CharacterContext, gear: Mapping[EquipmentSlot, Item]) 
     return CharacterContext.model_validate(data)
 
 
+def _unskilled(totals: Mapping[Stat, float]) -> dict[Stat, float]:
+    """``totals`` without weapon skill, which the caps take from the gear as worn."""
+    return {stat: value for stat, value in totals.items() if stat not in _SKILL_STATS}
+
+
 @dataclass(frozen=True)
 class GearEvaluation:
     """A whole set of gear scored as the character wears it."""
 
     context: CharacterContext
-    """The character wearing the gear: its weapon types, its totals as current gear."""
+    """The character wearing the gear: its weapon types, its totals as current gear (with
+    the weapon skill of the gear the caps come from)."""
     totals: dict[Stat, float]
+    skills: dict[Stat, float]
+    """The weapon skill the caps are measured with."""
     results: dict[EquipmentSlot, ScoreResult]
     """Each item scored on top of the items before it in slot order - the parts of
     ``score``, not what each item is worth on its own."""
@@ -122,23 +133,34 @@ def evaluate_gear(
     context: CharacterContext,
     profile: BuildProfile,
     ruleset: Ruleset,
+    *,
+    caps_from: Mapping[EquipmentSlot, Item] | None = None,
 ) -> GearEvaluation:
-    """Score the whole of ``gear`` for the character of ``context`` under ``profile``."""
-    worn = gear_context(context, gear)
+    """Score the whole of ``gear`` for the character of ``context`` under ``profile``.
+
+    The caps are those of ``caps_from`` - the gear as worn - when another set is valued
+    against it; by default those of ``gear`` itself.
+    """
+    worn_gear = gear if caps_from is None else caps_from
+    worn = gear_context(context, worn_gear)
     totals = gear_totals(gear.values(), worn, profile, ruleset)
-    skills = {stat: value for stat, value in totals.items() if stat in _SKILL_STATS}
+    worn_totals = (
+        totals if caps_from is None else gear_totals(worn_gear.values(), worn, profile, ruleset)
+    )
+    skills = {stat: value for stat, value in worn_totals.items() if stat in _SKILL_STATS}
     running: dict[Stat, float] = {}
     results: dict[EquipmentSlot, ScoreResult] = {}
     for slot in EquipmentSlot:
         item = gear.get(slot)
         if item is None:
             continue
-        before = with_totals(worn, {**running, **skills})
+        before = with_totals(worn, {**_unskilled(running), **skills})
         results[slot] = score_item(item, before, profile, ruleset)
         running = combine(running, item_totals(item, worn, profile, ruleset))
     return GearEvaluation(
-        context=with_totals(worn, totals),
+        context=with_totals(worn, {**_unskilled(totals), **skills}),
         totals=totals,
+        skills=skills,
         results=results,
         score=sum(result.score for result in results.values()),
         components=add_components(results.values()),

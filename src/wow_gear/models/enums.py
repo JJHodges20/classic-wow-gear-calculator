@@ -53,6 +53,15 @@ class ContentMode(StrEnum):
     PVP = "pvp"
 
 
+class ShapeshiftForm(StrEnum):
+    """A druid form that an item's bonus can be limited to ("in Cat, Bear and Dire Bear
+    forms only") and that a profile fights in."""
+
+    CAT = "cat"
+    BEAR = "bear"
+    DIRE_BEAR = "dire_bear"
+
+
 class CreatureType(StrEnum):
     BEAST = "beast"
     DEMON = "demon"
