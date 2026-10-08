@@ -10,7 +10,7 @@ from __future__ import annotations
 import streamlit as st
 from pydantic import ValidationError
 
-from components import items
+from components import items, layout
 from components.html import eyebrow, md
 from state import session
 from state.session import Slot
@@ -45,7 +45,7 @@ PRIMARY_GROUPS = 2
 
 def render(slot: Slot, workspace: Workspace, ruleset: Ruleset, other: Item | None) -> None:
     chosen = session.item(slot)
-    with st.container(border=True):
+    with layout.card(f"item-{slot}"):
         top = st.container(
             horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"
         )

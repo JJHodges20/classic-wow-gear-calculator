@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from html import escape
 
+from components import layout
 from components.html import Tone, chip, eyebrow, signed, tone_of
 from components.items import type_label
 from wow_gear.models.enums import EquipmentSlot, Stat
@@ -112,16 +113,6 @@ def totals_table(totals: dict[Stat, float], ruleset: Ruleset) -> str:
     )
 
 
-def tile(label: str, value: str, unit: str = "", tone: str = "") -> str:
-    value_css = f" wg-delta-{tone}" if tone in ("good", "bad") else ""
-    unit_html = f'<span class="wg-tile-unit">{escape(unit)}</span>' if unit else ""
-    return (
-        f'<div class="wg-tile"><div class="wg-tile-label" title="{escape(label)}">'
-        f"{escape(label)}</div>"
-        f'<div class="wg-tile-value{value_css}">{escape(value)}{unit_html}</div></div>'
-    )
-
-
 def replacement_html(result: ReplacementResult) -> str:
     """The verdict on a replacement for the whole character, before the why."""
     unit = result.unit_abbreviation
@@ -135,12 +126,12 @@ def replacement_html(result: ReplacementResult) -> str:
     else:
         badge = chip("Effectively the same", "muted")
     removed = " and ".join(result.removed) if result.removed else "nothing (the slot is empty)"
-    tiles = (
-        '<div class="wg-tiles">'
-        + tile("Change", signed(result.delta), unit, tone_of(result.delta))
-        + tile("Gear value now", f"{result.score_before:.1f}", unit)
-        + tile("With it", f"{result.score_after:.1f}", unit)
-        + "</div>"
+    tiles = layout.tiles_html(
+        [
+            layout.Tile("Change", signed(result.delta), unit, tone=tone_of(result.delta)),
+            layout.Tile("Gear value now", f"{result.score_before:.1f}", unit),
+            layout.Tile("With it", f"{result.score_after:.1f}", unit),
+        ]
     )
     return (
         f'<div class="wg-verdict{"" if better else " wg-neutral"}">'

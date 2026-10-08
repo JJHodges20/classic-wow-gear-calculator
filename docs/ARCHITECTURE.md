@@ -189,9 +189,11 @@ apps/streamlit_app/
   pages/          one small script per page, as st.navigation runs them
   views/          what each page draws, as functions: calculator, compare, gear_set,
                   profiles, item_database, data_health, and the setup they share
-  components/     the pieces: theme, escaped HTML, item cards, the context bar, the item
-                  picker and manual entry, the recommendation, the advanced tabs, the
-                  gear set's slots, caps and value, and the export menu
+  components/     the pieces: theme (colour tokens and CSS), layout (page and section
+                  headers, cards, tiles, notes, empty states, responsive columns), escaped
+                  HTML, item cards, the context bar, the item picker and manual entry, the
+                  recommendation, the advanced tabs, the gear set's slots, caps and value,
+                  and the export menu
   state/          session keys and helpers; the workspace, cached once per project
 ```
 

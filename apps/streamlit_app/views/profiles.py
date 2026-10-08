@@ -6,7 +6,9 @@ from __future__ import annotations
 from html import escape
 
 import streamlit as st
+from streamlit.delta_generator import DeltaGenerator
 
+from components import layout
 from components.html import chip, eyebrow, md
 from state import session
 from views.common import open_workspace
@@ -96,7 +98,7 @@ def _inspect(service: ProfileService, profile: BuildProfile) -> None:
         + (f", phase {profile.target_phase}" if profile.target_phase else "")
         + f". Scores are in {profile.score_unit}."
     )
-    st.subheader(md(profile.label))
+    st.html(f'<h2 class="wg-card-title">{escape(profile.label)}</h2>')
     st.html(
         '<div class="wg-chips">'
         + "".join(badges)
@@ -105,7 +107,7 @@ def _inspect(service: ProfileService, profile: BuildProfile) -> None:
     )
 
     st.html(eyebrow("Stat weights") + _weights(profile, ruleset))
-    left, right = st.columns(2, gap="large")
+    left, right = layout.split([1, 1], key="profile")
     with left:
         conversions = _conversions(profile, ruleset)
         st.html(
@@ -236,17 +238,18 @@ def _customize(service: ProfileService, profile: BuildProfile) -> None:
                 st.rerun()
 
 
-def _manage(service: ProfileService, profile: BuildProfile) -> None:
-    columns = st.columns([1, 1, 2], vertical_alignment="center")
-    if columns[0].button("Use in the calculator", icon=":material/calculate:"):
+def _manage(
+    service: ProfileService, profile: BuildProfile, use: DeltaGenerator, delete: DeltaGenerator
+) -> None:
+    if use.button("Use in the calculator", icon=":material/calculate:", width="stretch"):
         st.session_state[session.CLASS] = profile.class_name
         st.session_state[session.ROLE] = profile.role
         st.session_state[session.PROFILE] = profile.id
         st.switch_page(CALCULATOR)
     if service.is_custom(profile.id):
         versions = service.history(profile.id)
-        columns[2].caption("Saved versions: " + ", ".join(versions))
-        with columns[1].popover("Delete", icon=":material/delete:"):
+        st.caption("Saved versions: " + ", ".join(versions))
+        with delete.popover("Delete", icon=":material/delete:", width="stretch"):
             st.write(md(f"Delete {profile.label}? Its saved versions stay in your data folder."))
             if st.button("Delete it", type="primary", key=f"profile_delete_{profile.id}"):
                 service.delete_custom(profile.id)
@@ -256,6 +259,11 @@ def _manage(service: ProfileService, profile: BuildProfile) -> None:
 
 
 def render() -> None:
+    layout.page_header(
+        "Build profiles",
+        "The weights, caps and assumptions behind every score - and your own versions of them.",
+        "profiles",
+    )
     ws = open_workspace()
     if ws is None:
         return
@@ -272,8 +280,8 @@ def render() -> None:
     first = str(session.get(session.PROFILE) or next(iter(profiles)))
     session.default(KEY, first if first in profiles else next(iter(profiles)))
     session.keep_valid(KEY, list(profiles), next(iter(profiles)))
-    st.write("")
-    selected = st.selectbox(
+    top = st.columns([3.2, 1.2, 0.8], vertical_alignment="bottom")
+    selected = top[0].selectbox(
         "Build profile",
         list(profiles),
         format_func=lambda key: _option_label(service, profiles[key]),
@@ -282,7 +290,7 @@ def render() -> None:
     if selected is None:
         return
     profile = profiles[selected]
-    _manage(service, profile)
-    with st.container(border=True):
+    _manage(service, profile, top[1], top[2])
+    with layout.card("profile"):
         _inspect(service, profile)
     _customize(service, profile)

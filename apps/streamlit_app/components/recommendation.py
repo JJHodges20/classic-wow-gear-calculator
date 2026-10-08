@@ -11,6 +11,7 @@ from html import escape
 
 import streamlit as st
 
+from components import layout
 from components.html import chip, eyebrow, md, signed, tone_of
 from state.session import Slot
 from wow_gear.models.comparison import ComparisonResult, ExplanationLine
@@ -19,23 +20,14 @@ CAP_NOTE = "Cap-sensitive stats were scored without your current gear totals"
 
 
 def empty() -> None:
-    st.html(
-        '<div class="wg-empty"><b>Choose two items to compare.</b>'
-        "<ol><li>Pick your class, role and build profile above.</li>"
-        "<li>Search for item A and item B, or enter one by hand.</li>"
-        "<li>Enter your current gear totals under <i>Current stats</i> when a cap matters.</li>"
-        "</ol></div>"
-    )
-
-
-def _tile(label: str, value: str, unit: str, *, picked: bool, tone: str = "") -> str:
-    css = " wg-picked" if picked else ""
-    value_css = f" wg-delta-{tone}" if tone in ("good", "bad") else ""
-    return (
-        f'<div class="wg-tile{css}"><div class="wg-tile-label" title="{escape(label)}">'
-        f"{escape(label)}</div>"
-        f'<div class="wg-tile-value{value_css}">{escape(value)}'
-        f'<span class="wg-tile-unit">{escape(unit)}</span></div></div>'
+    layout.empty_state(
+        "Choose two items to compare.",
+        steps=[
+            "Pick your class, role and build profile above.",
+            "Search for item A and item B, or enter one by hand.",
+            "Enter your current gear totals under Current stats when a cap matters.",
+        ],
+        glyph="search",
     )
 
 
@@ -81,7 +73,7 @@ def _tiles(result: ComparisonResult, slots: dict[str, Slot]) -> str:
     unit = result.unit_abbreviation
     by_slot = sorted(result.results, key=lambda r: slots.get(r.item_id, "Z"))
     tiles = [
-        _tile(
+        layout.Tile(
             f"Item {slots.get(r.item_id, '?')} · {r.item_name}",
             f"{r.score:.1f}",
             unit,
@@ -93,15 +85,14 @@ def _tiles(result: ComparisonResult, slots: dict[str, Slot]) -> str:
         first = slots.get(result.first_id, "?")
         second = slots.get(result.second_id, "?")
         tiles.append(
-            _tile(
+            layout.Tile(
                 f"Difference, {first} over {second}",
                 signed(result.score_delta),
                 unit,
-                picked=False,
                 tone=tone_of(result.score_delta),
             )
         )
-    return '<div class="wg-tiles">' + "".join(tiles) + "</div>"
+    return layout.tiles_html(tiles)
 
 
 def line_html(line: ExplanationLine) -> str:
@@ -116,7 +107,7 @@ def line_html(line: ExplanationLine) -> str:
 
 def render(result: ComparisonResult, slots: dict[str, Slot]) -> None:
     names = {r.item_id: r.item_name for r in result.results}
-    with st.container(border=True):
+    with layout.card("recommendation"):
         st.html(eyebrow("Recommendation") + verdict(result, names) + _tiles(result, slots))
         confidence = result.confidence
         reasons = "; ".join(confidence.reasons)
@@ -141,6 +132,7 @@ def render(result: ComparisonResult, slots: dict[str, Slot]) -> None:
         elif result.first_id and result.second_id:
             st.html(eyebrow("Why") + '<div class="wg-small">Every component is equal.</div>')
 
+    quiet: list[str | tuple[str, layout.NoteKind]] = []
     for note in result.notes:
         if note.startswith(CAP_NOTE):
             st.warning(
@@ -149,10 +141,8 @@ def render(result: ComparisonResult, slots: dict[str, Slot]) -> None:
         elif "not usable" in note:
             st.error(md(note), icon=":material/block:")
         else:
-            st.info(md(note), icon=":material/info:")
-    details = []
+            quiet.append(note)
     if result.not_valued:
-        details.append("Not valued by this profile: " + ", ".join(result.not_valued) + ".")
-    details.extend(f"Not scored in version 1 - {effect}" for effect in result.not_scored)
-    if details:
-        st.html("".join(f'<div class="wg-small">{escape(text)}</div>' for text in details))
+        quiet.append("Not valued by this profile: " + ", ".join(result.not_valued) + ".")
+    quiet.extend(f"Not scored in version 1 - {effect}" for effect in result.not_scored)
+    layout.notes(quiet)

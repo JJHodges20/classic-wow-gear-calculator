@@ -37,12 +37,12 @@ def test_compare_ranks_several_items_and_shows_every_component(
     add(app, "goldminer", GOLDMINER, 2)
     assert app.text_input(key="search_cmp3").value == ""  # an empty picker for the next
     page = text(app)
-    assert "Items to compare (3 of up to 8)" in page
+    assert "Items to compare 3 of up to 8" in page
     assert "Recommended under this profile" in page and "Lionheart Helm" in page
     assert "Why Lionheart Helm over Mask of the Unforgiven" in page
     assert "Every component" in page and "Strength into attack power" in page
     app.button(key="compare_remove_0").click().run()
-    assert "Items to compare (2 of up to 8)" in text(app)
+    assert "Items to compare 2 of up to 8" in text(app)
 
 
 def test_profiles_page_shows_weights_caps_and_sources(open_app: Callable[[], AppTest]) -> None:
@@ -77,6 +77,11 @@ def test_item_database_filters_and_pages(open_app: Callable[[], AppTest]) -> Non
     assert "Page 1 of 1 · 3 items" in text(app)
     app.text_input(key="db_text").input("lionheart").run()
     assert "1 found" in text(app)
+    app.button(key="db_clear").click().run()
+    no_exceptions(app)
+    assert app.text_input(key="db_text").value == ""
+    assert app.selectbox(key="db_slot").value == "any"
+    assert "Page 1 of 1 · 17 items" in text(app)
 
 
 def test_data_health_reports_and_refreshes(open_app: Callable[[], AppTest]) -> None:

@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import streamlit as st
 
-from components import advanced, exports, item_input, recommendation
-from components.html import eyebrow, md
+from components import advanced, exports, item_input, layout, recommendation
+from components.html import md
 from state import session
 from state.session import Slot
 from views.common import setup
@@ -16,6 +16,12 @@ from wow_gear.services.errors import DataValidationError, NotFoundError
 
 
 def render() -> None:
+    layout.page_header(
+        "Calculator",
+        "Choose your build, add two items and see which one is better for it - by how much, "
+        "and why.",
+        "calculator",
+    )
     ready = setup()
     if ready is None:
         return
@@ -29,17 +35,16 @@ def render() -> None:
     if equipped != session.NEITHER:
         replacing = chosen.get("A" if equipped.endswith("A") else "B")
 
-    st.write("")
-    left, right = st.columns([1, 1.08], gap="large")
+    left, right = layout.split([1, 1.08], key="calculator")
     with left:
-        st.html(eyebrow("Items"))
+        layout.section("Items", "Search the item data, or enter an item by hand.")
         for slot in session.SLOTS:
             other = chosen["B" if slot == "A" else "A"]
             item_input.render(slot, ws, ruleset, other)
 
     result: ComparisonResult | None = None
     with right:
-        st.html(eyebrow("Result"))
+        layout.section("Result")
         picked = [item for item in chosen.values() if item is not None]
         if not picked or ready.context is None:
             recommendation.empty()
@@ -55,8 +60,9 @@ def render() -> None:
                 recommendation.render(result, slots)
                 exports.comparison_downloads(result, ready.context, "calc_export")
 
-    st.write("")
-    st.html(eyebrow("Advanced"))
+    layout.section(
+        "Details", "The assumptions, caps, current stats and raw math behind the result."
+    )
     advanced.render(
         profile,
         ruleset,

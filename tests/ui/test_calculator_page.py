@@ -121,7 +121,7 @@ def test_an_unusable_item_is_explained(app: AppTest) -> None:
     pick(app, "B", "lionheart", LIONHEART)
     errors = [error.value for error in app.error]
     assert any("Lionheart Helm is not usable: Mages cannot wear plate armor" in e for e in errors)
-    assert any("worn in different slots" in info.value for info in app.info)
+    assert "worn in different slots" in text(app)  # a note, not an alert
 
 
 def test_a_failing_provider_leaves_a_message_and_local_results(

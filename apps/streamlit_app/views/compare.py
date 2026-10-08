@@ -7,7 +7,7 @@ from html import escape
 
 import streamlit as st
 
-from components import advanced, exports, items, recommendation
+from components import advanced, exports, items, layout, recommendation
 from components.html import Tone, chip, eyebrow, md, signed, tone_of
 from components.item_input import picker
 from views.common import setup
@@ -91,6 +91,12 @@ def _matrix(result: ComparisonResult) -> str:
 
 
 def render() -> None:
+    layout.page_header(
+        "Compare",
+        "Rank up to eight items for one build, with every item's score broken down component "
+        "by component.",
+        "compare",
+    )
     ready = setup()
     if ready is None:
         return
@@ -98,25 +104,29 @@ def render() -> None:
     chosen = _chosen()
     result: ComparisonResult | None = None
 
-    st.write("")
-    left, right = st.columns([1, 1.5], gap="large")
+    left, right = layout.split([1, 1.5], key="compare")
     with left:
-        st.html(eyebrow(f"Items to compare ({len(chosen)} of up to {MAX_ITEMS})"))
-        for index, item in enumerate(chosen):
-            with st.container(border=True):
-                row = st.container(
-                    horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"
-                )
-                row.html(
-                    f'<div class="wg-item-name">{escape(item.name)}</div>'
-                    f'<div class="wg-item-meta">{escape(items.type_label(item))}</div>',
-                    width="content",
-                )
-                if row.button("Remove", key=f"compare_remove_{index}", icon=":material/close:"):
-                    st.session_state[KEY] = [i for i in chosen if i.id != item.id]
-                    st.rerun()
+        layout.section("Items to compare", aside=f"{len(chosen)} of up to {MAX_ITEMS}")
+        if chosen:
+            with layout.card("chosen"):
+                for index, item in enumerate(chosen):
+                    row_key = "wg-slot-first-cmp" if index == 0 else f"wg-slot-cmp-{index}"
+                    with st.container(key=row_key):
+                        info, action = st.columns([3.4, 1], vertical_alignment="center")
+                        info.html(
+                            f'<div class="wg-item-name">{escape(item.name)}</div>'
+                            f'<div class="wg-item-meta">{escape(items.type_label(item))}</div>'
+                        )
+                        if action.button(
+                            "Remove",
+                            key=f"compare_remove_{index}",
+                            type="tertiary",
+                            icon=":material/close:",
+                        ):
+                            st.session_state[KEY] = [i for i in chosen if i.id != item.id]
+                            st.rerun()
         if len(chosen) < MAX_ITEMS:
-            with st.container(border=True):
+            with layout.card("add"):
                 st.html(eyebrow("Add an item"))
                 # A new round of keys after each add leaves an empty picker for the next.
                 round_number = int(st.session_state.get(ROUND, 0))
@@ -128,17 +138,18 @@ def render() -> None:
                         st.session_state[KEY] = [*chosen, added]
                         st.session_state[ROUND] = round_number + 1
                         st.rerun()
-        if chosen and st.button("Clear the list", icon=":material/delete_sweep:"):
+        if chosen and st.button("Clear the list", icon=":material/delete_sweep:", type="tertiary"):
             st.session_state[KEY] = []
             st.rerun()
 
     with right:
-        st.html(eyebrow("Ranking"))
+        layout.section("Ranking")
         if not chosen or ready.context is None:
-            st.html(
-                '<div class="wg-empty"><b>Add items to rank them.</b> Every item is scored '
-                "from the same gear for the profile above; the two best are explained "
-                "component by component.</div>"
+            layout.empty_state(
+                "Add items to rank them.",
+                "Every item is scored from the same gear for the build above; the two best are "
+                "explained component by component.",
+                glyph="compare",
             )
         else:
             try:
@@ -147,7 +158,7 @@ def render() -> None:
                 st.error(md(f"These items cannot be compared: {error}"), icon=":material/error:")
             else:
                 names = {r.item_id: r.item_name for r in result.results}
-                with st.container(border=True):
+                with layout.card("ranking"):
                     st.html(recommendation.verdict(result, names) + _ranking(result))
                     st.html(
                         '<div class="wg-small">Recommended under this profile and these '
@@ -156,18 +167,21 @@ def render() -> None:
                         + "</div>"
                     )
                 if result.lines and result.first_id and result.second_id:
-                    st.html(
-                        eyebrow(f"Why {names[result.first_id]} over {names[result.second_id]}")
-                        + '<ul class="wg-why">'
-                        + "".join(recommendation.line_html(line) for line in result.lines)
-                        + "</ul>"
-                    )
-                st.html(eyebrow("Every component") + _matrix(result))
-                for note in result.notes:
-                    st.info(md(note), icon=":material/info:")
+                    with layout.card("why"):
+                        st.html(
+                            eyebrow(f"Why {names[result.first_id]} over {names[result.second_id]}")
+                            + '<ul class="wg-why">'
+                            + "".join(recommendation.line_html(line) for line in result.lines)
+                            + "</ul>"
+                        )
+                with layout.card("matrix"):
+                    st.html(eyebrow("Every component") + _matrix(result))
+                layout.notes(list(result.notes))
                 exports.comparison_downloads(result, ready.context, "compare_export")
 
-    st.write("")
+    layout.section(
+        "Details", "What the ranking rests on, and the gear totals caps are measured from."
+    )
     with st.expander("Assumptions", icon=":material/rule:"):
         advanced.assumptions(profile, ruleset, result)
     with st.expander("Current stats used for caps", icon=":material/tune:"):

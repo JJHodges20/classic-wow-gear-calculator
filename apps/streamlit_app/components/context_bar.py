@@ -11,6 +11,7 @@ from html import escape
 
 import streamlit as st
 
+from components import layout
 from components.html import chip
 from state import session
 from wow_gear.models.enums import ContentMode
@@ -47,7 +48,7 @@ def render(calc: CalculatorService, ruleset_id: str) -> Choice | None:
     session.default(session.CLASS, classes[0][0])
     session.keep_valid(session.CLASS, list(class_labels), classes[0][0])
 
-    with st.container(border=True):
+    with layout.card("context"):
         columns = st.columns([1.0, 1.0, 1.5, 1.0, 1.25, 0.7, 1.0], vertical_alignment="bottom")
         class_name = columns[0].selectbox(
             "Class",

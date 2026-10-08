@@ -9,8 +9,10 @@ from .conftest import no_exceptions, text
 
 def test_the_app_shell_renders(app: AppTest) -> None:
     no_exceptions(app)
-    assert app.title[0].value == "Classic Gear Calculator"
-    assert "An unofficial fan tool" in text(app)
+    page = text(app)
+    # The name is in the logo; each page has its own title and purpose.
+    assert "Calculator Choose your build, add two items" in page
+    assert "Classic Gear Calculator" in page and "An unofficial fan tool" in page
 
 
 def test_the_calculator_starts_empty_with_a_context(app: AppTest) -> None:

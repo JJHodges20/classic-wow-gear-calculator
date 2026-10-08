@@ -3,6 +3,50 @@
 One entry per milestone: what was built, what was decided, the assumptions made, and the
 evidence for the gate in `CLAUDE.md`. Newest first.
 
+## UI polish after version 1 (2026-10-07)
+
+**Built**
+
+- A design review of every page, then a restyle that keeps every feature, widget key and
+  service call. [Decision 0006](decisions/0006-app-design-system.md) has the revision:
+  - sans-serif type with a fixed scale;
+  - colour tokens for both themes;
+  - a 4-48px spacing scale;
+  - `components/layout.py` (page and section headers, cards, insets, tiles, notes, empty
+    states, responsive columns).
+- Every page has a header with its own title. The app's name moved to the top bar.
+- The Gear set slots sit in two panels of rows, not seventeen cards. Notes that explain a
+  result are a quiet list; alerts are kept for problems.
+- Item database:
+  - the filters sit in one panel with a "Clear filters" button;
+  - the table's columns are sized to their content;
+  - a short result list is as tall as its rows;
+  - a missing value reads "-".
+- Data health: the columns balance, and the phase chart labels its value axis.
+- Accessibility:
+  - a gold button's label stays at 4.5:1 or better in the dark theme;
+  - the top navigation shows a focus outline.
+- Responsive:
+  - page columns stack below 960px (the gear page's below 1280px);
+  - the top rows of choices wrap as a grid on tablets;
+  - tile numbers scale rather than being cut short;
+  - slot rows keep their button on a phone.
+
+**Found on the way**
+
+- Removing a widget's key in a callback resets its value but not what the browser shows. The
+  first "Clear filters" left the old text on screen: it now sets each filter's default.
+- Streamlit's HTML sanitizer drops inline SVG. The page icons travel as data-URI images,
+  coloured for the theme.
+
+**Gate**
+
+| Check | Result |
+| --- | --- |
+| Full suite | 987 pass; three app tests updated for moved text (the shell's title, a note that is no longer an alert, the compare count) and one extended for "Clear filters" |
+| Lint and types | `ruff check`, `ruff format --check`, `mypy` (strict, package and app) clean |
+| UI check | Chromium: all six pages in light and dark at 1440px and at 420px; the main pages at 1024px and 768px; no exception, page error or sideways overflow. Flows: search, select, clear filters and send an item to the calculator; rank two items; open and close a slot's editor; use a profile in the calculator. Keyboard focus checked on the calculator |
+
 ## Milestone 10 - Version 1 audit (2026-10-07)
 
 **Built**

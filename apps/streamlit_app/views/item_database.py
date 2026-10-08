@@ -7,7 +7,7 @@ from html import escape
 
 import streamlit as st
 
-from components import items
+from components import items, layout
 from components.html import eyebrow
 from state import session
 from views.common import open_workspace
@@ -28,8 +28,26 @@ KINDS: dict[str, str] = {
 }
 
 
+FILTER_DEFAULTS: dict[str, object] = {
+    "db_text": "",
+    "db_slot": ANY,
+    "db_kind": ANY,
+    "db_origin": ANY,
+    "db_phase": ANY,
+    "db_level": None,
+    "db_quality": ANY,
+}
+
+
+def _clear_filters() -> None:
+    """Every filter back to "any". The values are set rather than removed, so the widgets on
+    screen show them too."""
+    for key, value in FILTER_DEFAULTS.items():
+        st.session_state[key] = value
+
+
 def _filters() -> tuple[str, ItemFilters]:
-    top = st.columns([2.2, 1, 1, 1])
+    top = st.columns([2.2, 1, 1, 1], vertical_alignment="bottom")
     text = top[0].text_input("Name contains", key="db_text", placeholder="e.g. of Wrath")
     slot = top[1].selectbox(
         "Slot",
@@ -44,7 +62,7 @@ def _filters() -> tuple[str, ItemFilters]:
         format_func=lambda v: "All sources" if v == ANY else ORIGINS[v],
         key="db_origin",
     )
-    second = st.columns([1, 1, 1, 1.2])
+    second = st.columns([1.1, 1.1, 1, 1, 1], vertical_alignment="bottom")
     phase = second[0].selectbox(
         "Up to phase",
         [ANY, "1", "2", "3", "4", "5", "6"],
@@ -65,6 +83,14 @@ def _filters() -> tuple[str, ItemFilters]:
         [ANY, *ItemQuality],
         format_func=lambda v: "Any quality" if v == ANY else QUALITY_LABELS[ItemQuality(v)],
         key="db_quality",
+    )
+    second[4].button(
+        "Clear filters",
+        key="db_clear",
+        on_click=_clear_filters,
+        icon=":material/filter_alt_off:",
+        type="tertiary",
+        width="stretch",
     )
     kind_family, _, kind_value = (kind or ANY).partition(":")
     filters = ItemFilters(
@@ -98,7 +124,7 @@ def _row(hit: SearchHit) -> dict[str, object]:
 def _detail(hit: SearchHit, ruleset: Ruleset) -> None:
     item = hit.item
     provenance = item.provenance
-    with st.container(border=True):
+    with layout.card("detail"):
         st.html(eyebrow("Item") + items.card(item, ruleset))
         facts = [
             ("Id", item.id),
@@ -115,7 +141,8 @@ def _detail(hit: SearchHit, ruleset: Ruleset) -> None:
             ("Expires", f"{hit.expires_at:%Y-%m-%d %H:%M}" if hit.expires_at else "Never"),
         ]
         rows = "".join(
-            f"<tr><td>{escape(name)}</td><td>{escape(value)}</td></tr>" for name, value in facts
+            f'<tr><td class="wg-label">{escape(name)}</td><td>{escape(value)}</td></tr>'
+            for name, value in facts
         )
         link = (
             f'<a href="{escape(provenance.source_url)}" target="_blank" '
@@ -126,22 +153,24 @@ def _detail(hit: SearchHit, ruleset: Ruleset) -> None:
         st.html(f'<table class="wg-table"><tbody>{rows}</tbody></table>{link}')
         buttons = st.columns(2)
         for column, slot in zip(buttons, session.SLOTS, strict=True):
-            if column.button(f"Compare as item {slot}", key=f"db_use_{slot}"):
+            if column.button(f"Compare as item {slot}", key=f"db_use_{slot}", width="stretch"):
                 session.set_item(slot, item)
                 st.switch_page(CALCULATOR)
 
 
 def render() -> None:
+    layout.page_header(
+        "Item database",
+        "Browse every item the calculator knows and where its data came from, and send one to "
+        "the calculator.",
+        "items",
+    )
     ws = open_workspace()
     if ws is None:
         return
     counts = ws.search.counts()
-    st.caption(
-        f"{sum(counts.values()):,} items here: {counts.get('bundled', 0):,} from the bundled "
-        f"dataset, {counts.get('cache', 0):,} looked up online, {counts.get('user', 0):,} of "
-        "your own."
-    )
-    text, filters = _filters()
+    with layout.card("filters"):
+        text, filters = _filters()
     query = repr((text, filters))
     if st.session_state.get("db_last_query") != query:
         st.session_state["db_last_query"] = query
@@ -153,10 +182,21 @@ def render() -> None:
     else:
         hits, total = ws.search.browse(filters, offset=page * PAGE_SIZE, limit=PAGE_SIZE)
         pages = max(1, -(-total // PAGE_SIZE))
+    layout.section(
+        "Items",
+        f"{sum(counts.values()):,} items here: {counts.get('bundled', 0):,} from the bundled "
+        f"dataset, {counts.get('cache', 0):,} looked up online, {counts.get('user', 0):,} of "
+        "your own.",
+        aside=f"{total:,} found" if text else f"Page {page + 1} of {pages} · {total:,} items",
+    )
     if not hits:
-        st.info("No items match these filters.", icon=":material/search_off:")
+        layout.empty_state(
+            "No items match these filters.",
+            "Widen a filter, or clear them all to see every item.",
+            glyph="search",
+        )
         return
-    left, right = st.columns([1.7, 1], gap="large")
+    left, right = layout.split([2, 1], key="items")
     with left:
         event = st.dataframe(
             [_row(hit) for hit in hits],
@@ -165,24 +205,41 @@ def render() -> None:
             selection_mode="single-row",
             hide_index=True,
             width="stretch",
-            height=560,
+            # A short list is as tall as its rows; a long one scrolls inside a fixed height.
+            height=560 if len(hits) > 15 else "content",
+            placeholder="-",
+            column_config={
+                "Name": st.column_config.TextColumn(width="medium"),
+                "Slot and type": st.column_config.TextColumn(width=150),
+                "Quality": st.column_config.TextColumn(width=90),
+                "Phase": st.column_config.NumberColumn(width=64),
+                "Level": st.column_config.NumberColumn(width=64),
+                "Stats": st.column_config.TextColumn(width="large"),
+                "Source": st.column_config.TextColumn(width="small"),
+            },
         )
-        nav = st.columns([1, 2, 1], vertical_alignment="center")
-        if nav[0].button("Previous", disabled=page == 0, icon=":material/chevron_left:"):
-            st.session_state["db_page"] = page - 1
-            st.rerun()
-        nav[1].caption(
-            f"{total:,} found" if text else f"Page {page + 1} of {pages} · {total:,} items"
-        )
-        if nav[2].button("Next", disabled=page + 1 >= pages, icon=":material/chevron_right:"):
-            st.session_state["db_page"] = page + 1
-            st.rerun()
+        if not text:
+            pager = st.container(
+                horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"
+            )
+            if pager.button(
+                "Previous", disabled=page == 0, icon=":material/chevron_left:", key="db_previous"
+            ):
+                st.session_state["db_page"] = page - 1
+                st.rerun()
+            pager.html(f'<div class="wg-small">Page {page + 1} of {pages}</div>', width="content")
+            if pager.button(
+                "Next", disabled=page + 1 >= pages, icon=":material/chevron_right:", key="db_next"
+            ):
+                st.session_state["db_page"] = page + 1
+                st.rerun()
     with right:
         rows = event.selection.rows if event is not None else []
         if rows and rows[0] < len(hits):
             _detail(hits[rows[0]], ws.ruleset)
         else:
-            st.html(
-                '<div class="wg-empty"><b>Select a row</b> to see the item, where its data '
-                "came from, and to compare it in the calculator.</div>"
+            layout.empty_state(
+                "Select a row",
+                "to see the item, where its data came from, and to compare it in the calculator.",
+                glyph="items",
             )

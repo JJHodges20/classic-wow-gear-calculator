@@ -12,7 +12,7 @@ import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
 from components import gear as show
-from components import recommendation
+from components import layout, recommendation
 from components.context_bar import phase_label
 from components.html import chip, eyebrow, md
 from components.item_input import picker
@@ -247,7 +247,7 @@ def _details(ws: Workspace, working: SavedCharacter) -> SavedCharacter:
             icon=":material/warning:",
         )
     ruleset = calc.ruleset(working.ruleset)
-    with st.container(border=True):
+    with layout.card("details"):
         columns = st.columns([1.4, 2.3, 1.1, 0.7, 1.5, 1.0], vertical_alignment="bottom")
         name = columns[0].text_input(
             "Name", value=working.name, max_chars=60, key=f"gear_name_{gen}"
@@ -371,7 +371,7 @@ def _slot_row(
 
 
 def _slot_editor(ws: Workspace, working: SavedCharacter, slot: EquipmentSlot, worn: bool) -> None:
-    with st.container(border=True):
+    with layout.inset(f"editor-{slot.value}"):
         st.html(eyebrow(f"Choose an item for {EQUIPMENT_SLOT_LABELS[slot].lower()}"))
         round_number = int(st.session_state.get(ROUND, 0))
         picked = picker(f"gear{round_number}", ws, fits=_fits(slot))
@@ -394,10 +394,11 @@ def _grid(
     ws: Workspace, working: SavedCharacter, loaded: LoadedGear, analysis: GearAnalysis | None
 ) -> None:
     left, right = st.columns(2, gap="medium")
-    for column, slots in ((left, LEFT), (right, RIGHT)):
-        with column:
-            for slot in slots:
-                with st.container(border=True):
+    for name, column, slots in (("left", left, LEFT), ("right", right, RIGHT)):
+        with column, layout.card(f"slots-{name}"):
+            for index, slot in enumerate(slots):
+                row = f"wg-slot-first-{slot.value}" if index == 0 else f"wg-slot-{slot.value}"
+                with st.container(key=row):
                     _slot_row(ws, working, loaded, analysis, slot)
 
 
@@ -413,17 +414,15 @@ def _summary(analysis: GearAnalysis, loaded: LoadedGear, profile: BuildProfile) 
     worn = len(loaded.items)
     reached = sum(1 for status in analysis.caps if status.state != "short")
     tiles = [
-        show.tile("Gear value", f"{analysis.score:.1f}", unit),
-        show.tile("Pieces worn", f"{worn} of {worn + len(analysis.empty)}"),
+        layout.Tile("Gear value", f"{analysis.score:.1f}", unit),
+        layout.Tile("Pieces worn", f"{worn} of {worn + len(analysis.empty)}"),
     ]
     if analysis.caps:
-        tiles.append(show.tile("Caps reached", f"{reached} of {len(analysis.caps)}"))
-    with st.container(border=True):
+        tiles.append(layout.Tile("Caps reached", f"{reached} of {len(analysis.caps)}"))
+    with layout.card("summary"):
         st.html(
             eyebrow(f"Under {profile.label}")
-            + '<div class="wg-tiles">'
-            + "".join(tiles)
-            + "</div>"
+            + layout.tiles_html(tiles)
             + '<div class="wg-small">A piece is worth what the character would lose without it, '
             "with the rest of the gear as it is. Valued under this profile and its assumptions."
             "</div>"
@@ -435,39 +434,38 @@ def _panel(
 ) -> None:
     ruleset = ws.calculator.ruleset(analysis.ruleset_id)
     _summary(analysis, loaded, profile)
-    st.html(eyebrow("Caps and breakpoints") + show.caps_html(analysis.caps))
+    with layout.card("caps"):
+        st.html(eyebrow("Caps and breakpoints") + show.caps_html(analysis.caps))
+    findings = ""
     if analysis.under_served:
-        st.html(eyebrow("Under-served priorities") + _list(analysis.under_served))
+        findings += eyebrow("Under-served priorities") + _list(analysis.under_served)
     if analysis.weakest:
-        st.html(
-            eyebrow("Weakest pieces")
-            + _list(
-                [
-                    f"{EQUIPMENT_SLOT_LABELS[weak.slot]} · {weak.item_name}: {weak.reason}"
-                    for weak in analysis.weakest
-                ]
-            )
+        findings += eyebrow("Weakest pieces") + _list(
+            [
+                f"{EQUIPMENT_SLOT_LABELS[weak.slot]} · {weak.item_name}: {weak.reason}"
+                for weak in analysis.weakest
+            ]
         )
     if analysis.not_valued:
-        st.html(
+        findings += (
             eyebrow("Not valued by this profile")
             + '<div class="wg-chips">'
             + "".join(chip(text, "muted") for text in analysis.not_valued)
             + "</div>"
         )
-    st.html(eyebrow("Where the value comes from") + show.value_table(analysis, ruleset))
+    if findings:
+        with layout.card("findings"):
+            st.html(findings)
+    with layout.card("value"):
+        st.html(eyebrow("Where the value comes from") + show.value_table(analysis, ruleset))
+    quiet: list[str | tuple[str, layout.NoteKind]] = []
     for note in analysis.notes:
         if "not usable" in note:
             st.error(md(note), icon=":material/block:")
         else:
-            st.info(md(note), icon=":material/info:")
-    if analysis.not_scored:
-        st.html(
-            '<div class="wg-small">Not scored in version 1:</div>'
-            + '<div class="wg-small">'
-            + "<br>".join(escape(text) for text in analysis.not_scored)
-            + "</div>"
-        )
+            quiet.append(note)
+    quiet.extend(f"Not scored in version 1 - {text}" for text in analysis.not_scored)
+    layout.notes(quiet)
     with st.expander("Assumptions", icon=":material/rule:"):
         st.html(_list(analysis.assumptions))
 
@@ -476,9 +474,12 @@ def _panel(
 
 
 def _try(ws: Workspace, working: SavedCharacter, loaded: LoadedGear) -> ReplacementResult | None:
-    st.html(eyebrow("Try a replacement"))
+    layout.section(
+        "Try a replacement",
+        "Pick a slot and search for an item: the whole character is valued with it and without it.",
+    )
     tried: ReplacementResult | None = None
-    with st.container(border=True):
+    with layout.card("try"):
         left, right = st.columns([1, 1.3], gap="large")
         with left:
             slot = st.selectbox(
@@ -500,11 +501,11 @@ def _try(ws: Workspace, working: SavedCharacter, loaded: LoadedGear) -> Replacem
         with right:
             pending = st.session_state.get(TRY)
             if not (isinstance(pending, tuple) and pending[0] == slot):
-                st.html(
-                    '<div class="wg-empty"><b>Search for an item to try.</b> The whole '
-                    "character is valued with it and without it, so caps the rest of the gear "
-                    "fills, a two-hander replacing two weapons and a weapon that moves the hit "
-                    "cap are all counted.</div>"
+                layout.empty_state(
+                    "Search for an item to try.",
+                    "Caps the rest of the gear already fills and a two-hander replacing two "
+                    "weapons are all counted; a change of weapon skill is shown, not valued.",
+                    glyph="search",
                 )
                 return None
             try:
@@ -527,8 +528,7 @@ def _tried(ws: Workspace, working: SavedCharacter, tried: ReplacementResult) -> 
     changes = show.cap_changes(tried)
     if changes:
         st.html(eyebrow("Caps") + _list(changes))
-    for note in tried.notes:
-        st.info(md(note), icon=":material/info:")
+    layout.notes(list(tried.notes))
     buttons = st.container(horizontal=True)
     if buttons.button("Put it on", type="primary", icon=":material/check:", key="gear_try_equip"):
         try:
@@ -604,13 +604,18 @@ def _files(
 
 
 def render() -> None:
+    layout.page_header(
+        "Gear set",
+        "Save a character with its whole gear: what each piece is worth, where the caps stand, "
+        "and how one change moves the whole character.",
+        "gear",
+    )
     ws = open_workspace()
     if ws is None:
         return
     flash = st.session_state.pop(FLASH, None)
     if flash:
         st.success(md(flash), icon=":material/check:")
-    st.write("")
     try:
         working = _choose(ws)
     except WowGearError as error:
@@ -645,29 +650,30 @@ def render() -> None:
     except (DataValidationError, NotFoundError) as error:
         st.error(md(f"This gear cannot be analysed: {error}"), icon=":material/error:")
 
-    st.write("")
-    gear_column, analysis_column = st.columns([1.25, 1], gap="large")
+    gear_column, analysis_column = layout.split([1.25, 1], key="gear", stack_below="laptop")
     with gear_column:
-        st.html(eyebrow(f"Gear · {len(loaded.items)} pieces"))
+        layout.section("Gear", aside=f"{len(loaded.items)} of {len(EquipmentSlot)} slots")
         _grid(ws, working, loaded, analysis)
     with analysis_column:
-        st.html(eyebrow("Analysis"))
+        layout.section("Analysis")
         if analysis is None or profile is None:
-            st.html('<div class="wg-empty"><b>No analysis.</b> Fix the problem above.</div>')
+            layout.empty_state("No analysis.", "Fix the problem above to see it.")
         elif not loaded.items:
-            st.html(
-                '<div class="wg-empty"><b>Add your gear to analyse it.</b>'
-                "<ol><li>Choose the build profile and race above.</li>"
-                "<li>Use <i>Add</i> on each slot to search for the item you wear, or import "
-                "a gear list.</li><li>Save the character to keep it.</li></ol></div>"
+            layout.empty_state(
+                "Add your gear to analyse it.",
+                steps=[
+                    "Choose the build profile and race above.",
+                    "Use Add on each slot to search for the item you wear, or import a gear list.",
+                    "Save the character to keep it.",
+                ],
+                glyph="plus",
             )
         else:
             _panel(ws, analysis, loaded, profile)
 
-    st.write("")
     tried = _try(ws, working, loaded) if loaded.items or working.gear.items else None
 
-    st.write("")
+    layout.section("Totals and files")
     with st.expander("Totals from this gear", icon=":material/functions:"):
         if analysis is None:
             st.caption("Totals show once the gear can be analysed.")

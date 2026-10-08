@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from components import theme
+from components import layout, theme
 from state import session
 from wow_gear import __version__
 
@@ -20,7 +20,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-theme.inject()
+tokens = theme.inject()
+st.logo(layout.logo_svg(tokens), size="large")
 session.keep_across_pages()
 
 page = st.navigation(
@@ -65,12 +66,5 @@ page = st.navigation(
     ],
     position="top",
 )
-st.title("Classic Gear Calculator")
-st.caption("Explainable gear comparisons for World of Warcraft Classic Era.")
 page.run()
-
-st.divider()
-st.caption(
-    f"Version {__version__}. An unofficial fan tool: World of Warcraft is a trademark of Blizzard "
-    "Entertainment. Wowhead links are for reference; the app never fetches from Wowhead."
-)
+layout.footer(__version__)
